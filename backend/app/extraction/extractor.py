@@ -4,7 +4,7 @@ import sys
 
 CURRENT_FILE = Path(__file__).resolve()
 ROOT_DIR = next(
-    (p for p in CURRENT_FILE.parents if p.name.lower() == "aletheia"),
+    (p for p in CURRENT_FILE.parents if p.name.lower() == "alethia"),
     CURRENT_FILE.parent,
 )
 

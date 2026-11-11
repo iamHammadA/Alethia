@@ -1,0 +1,28 @@
+{
+  "articles_seen": 1,
+  "papers_created": 1,
+  "claims_created": 16,
+  "evidence_created": 40,
+  "methods_created": 2,
+  "concepts_created": 3,
+  "entities_created": 0,
+  "datasets_created": 0,
+  "warnings": [],
+  "input_files": {
+    "matched_evidence": "/run/media/hammad/Software/Work/Python Work/Alethia/arXiv papers/matched_evidence.json",
+    "analyzed_evidence": "/run/media/hammad/Software/Work/Python Work/Alethia/arXiv papers/analyzed_evidences.json",
+    "paper_metadata": null
+  },
+  "models_created": 1,
+  "algorithms_created": 0,
+  "total_nodes": 63,
+  "total_edges": 76,
+  "cross_paper_similarity_candidates": 0,
+  "llm_cross_paper_enabled": false,
+  "outputs": {
+    "graphml": "/run/media/hammad/Software/Work/Python Work/Alethia/arXiv papers/knowledge_graph/alethia_knowledge_graph.graphml",
+    "json": "/run/media/hammad/Software/Work/Python Work/Alethia/arXiv papers/knowledge_graph/alethia_knowledge_graph.json",
+    "html": "/run/media/hammad/Software/Work/Python Work/Alethia/arXiv papers/knowledge_graph/alethia_knowledge_graph.html",
+    "insights": "/run/media/hammad/Software/Work/Python Work/Alethia/arXiv papers/knowledge_graph/research_insights.json"
+  }
+}

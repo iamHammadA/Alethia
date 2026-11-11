@@ -11,7 +11,7 @@ import os
 
 # Dynamically add the root 'Aletheia' directory to sys.path
 CURRENT_FILE = Path(__file__).resolve()
-ROOT_DIR = next((p for p in CURRENT_FILE.parents if p.name.lower() == "aletheia"), CURRENT_FILE.parent)
+ROOT_DIR = next((p for p in CURRENT_FILE.parents if p.name.lower() == "alethia"), CURRENT_FILE.parent)
 
 SAVE_DIR = ROOT_DIR / "arXiv papers"
 SAVE_DIR.mkdir(parents=True, exist_ok=True)
@@ -26,7 +26,7 @@ def get_data():
     )
     command = command_gathering()
     encoded_command = urllib.parse.quote(command)
-    max_results = 1
+    max_results = 2
     url = f"http://export.arxiv.org/api/query?search_query=all:{encoded_command}&max_results={max_results}"
     
     with urllib.request.urlopen(url) as in_data:

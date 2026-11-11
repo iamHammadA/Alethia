@@ -5,7 +5,7 @@ import pymupdf4llm
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-from ai_claim_analyzer import analyzer
+from .ai_claim_analyzer import analyzer
 
 nltk.download("punkt", quiet=True)
 

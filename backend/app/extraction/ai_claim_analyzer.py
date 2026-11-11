@@ -1,6 +1,6 @@
 from google import genai
 import json
-from claim_normalizer import main_function
+from .claim_normalizer import main_function
 import os
 import requests
 from dotenv import load_dotenv
@@ -11,7 +11,7 @@ client = genai.Client()
 def call_openrouter_reasoning(
     claim_input: dict | str, 
     api_key: str | None = None,
-    model: str = "nvidia/nemotron-3-super-120b-a12b:free"
+    model: str = "baidu/ernie-5.5-flash-preview:free"
 ) -> dict:
     """
     Analyzes scientific claims using OpenRouter reasoning models,

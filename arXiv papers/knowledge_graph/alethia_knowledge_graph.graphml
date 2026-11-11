@@ -1,0 +1,1424 @@
+<?xml version='1.0' encoding='utf-8'?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+  <key id="d37" for="edge" attr.name="page_number" attr.type="string" />
+  <key id="d36" for="edge" attr.name="source_paper_id" attr.type="string" />
+  <key id="d35" for="edge" attr.name="reason" attr.type="string" />
+  <key id="d34" for="edge" attr.name="strength" attr.type="string" />
+  <key id="d33" for="edge" attr.name="similarity" attr.type="string" />
+  <key id="d32" for="edge" attr.name="relationship" attr.type="string" />
+  <key id="d31" for="edge" attr.name="edge_id" attr.type="string" />
+  <key id="d30" for="node" attr.name="description" attr.type="string" />
+  <key id="d29" for="node" attr.name="name" attr.type="string" />
+  <key id="d28" for="node" attr.name="reason" attr.type="string" />
+  <key id="d27" for="node" attr.name="relationship" attr.type="string" />
+  <key id="d26" for="node" attr.name="strength" attr.type="string" />
+  <key id="d25" for="node" attr.name="similarity" attr.type="string" />
+  <key id="d24" for="node" attr.name="section" attr.type="string" />
+  <key id="d23" for="node" attr.name="page_number" attr.type="string" />
+  <key id="d22" for="node" attr.name="sentence" attr.type="string" />
+  <key id="d21" for="node" attr.name="best_evidence" attr.type="string" />
+  <key id="d20" for="node" attr.name="overall_strength" attr.type="string" />
+  <key id="d19" for="node" attr.name="overall_relationship" attr.type="string" />
+  <key id="d18" for="node" attr.name="claim_confidence" attr.type="string" />
+  <key id="d17" for="node" attr.name="requires_evidence" attr.type="string" />
+  <key id="d16" for="node" attr.name="object" attr.type="string" />
+  <key id="d15" for="node" attr.name="relation" attr.type="string" />
+  <key id="d14" for="node" attr.name="subject" attr.type="string" />
+  <key id="d13" for="node" attr.name="claim_type" attr.type="string" />
+  <key id="d12" for="node" attr.name="source_paper_id" attr.type="string" />
+  <key id="d11" for="node" attr.name="normalized_claim" attr.type="string" />
+  <key id="d10" for="node" attr.name="original_text" attr.type="string" />
+  <key id="d9" for="node" attr.name="metadata_source" attr.type="string" />
+  <key id="d8" for="node" attr.name="article_key" attr.type="string" />
+  <key id="d7" for="node" attr.name="source_pdf" attr.type="string" />
+  <key id="d6" for="node" attr.name="abstract" attr.type="string" />
+  <key id="d5" for="node" attr.name="arxiv_id" attr.type="string" />
+  <key id="d4" for="node" attr.name="publication_year" attr.type="string" />
+  <key id="d3" for="node" attr.name="authors" attr.type="string" />
+  <key id="d2" for="node" attr.name="title" attr.type="string" />
+  <key id="d1" for="node" attr.name="label" attr.type="string" />
+  <key id="d0" for="node" attr.name="node_type" attr.type="string" />
+  <graph edgedefault="directed">
+    <node id="paper_f9b5558539da260a67f0">
+      <data key="d0">paper</data>
+      <data key="d1">paper0.pdf</data>
+      <data key="d2">Unknown title</data>
+      <data key="d3">[]</data>
+      <data key="d4" />
+      <data key="d5" />
+      <data key="d6" />
+      <data key="d7">paper0.pdf</data>
+      <data key="d8">article0</data>
+      <data key="d9">article_record_or_filename</data>
+    </node>
+    <node id="claim_7272fee42c4be4fc3856">
+      <data key="d0">claim</data>
+      <data key="d1">Study evaluates various approaches, including fine-tuning with diverse datasets, incorporating psychologi…</data>
+      <data key="d10">Study evaluates various approaches, including fine-tuning with diverse datasets, incorporating psychological principles, and designing models that better mimic human reasoning patterns.</data>
+      <data key="d11">Study evaluates various approaches, including fine-tuning with diverse datasets, incorporating psychological principles, and designing models that better mimic human reasoning patterns.</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d13">unknown</data>
+      <data key="d14" />
+      <data key="d15" />
+      <data key="d16" />
+      <data key="d17" />
+      <data key="d18" />
+      <data key="d19">supports</data>
+      <data key="d20">0.6</data>
+      <data key="d21">{"sentence": "2 \n\n**Enhancing Human-Like Responses in Large Language Models** \n\nThese prompts were instrumental in curating a dataset that serves as the foundation for fine-tuning LLMs to be more human-like in their interactions.", "similarity": 0.1358, "strength": 0.6}</data>
+    </node>
+    <node id="evidence_98b75d844e5abcd52301">
+      <data key="d0">evidence</data>
+      <data key="d1">To achieve this, we developed synthetic datasets tailored for fine-tuning models using the…</data>
+      <data key="d22">To achieve this, we developed synthetic datasets tailored for fine-tuning models using the Direct Preference Optimization (DPO) technique [17].</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d23" />
+      <data key="d24" />
+      <data key="d25">0.1566</data>
+      <data key="d26">0.4</data>
+      <data key="d27">supports</data>
+      <data key="d28">The passage mentions developing synthetic datasets for fine-tuning, which is one of the approaches mentioned in the claim.</data>
+    </node>
+    <node id="evidence_a447cf9042696756fa23">
+      <data key="d0">evidence</data>
+      <data key="d1">2 
+
+**Enhancing Human-Like Responses in Large Language Models** 
+
+These prompts were instr…</data>
+      <data key="d22">2 
+
+**Enhancing Human-Like Responses in Large Language Models** 
+
+These prompts were instrumental in curating a dataset that serves as the foundation for fine-tuning LLMs to be more human-like in their interactions.</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d23" />
+      <data key="d24" />
+      <data key="d25">0.1358</data>
+      <data key="d26">0.6</data>
+      <data key="d27">supports</data>
+      <data key="d28">The passage mentions curating a dataset for fine-tuning, which is also mentioned in the claim.</data>
+    </node>
+    <node id="evidence_f245ea9e4636f183cd94">
+      <data key="d0">evidence</data>
+      <data key="d1">## **3 Data Preparation** 
+
+To enhance the conversational abilities of Large Language Mode…</data>
+      <data key="d22">## **3 Data Preparation** 
+
+To enhance the conversational abilities of Large Language Models (LLMs) and generate responses that better mimic human communication, we utilized the Llama 3 70B and 405B models to create a synthetic dataset, following a methodology similar to the Self-Instruct [24] approach.</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d23" />
+      <data key="d24" />
+      <data key="d25">0.1355</data>
+      <data key="d26">0.6</data>
+      <data key="d27">supports</data>
+      <data key="d28">The passage mentions creating a synthetic dataset for enhancing conversational abilities, which is another approach mentioned in the claim.</data>
+    </node>
+    <node id="method_242a7e0404079f5f47b5">
+      <data key="d0">method</data>
+      <data key="d1">Fine-Tuning</data>
+      <data key="d29">Fine-Tuning</data>
+      <data key="d30" />
+    </node>
+    <node id="concept_0c4d01e81bb3d1fd0dc4">
+      <data key="d0">concept</data>
+      <data key="d1">Reasoning</data>
+      <data key="d29">Reasoning</data>
+      <data key="d30" />
+    </node>
+    <node id="claim_f44567df621d3d0c4962">
+      <data key="d0">claim</data>
+      <data key="d1">Findings demonstrate that enhancements improve user interactions and open new possibilities for AI applic…</data>
+      <data key="d10">Findings demonstrate that enhancements improve user interactions and open new possibilities for AI applications across different domains.</data>
+      <data key="d11">Findings demonstrate that enhancements improve user interactions and open new possibilities for AI applications across different domains.</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d13">unknown</data>
+      <data key="d14" />
+      <data key="d15" />
+      <data key="d16" />
+      <data key="d17" />
+      <data key="d18" />
+      <data key="d19">supports</data>
+      <data key="d20">0.8</data>
+      <data key="d21">{"sentence": "Our findings demonstrate that these techniques significantly enhance both conversational fluency and user engagement, bringing AI closer to mimicking real human communication.", "similarity": 0.2476, "strength": 0.4}</data>
+    </node>
+    <node id="evidence_2d3e21a41f0f2105d2e5">
+      <data key="d0">evidence</data>
+      <data key="d1">Our findings demonstrate that these techniques significantly enhance both conversational f…</data>
+      <data key="d22">Our findings demonstrate that these techniques significantly enhance both conversational fluency and user engagement, bringing AI closer to mimicking real human communication.</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d23" />
+      <data key="d24" />
+      <data key="d25">0.2476</data>
+      <data key="d26">0.4</data>
+      <data key="d27">supports</data>
+      <data key="d28">The passage directly supports the claim by stating that enhancements improve user interactions.</data>
+    </node>
+    <node id="evidence_115d70553757919f1c9e">
+      <data key="d0">evidence</data>
+      <data key="d1">This improvement brings AI interactions closer to natural human communication, making thes…</data>
+      <data key="d22">This improvement brings AI interactions closer to natural human communication, making these models more suitable for real-world conversational applications.</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d23" />
+      <data key="d24" />
+      <data key="d25">0.1723</data>
+      <data key="d26">0.6</data>
+      <data key="d27">supports</data>
+      <data key="d28">The passage provides additional evidence by stating that the improvements make AI models more suitable for real-world applications.</data>
+    </node>
+    <node id="evidence_4df60add2859e0953e1f">
+      <data key="d0">evidence</data>
+      <data key="d1">In summary, our findings demonstrate that fine-tuning effectively reduces mechanical phras…</data>
+      <data key="d22">In summary, our findings demonstrate that fine-tuning effectively reduces mechanical phrasing and enhances conversational coherence.</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d23" />
+      <data key="d24" />
+      <data key="d25">0.1626</data>
+      <data key="d26">0.4</data>
+      <data key="d27">supports</data>
+      <data key="d28">The passage supports the claim by stating that fine-tuning improves conversational coherence.</data>
+    </node>
+    <node id="claim_dbe1bf64e017e6d1e020">
+      <data key="d0">claim</data>
+      <data key="d1">Large language models show remarkable progress in understanding and generating natural language.</data>
+      <data key="d10">Large language models show remarkable progress in understanding and generating natural language.</data>
+      <data key="d11">Large language models show remarkable progress in understanding and generating natural language.</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d13">unknown</data>
+      <data key="d14" />
+      <data key="d15" />
+      <data key="d16" />
+      <data key="d17" />
+      <data key="d18" />
+      <data key="d19">supports</data>
+      <data key="d20">0.8</data>
+      <data key="d21" />
+    </node>
+    <node id="evidence_ed6d573af590b9ba241f">
+      <data key="d0">evidence</data>
+      <data key="d1">## **1 Introduction** 
+
+Large language models (LLMs) have shown remarkable progress in und…</data>
+      <data key="d22">## **1 Introduction** 
+
+Large language models (LLMs) have shown remarkable progress in understanding and generating natural language, thanks to their training on vast and diverse datasets.</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d23" />
+      <data key="d24" />
+      <data key="d25">0.6662</data>
+      <data key="d26">0.8</data>
+      <data key="d27">supports</data>
+      <data key="d28">The passage directly reports the claim's assertion about large language models' progress.</data>
+    </node>
+    <node id="evidence_98365ee1e6e7ba1c92bc">
+      <data key="d0">evidence</data>
+      <data key="d1">9 
+
+**Enhancing Human-Like Responses in Large Language Models** 
+
+- [9] Hugging Face.</data>
+      <data key="d22">9 
+
+**Enhancing Human-Like Responses in Large Language Models** 
+
+- [9] Hugging Face.</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d23" />
+      <data key="d24" />
+      <data key="d25">0.2735</data>
+      <data key="d26">0.0</data>
+      <data key="d27">irrelevant</data>
+      <data key="d28">The passage is a reference to a specific paper and does not provide evidence for the claim.</data>
+    </node>
+    <node id="evidence_a250c4cdf6356f68daac">
+      <data key="d0">evidence</data>
+      <data key="d1">Instruction-following evaluation for large language models, 2023.</data>
+      <data key="d22">Instruction-following evaluation for large language models, 2023.</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d23" />
+      <data key="d24" />
+      <data key="d25">0.2677</data>
+      <data key="d26">0.0</data>
+      <data key="d27">insufficient</data>
+      <data key="d28">The passage is related to the topic but does not provide enough information to establish or evaluate the claim.</data>
+    </node>
+    <node id="claim_8935b7eb24a27a43cbd0">
+      <data key="d0">claim</data>
+      <data key="d1">...</data>
+      <data key="d10">...</data>
+      <data key="d11">...</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d13">unknown</data>
+      <data key="d14" />
+      <data key="d15" />
+      <data key="d16" />
+      <data key="d17" />
+      <data key="d18" />
+      <data key="d19">supports</data>
+      <data key="d20">0.8</data>
+      <data key="d21">{"sentence": "Our findings demonstrate that these techniques significantly enhance both conversational fluency and user engagement, bringing AI closer to mimicking real human communication.", "similarity": 0.9208}</data>
+    </node>
+    <node id="evidence_e3c3aafe5517f0419e8d">
+      <data key="d0">evidence</data>
+      <data key="d1">We focus on techniques that enhance natural language understanding, conversational coheren…</data>
+      <data key="d22">We focus on techniques that enhance natural language understanding, conversational coherence, and emotional intelligence in AI systems.</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d23" />
+      <data key="d24" />
+      <data key="d25">0.2371</data>
+      <data key="d26">0.0</data>
+      <data key="d27">insufficient</data>
+      <data key="d28">The sentence is related to the claim but does not provide enough information to establish or evaluate it.</data>
+    </node>
+    <node id="claim_68a28b6113113e9309a5">
+      <data key="d0">claim</data>
+      <data key="d1">We implement Direct Preference Optimization to emphasize user engagement while maintaining linguistic acc…</data>
+      <data key="d10">We implement Direct Preference Optimization to emphasize user engagement while maintaining linguistic accuracy.</data>
+      <data key="d11">We implement Direct Preference Optimization to emphasize user engagement while maintaining linguistic accuracy.</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d13">unknown</data>
+      <data key="d14" />
+      <data key="d15" />
+      <data key="d16" />
+      <data key="d17" />
+      <data key="d18" />
+      <data key="d19">supports</data>
+      <data key="d20">0.8</data>
+      <data key="d21">{"sentence": "By implementing Direct Preference Optimization (DPO), we emphasize user engagement while maintaining linguistic accuracy [17].", "similarity": 0.8051, "strength": 0.8}</data>
+    </node>
+    <node id="evidence_7eb1778fcb729b60f461">
+      <data key="d0">evidence</data>
+      <data key="d1">By implementing Direct Preference Optimization (DPO), we emphasize user engagement while m…</data>
+      <data key="d22">By implementing Direct Preference Optimization (DPO), we emphasize user engagement while maintaining linguistic accuracy [17].</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d23" />
+      <data key="d24" />
+      <data key="d25">0.8051</data>
+      <data key="d26">0.8</data>
+      <data key="d27">supports</data>
+      <data key="d28">The passage directly supports the claim by stating that DPO is used to emphasize user engagement and maintain linguistic accuracy.</data>
+    </node>
+    <node id="evidence_218d28cd6c1a3f3ad982">
+      <data key="d0">evidence</data>
+      <data key="d1">Direct Preference Optimization (DPO) [17] technique was chosen to implement a reward mecha…</data>
+      <data key="d22">Direct Preference Optimization (DPO) [17] technique was chosen to implement a reward mechanism that guides the model towards more human-like behavior during training.</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d23" />
+      <data key="d24" />
+      <data key="d25">0.306</data>
+      <data key="d26">0.4</data>
+      <data key="d27">supports</data>
+      <data key="d28">The passage supports the claim by stating that DPO is used for a related purpose, but it does not directly address user engagement.</data>
+    </node>
+    <node id="evidence_99b38dc0cbb58a98430e">
+      <data key="d0">evidence</data>
+      <data key="d1">Direct preference optimization: Your language model is secretly a reward model, 2024.</data>
+      <data key="d22">Direct preference optimization: Your language model is secretly a reward model, 2024.</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d23" />
+      <data key="d24" />
+      <data key="d25">0.273</data>
+      <data key="d26">0.0</data>
+      <data key="d27">irrelevant</data>
+      <data key="d28">The passage does not provide any relevant information to the claim and appears to be humorous or unrelated.</data>
+    </node>
+    <node id="method_418c7944ab4659038262">
+      <data key="d0">method</data>
+      <data key="d1">Direct Preference Optimization</data>
+      <data key="d29">Direct Preference Optimization</data>
+      <data key="d30" />
+    </node>
+    <node id="concept_3a2ac46557ab37e2b492">
+      <data key="d0">concept</data>
+      <data key="d1">User Engagement</data>
+      <data key="d29">User Engagement</data>
+      <data key="d30" />
+    </node>
+    <node id="concept_b85869ec107c3029100d">
+      <data key="d0">concept</data>
+      <data key="d1">Linguistic Accuracy</data>
+      <data key="d29">Linguistic Accuracy</data>
+      <data key="d30" />
+    </node>
+    <node id="claim_07d1a3589e4a2317618b">
+      <data key="d0">claim</data>
+      <data key="d1">Efforts focused on leveraging the model's established strengths and refining its performance to facilitat…</data>
+      <data key="d10">Efforts focused on leveraging the model's established strengths and refining its performance to facilitate natural human-like interactions.</data>
+      <data key="d11">Efforts focused on leveraging the model's established strengths and refining its performance to facilitate natural human-like interactions.</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d13">unknown</data>
+      <data key="d14" />
+      <data key="d15" />
+      <data key="d16" />
+      <data key="d17" />
+      <data key="d18" />
+      <data key="d19">supports</data>
+      <data key="d20">0.6</data>
+      <data key="d21">{"sentence": "Our efforts focused on leveraging the model’s established strengths, such as its ability to understand context and generate coherent responses, while refining its performance to facilitate more natural, human-like interactions.", "similarity": 0.8082}</data>
+    </node>
+    <node id="evidence_70d03f66b0712dcabbf3">
+      <data key="d0">evidence</data>
+      <data key="d1">Our efforts focused on leveraging the model’s established strengths, such as its ability t…</data>
+      <data key="d22">Our efforts focused on leveraging the model’s established strengths, such as its ability to understand context and generate coherent responses, while refining its performance to facilitate more natural, human-like interactions.</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d23" />
+      <data key="d24" />
+      <data key="d25">0.8082</data>
+      <data key="d26">0.8</data>
+      <data key="d27">supports</data>
+      <data key="d28">The passage directly supports the claim by mentioning leveraging established strengths and refining performance for human-like interactions.</data>
+    </node>
+    <node id="evidence_d1e65d7630f8956c1797">
+      <data key="d0">evidence</data>
+      <data key="d1">These datasets allow the models to balance casual, conversational language with structured…</data>
+      <data key="d22">These datasets allow the models to balance casual, conversational language with structured, topic-based dialogue, resulting in more natural and human-like interactions.</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d23" />
+      <data key="d24" />
+      <data key="d25">0.1554</data>
+      <data key="d26">0.2</data>
+      <data key="d27">supports</data>
+      <data key="d28">The passage supports the claim by mentioning datasets that facilitate human-like interactions.</data>
+    </node>
+    <node id="evidence_75e16faae178ba057676">
+      <data key="d0">evidence</data>
+      <data key="d1">You are a human, so you should answer like a human being.</data>
+      <data key="d22">You are a human, so you should answer like a human being.</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d23" />
+      <data key="d24" />
+      <data key="d25">0.1472</data>
+      <data key="d26">0.0</data>
+      <data key="d27">irrelevant</data>
+      <data key="d28">The passage is unrelated to the claim and does not provide useful evidence.</data>
+    </node>
+    <node id="claim_755a018ef8a43640d91c">
+      <data key="d0">claim</data>
+      <data key="d1">Fine-tuned models outperformed official instruction models.</data>
+      <data key="d10">Fine-tuned models outperformed official instruction models.</data>
+      <data key="d11">Fine-tuned models outperformed official instruction models.</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d13">unknown</data>
+      <data key="d14" />
+      <data key="d15" />
+      <data key="d16" />
+      <data key="d17" />
+      <data key="d18" />
+      <data key="d19">supports</data>
+      <data key="d20">0.8</data>
+      <data key="d21">{"sentence": "The results, summarized in _Table 5_ , demonstrate that our fine-tuned models consistently outperformed the official instruction models.", "similarity": 0.6551}</data>
+    </node>
+    <node id="evidence_2fec0f73ab15f586e3d6">
+      <data key="d0">evidence</data>
+      <data key="d1">The results, summarized in _Table 5_ , demonstrate that our fine-tuned models consistently…</data>
+      <data key="d22">The results, summarized in _Table 5_ , demonstrate that our fine-tuned models consistently outperformed the official instruction models.</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d23" />
+      <data key="d24" />
+      <data key="d25">0.6551</data>
+      <data key="d26">0.8</data>
+      <data key="d27">supports</data>
+      <data key="d28">Directly reports experimental result showing fine-tuned models outperforming official instruction models.</data>
+    </node>
+    <node id="evidence_79f0bebfedd33b035599">
+      <data key="d0">evidence</data>
+      <data key="d1">The comparison between our fine-tuned models and the official instruction models is summar…</data>
+      <data key="d22">The comparison between our fine-tuned models and the official instruction models is summarized in _Table 6_ .</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d23" />
+      <data key="d24" />
+      <data key="d25">0.5861</data>
+      <data key="d26">0.7</data>
+      <data key="d27">supports</data>
+      <data key="d28">Reports on a comparison between fine-tuned and official instruction models, which supports the claim.</data>
+    </node>
+    <node id="evidence_b610d5530434c96671c6">
+      <data key="d0">evidence</data>
+      <data key="d1">This setup allowed participants to compare responses from our fine-tuned models with those…</data>
+      <data key="d22">This setup allowed participants to compare responses from our fine-tuned models with those from the official instruction models and select the response they judged to be more human-like.</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d23" />
+      <data key="d24" />
+      <data key="d25">0.4744</data>
+      <data key="d26">0.2</data>
+      <data key="d27">insufficient</data>
+      <data key="d28">Describes a setup for comparison, but does not directly report results or comparisons.</data>
+    </node>
+    <node id="claim_0d9b65be27fb93fa72f8">
+      <data key="d0">claim</data>
+      <data key="d1">Our findings demonstrate that fine-tuning reduces mechanical phrasing and enhances conversational coheren…</data>
+      <data key="d10">Our findings demonstrate that fine-tuning reduces mechanical phrasing and enhances conversational coherence.</data>
+      <data key="d11">Our findings demonstrate that fine-tuning reduces mechanical phrasing and enhances conversational coherence.</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d13">unknown</data>
+      <data key="d14" />
+      <data key="d15" />
+      <data key="d16" />
+      <data key="d17" />
+      <data key="d18" />
+      <data key="d19">supports</data>
+      <data key="d20">0.8</data>
+      <data key="d21">{"sentence": "In summary, our findings demonstrate that fine-tuning effectively reduces mechanical phrasing and enhances conversational coherence.", "similarity": 0.8967}</data>
+    </node>
+    <node id="evidence_503a02be198512cbdbee">
+      <data key="d0">evidence</data>
+      <data key="d1">In contrast, our fine-tuned models avoided such mechanical phrasing, delivering responses …</data>
+      <data key="d22">In contrast, our fine-tuned models avoided such mechanical phrasing, delivering responses that were more direct and contextually appropriate, thereby enhancing their perceived human-likeness.</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d23" />
+      <data key="d24" />
+      <data key="d25">0.2376</data>
+      <data key="d26">0.6</data>
+      <data key="d27">supports</data>
+      <data key="d28">The sentence supports the claim by describing a specific benefit of fine-tuning.</data>
+    </node>
+    <node id="claim_f66dffa29bc10b44752b">
+      <data key="d0">claim</data>
+      <data key="d1">The average performance change is minimal.</data>
+      <data key="d10">The average performance change is minimal.</data>
+      <data key="d11">The average performance change is minimal.</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d13">unknown</data>
+      <data key="d14" />
+      <data key="d15" />
+      <data key="d16" />
+      <data key="d17" />
+      <data key="d18" />
+      <data key="d19">supports</data>
+      <data key="d20">0.8</data>
+      <data key="d21">{"sentence": "Overall, the average performance change was minimal, with the majority of models showing either a small reduction or a small improvement.", "similarity": 0.4881}</data>
+    </node>
+    <node id="evidence_268d84d3237ce8fdb15c">
+      <data key="d0">evidence</data>
+      <data key="d1">Overall, the average performance change was minimal, with the majority of models showing e…</data>
+      <data key="d22">Overall, the average performance change was minimal, with the majority of models showing either a small reduction or a small improvement.</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d23" />
+      <data key="d24" />
+      <data key="d25">0.4881</data>
+      <data key="d26">0.6</data>
+      <data key="d27">supports</data>
+      <data key="d28">The passage directly states that the average performance change is minimal.</data>
+    </node>
+    <node id="evidence_de2a5698b22e857c0361">
+      <data key="d0">evidence</data>
+      <data key="d1">As expected, there was a slight average performance change in our fine-tuned models.</data>
+      <data key="d22">As expected, there was a slight average performance change in our fine-tuned models.</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d23" />
+      <data key="d24" />
+      <data key="d25">0.4863</data>
+      <data key="d26">0.6</data>
+      <data key="d27">supports</data>
+      <data key="d28">The passage directly states that the average performance change is minimal.</data>
+    </node>
+    <node id="evidence_10a28a1d45b7d696b8e4">
+      <data key="d0">evidence</data>
+      <data key="d1">Finally, we present the average performance change—both including and excluding IFEval—com…</data>
+      <data key="d22">Finally, we present the average performance change—both including and excluding IFEval—compared to the official instruction models in _Table 7_ .</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d23" />
+      <data key="d24" />
+      <data key="d25">0.327</data>
+      <data key="d26">0.0</data>
+      <data key="d27">insufficient</data>
+      <data key="d28">The passage does not directly state that the average performance change is minimal, but rather presents a comparison.</data>
+    </node>
+    <node id="claim_a9fac38659a5c09febd8">
+      <data key="d0">claim</data>
+      <data key="d1">Regular audits and updates of the model ensure ethical standards are maintained.</data>
+      <data key="d10">Regular audits and updates of the model ensure ethical standards are maintained.</data>
+      <data key="d11">Regular audits and updates of the model ensure ethical standards are maintained.</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d13">unknown</data>
+      <data key="d14" />
+      <data key="d15" />
+      <data key="d16" />
+      <data key="d17" />
+      <data key="d18" />
+      <data key="d19">supports</data>
+      <data key="d20">0.8</data>
+      <data key="d21">{"sentence": "Regular audits and updates of the model can further ensure ethical standards are maintained, particularly in sensitive domains such as healthcare, law, or customer service.", "similarity": 0.6736}</data>
+    </node>
+    <node id="evidence_cfc69c9aa1664caac247">
+      <data key="d0">evidence</data>
+      <data key="d1">Regular audits and updates of the model can further ensure ethical standards are maintaine…</data>
+      <data key="d22">Regular audits and updates of the model can further ensure ethical standards are maintained, particularly in sensitive domains such as healthcare, law, or customer service.</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d23" />
+      <data key="d24" />
+      <data key="d25">0.6736</data>
+      <data key="d26">0.8</data>
+      <data key="d27">supports</data>
+      <data key="d28">The passage directly supports the claim by stating that regular audits and updates can further ensure ethical standards.</data>
+    </node>
+    <node id="evidence_024af606ea0f38ba3c64">
+      <data key="d0">evidence</data>
+      <data key="d1">### **6.2 Ethical considerations** 
+
+As large language models (LLMs) become increasingly h…</data>
+      <data key="d22">### **6.2 Ethical considerations** 
+
+As large language models (LLMs) become increasingly human-like in their responses, several ethical concerns need to be addressed.</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d23" />
+      <data key="d24" />
+      <data key="d25">0.1695</data>
+      <data key="d26">0.0</data>
+      <data key="d27">irrelevant</data>
+      <data key="d28">The passage discusses the importance of addressing ethical concerns but does not directly relate to regular audits and updates.</data>
+    </node>
+    <node id="evidence_764ed53a0649000ccf75">
+      <data key="d0">evidence</data>
+      <data key="d1">By adhering to these regulatory frameworks and establishing robust ethical guidelines, dev…</data>
+      <data key="d22">By adhering to these regulatory frameworks and establishing robust ethical guidelines, developers can ensure that advancements in LLMs are implemented responsibly and transparently.</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d23" />
+      <data key="d24" />
+      <data key="d25">0.1417</data>
+      <data key="d26">0.6</data>
+      <data key="d27">supports</data>
+      <data key="d28">The passage suggests that regular audits and updates can contribute to responsible implementation of LLMs, but it does not directly state the claim.</data>
+    </node>
+    <node id="claim_da7f0d685a8fb3815b07">
+      <data key="d0">claim</data>
+      <data key="d1">Developers ensure responsible and transparent implementation of LLM advancements by adhering to regulator…</data>
+      <data key="d10">Developers ensure responsible and transparent implementation of LLM advancements by adhering to regulatory frameworks and establishing ethical guidelines.</data>
+      <data key="d11">Developers ensure responsible and transparent implementation of LLM advancements by adhering to regulatory frameworks and establishing ethical guidelines.</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d13">unknown</data>
+      <data key="d14" />
+      <data key="d15" />
+      <data key="d16" />
+      <data key="d17" />
+      <data key="d18" />
+      <data key="d19">supports</data>
+      <data key="d20">0.6</data>
+      <data key="d21">{"sentence": "By adhering to these regulatory frameworks and establishing robust ethical guidelines, developers can ensure that advancements in LLMs are implemented responsibly and transparently.", "similarity": 0.6388}</data>
+    </node>
+    <node id="evidence_4fa9e23fa80bb2b36ec8">
+      <data key="d0">evidence</data>
+      <data key="d1">**Guidelines:** 
+
+1.</data>
+      <data key="d22">**Guidelines:** 
+
+1.</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d23" />
+      <data key="d24" />
+      <data key="d25">0.2674</data>
+      <data key="d26">0.0</data>
+      <data key="d27">insufficient</data>
+      <data key="d28">The passage is related to the claim but does not provide enough information to establish or evaluate it.</data>
+    </node>
+    <node id="evidence_48aae1209c1e87ef8da5">
+      <data key="d0">evidence</data>
+      <data key="d1">Adhere to the following guidelines to ensure that your responses reflect a high level of p…</data>
+      <data key="d22">Adhere to the following guidelines to ensure that your responses reflect a high level of professionalism: 
+
+1.</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d23" />
+      <data key="d24" />
+      <data key="d25">0.1597</data>
+      <data key="d26">0.0</data>
+      <data key="d27">irrelevant</data>
+      <data key="d28">The passage is not directly related to the claim and does not provide useful evidence for evaluating it.</data>
+    </node>
+    <node id="model_487b91042c7cf27a19e2">
+      <data key="d0">model</data>
+      <data key="d1">LLM</data>
+      <data key="d29">LLM</data>
+      <data key="d30" />
+    </node>
+    <node id="claim_1a6543da29bcb4fe2df9">
+      <data key="d0">claim</data>
+      <data key="d1">We demonstrate that open-source models can be fine-tuned to produce more conversational responses resembl…</data>
+      <data key="d10">We demonstrate that open-source models can be fine-tuned to produce more conversational responses resembling human communication.</data>
+      <data key="d11">We demonstrate that open-source models can be fine-tuned to produce more conversational responses resembling human communication.</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d13">unknown</data>
+      <data key="d14" />
+      <data key="d15" />
+      <data key="d16" />
+      <data key="d17" />
+      <data key="d18" />
+      <data key="d19">supports</data>
+      <data key="d20">0.8</data>
+      <data key="d21">{"sentence": "We demonstrate that open-source models can be fine-tuned to produce responses that are more conversational and closely resemble human communication, addressing the common issue of formal and impersonal output found in many existing LLMs.", "similarity": 0.5829}</data>
+    </node>
+    <node id="evidence_f37b0ebce40531e4c9ae">
+      <data key="d0">evidence</data>
+      <data key="d1">We demonstrate that open-source models can be fine-tuned to produce responses that are mor…</data>
+      <data key="d22">We demonstrate that open-source models can be fine-tuned to produce responses that are more conversational and closely resemble human communication, addressing the common issue of formal and impersonal output found in many existing LLMs.</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d23" />
+      <data key="d24" />
+      <data key="d25">0.5829</data>
+      <data key="d26">0.8</data>
+      <data key="d27">supports</data>
+      <data key="d28">The passage directly supports the claim by stating that open-source models can be fine-tuned to produce more conversational responses.</data>
+    </node>
+    <node id="evidence_91a5a1651be539cee0a4">
+      <data key="d0">evidence</data>
+      <data key="d1">5 
+
+**Enhancing Human-Like Responses in Large Language Models** 
+
+Each voting session pres…</data>
+      <data key="d22">5 
+
+**Enhancing Human-Like Responses in Large Language Models** 
+
+Each voting session presented participants with two anonymized responses — one from a fine-tuned model and one from an official instruction model.</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d23" />
+      <data key="d24" />
+      <data key="d25">0.2278</data>
+      <data key="d26">0.0</data>
+      <data key="d27">irrelevant</data>
+      <data key="d28">The passage discusses the topic of enhancing human-like responses in LLMs, but it does not directly support or contradict the claim.</data>
+    </node>
+    <node id="claim_aea9a9cda3f741110b69">
+      <data key="d0">claim</data>
+      <data key="d1">Our approach maintains model performance across benchmarks without loss in accuracy or efficiency despite…</data>
+      <data key="d10">Our approach maintains model performance across benchmarks without loss in accuracy or efficiency despite naturalness enhancements.</data>
+      <data key="d11">Our approach maintains model performance across benchmarks without loss in accuracy or efficiency despite naturalness enhancements.</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d13">unknown</data>
+      <data key="d14" />
+      <data key="d15" />
+      <data key="d16" />
+      <data key="d17" />
+      <data key="d18" />
+      <data key="d19">supports</data>
+      <data key="d20">0.6</data>
+      <data key="d21">{"sentence": "Importantly, our approach maintains the performance of these models across various benchmarks, with no noticeable loss in accuracy or efficiency despite the enhancements in naturalness.", "similarity": 0.8358}</data>
+    </node>
+    <node id="evidence_a6d19627b389f744ea2f">
+      <data key="d0">evidence</data>
+      <data key="d1">Importantly, our approach maintains the performance of these models across various benchma…</data>
+      <data key="d22">Importantly, our approach maintains the performance of these models across various benchmarks, with no noticeable loss in accuracy or efficiency despite the enhancements in naturalness.</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d23" />
+      <data key="d24" />
+      <data key="d25">0.8358</data>
+      <data key="d26">0.6</data>
+      <data key="d27">supports</data>
+      <data key="d28">The passage directly supports the claim by stating that there is no noticeable loss in accuracy or efficiency.</data>
+    </node>
+    <node id="evidence_616cf3be1a178165e82f">
+      <data key="d0">evidence</data>
+      <data key="d1">The model optimizes the objective by minimizing the corresponding loss function, thereby i…</data>
+      <data key="d22">The model optimizes the objective by minimizing the corresponding loss function, thereby improving performance in a manner consistent with human judgment.</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d23" />
+      <data key="d24" />
+      <data key="d25">0.1646</data>
+      <data key="d26">0.0</data>
+      <data key="d27">irrelevant</data>
+      <data key="d28">Although the passage discusses improvement in performance, it does not address the specific claim about maintaining model performance across benchmarks.</data>
+    </node>
+    <node id="evidence_32c494393fb97ead67f3">
+      <data key="d0">evidence</data>
+      <data key="d1">### **5.2 Open LLM leaderboard Evaluation** 
+
+We anticipated a minor performance change in…</data>
+      <data key="d22">### **5.2 Open LLM leaderboard Evaluation** 
+
+We anticipated a minor performance change in benchmarks due to adjustments in the model’s weights.</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d23" />
+      <data key="d24" />
+      <data key="d25">0.1608</data>
+      <data key="d26">0.0</data>
+      <data key="d27">insufficient</data>
+      <data key="d28">The passage mentions potential performance changes but does not provide evidence that our approach maintains model performance.</data>
+    </node>
+    <node id="claim_d43f78c2bc18dde98e55">
+      <data key="d0">claim</data>
+      <data key="d1">We published our models and dataset on Hugging Face to support further research and development.</data>
+      <data key="d10">We published our models and dataset on Hugging Face to support further research and development.</data>
+      <data key="d11">We published our models and dataset on Hugging Face to support further research and development.</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d13">unknown</data>
+      <data key="d14" />
+      <data key="d15" />
+      <data key="d16" />
+      <data key="d17" />
+      <data key="d18" />
+      <data key="d19">supports</data>
+      <data key="d20">0.8</data>
+      <data key="d21">8 
+
+**Enhancing Human-Like Responses in Large Language Models** 
+
+We have published our models and dataset on Hugging Face [9] to support further research and development in this field.</data>
+    </node>
+    <node id="evidence_e82a8427792296ff6d4d">
+      <data key="d0">evidence</data>
+      <data key="d1">8 
+
+**Enhancing Human-Like Responses in Large Language Models** 
+
+We have published our mo…</data>
+      <data key="d22">8 
+
+**Enhancing Human-Like Responses in Large Language Models** 
+
+We have published our models and dataset on Hugging Face [9] to support further research and development in this field.</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d23" />
+      <data key="d24" />
+      <data key="d25">0.8066</data>
+      <data key="d26">0.8</data>
+      <data key="d27">supports</data>
+      <data key="d28">The passage directly reports the publication of the model and dataset on Hugging Face, which supports the claim.</data>
+    </node>
+    <node id="evidence_6731f9a924ba19873caf">
+      <data key="d0">evidence</data>
+      <data key="d1">- [8] Hugging Face.</data>
+      <data key="d22">- [8] Hugging Face.</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d23" />
+      <data key="d24" />
+      <data key="d25">0.5196</data>
+      <data key="d26">0.0</data>
+      <data key="d27">irrelevant</data>
+      <data key="d28">The passage is a citation reference but does not provide any relevant information to support or contradict the claim.</data>
+    </node>
+    <node id="claim_9fdfec4512d761e87466">
+      <data key="d0">claim</data>
+      <data key="d1">Engagement shows interest.</data>
+      <data key="d10">Engagement shows interest.</data>
+      <data key="d11">Engagement shows interest.</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d13">unknown</data>
+      <data key="d14" />
+      <data key="d15" />
+      <data key="d16" />
+      <data key="d17" />
+      <data key="d18" />
+      <data key="d19">supports</data>
+      <data key="d20">0.4</data>
+      <data key="d21" />
+    </node>
+    <node id="evidence_e7760fe65566b3f8473d">
+      <data key="d0">evidence</data>
+      <data key="d1">**Engagement** : Show interest and keep the chat flowing with questions.</data>
+      <data key="d22">**Engagement** : Show interest and keep the chat flowing with questions.</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d23" />
+      <data key="d24" />
+      <data key="d25">0.3256</data>
+      <data key="d26">0.4</data>
+      <data key="d27">supports</data>
+      <data key="d28">The sentence directly supports the claim by stating that engagement involves showing interest.</data>
+    </node>
+    <node id="evidence_941ee4234c4ab6734956">
+      <data key="d0">evidence</data>
+      <data key="d1">One&lt;br&gt;minute I’m talking about the latest&lt;br&gt;TV shows, and the next...|’m a large languag…</data>
+      <data key="d22">One&lt;br&gt;minute I’m talking about the latest&lt;br&gt;TV shows, and the next...|’m a large language model, I don’t&lt;br&gt;have personal experiences or leisure&lt;br&gt;time, so I don’t watch movies or&lt;br&gt;shows.</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d23" />
+      <data key="d24" />
+      <data key="d25">0.3122</data>
+      <data key="d26">0.0</data>
+      <data key="d27">insufficient</data>
+      <data key="d28">The sentence is related to the claim but does not provide enough information to establish or evaluate it.</data>
+    </node>
+    <node id="claim_0f3bc57575e8653269cc">
+      <data key="d0">claim</data>
+      <data key="d1">We have a sense of direction, a reason to get up in the morning, and a feeling of making a positive impac…</data>
+      <data key="d10">We have a sense of direction, a reason to get up in the morning, and a feeling of making a positive impact in the world.</data>
+      <data key="d11">We have a sense of direction, a reason to get up in the morning, and a feeling of making a positive impact in the world.</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d13">unknown</data>
+      <data key="d14" />
+      <data key="d15" />
+      <data key="d16" />
+      <data key="d17" />
+      <data key="d18" />
+      <data key="d19">supports</data>
+      <data key="d20">0.8</data>
+      <data key="d21">{"sentence": "Feeling&lt;br&gt;like we're part of something bigger than ourselves.&lt;br&gt;Purpose: Having a sense of direction, a reason to get up in the morning, and a feeling like&lt;br&gt;we're making a positive impact in the world.&lt;br&gt;Growth: Learning, growing, and evolving as individuals.", "similarity": 0.6355}</data>
+    </node>
+    <node id="evidence_b481f1bd582abd48ec0c">
+      <data key="d0">evidence</data>
+      <data key="d1">Feeling&lt;br&gt;like we're part of something bigger than ourselves.&lt;br&gt;Purpose: Having a sense …</data>
+      <data key="d22">Feeling&lt;br&gt;like we're part of something bigger than ourselves.&lt;br&gt;Purpose: Having a sense of direction, a reason to get up in the morning, and a feeling like&lt;br&gt;we're making a positive impact in the world.&lt;br&gt;Growth: Learning, growing, and evolving as individuals.</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d23" />
+      <data key="d24" />
+      <data key="d25">0.6355</data>
+      <data key="d26">0.8</data>
+      <data key="d27">supports</data>
+      <data key="d28">The passage directly states that having a sense of direction, a reason to get up in the morning, and a feeling of making a positive impact are all part of the same concept.</data>
+    </node>
+    <node id="evidence_bf38212e1b6a1d333552">
+      <data key="d0">evidence</data>
+      <data key="d1">🤔 Maybe it's the feeling of being so far away from city lights, or the sense of wonder whe…</data>
+      <data key="d22">🤔 Maybe it's the feeling of being so far away from city lights, or the sense of wonder when you see something so rare and beautiful!</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d23" />
+      <data key="d24" />
+      <data key="d25">0.2</data>
+      <data key="d26">0.0</data>
+      <data key="d27">irrelevant</data>
+      <data key="d28">The passage does not relate to the claim and is more focused on personal experiences.</data>
+    </node>
+    <node id="evidence_0b47c12d9d393206b1e2">
+      <data key="d0">evidence</data>
+      <data key="d1">Ah, that's such a great feeling!</data>
+      <data key="d22">Ah, that's such a great feeling!</data>
+      <data key="d12">paper_f9b5558539da260a67f0</data>
+      <data key="d23" />
+      <data key="d24" />
+      <data key="d25">0.1848</data>
+      <data key="d26">0.2</data>
+      <data key="d27">insufficient</data>
+      <data key="d28">The passage expresses a positive emotion but does not provide any information about the claim.</data>
+    </node>
+    <edge source="paper_f9b5558539da260a67f0" target="claim_7272fee42c4be4fc3856" id="edge_d8650ff5e36b0238321d">
+      <data key="d31">edge_d8650ff5e36b0238321d</data>
+      <data key="d32">CONTAINS</data>
+    </edge>
+    <edge source="paper_f9b5558539da260a67f0" target="method_242a7e0404079f5f47b5" id="edge_25cbe0073521f416e3f4">
+      <data key="d31">edge_25cbe0073521f416e3f4</data>
+      <data key="d32">USES_METHOD</data>
+    </edge>
+    <edge source="paper_f9b5558539da260a67f0" target="concept_0c4d01e81bb3d1fd0dc4" id="edge_09e2261983e7c6c9ca27">
+      <data key="d31">edge_09e2261983e7c6c9ca27</data>
+      <data key="d32">DISCUSSES</data>
+    </edge>
+    <edge source="paper_f9b5558539da260a67f0" target="claim_f44567df621d3d0c4962" id="edge_9dfaf80928506ff2338d">
+      <data key="d31">edge_9dfaf80928506ff2338d</data>
+      <data key="d32">CONTAINS</data>
+    </edge>
+    <edge source="paper_f9b5558539da260a67f0" target="claim_dbe1bf64e017e6d1e020" id="edge_c561b386dcec42366d8f">
+      <data key="d31">edge_c561b386dcec42366d8f</data>
+      <data key="d32">CONTAINS</data>
+    </edge>
+    <edge source="paper_f9b5558539da260a67f0" target="claim_8935b7eb24a27a43cbd0" id="edge_641cab54f86431394e43">
+      <data key="d31">edge_641cab54f86431394e43</data>
+      <data key="d32">CONTAINS</data>
+    </edge>
+    <edge source="paper_f9b5558539da260a67f0" target="claim_68a28b6113113e9309a5" id="edge_2022af43f326098b7e0e">
+      <data key="d31">edge_2022af43f326098b7e0e</data>
+      <data key="d32">CONTAINS</data>
+    </edge>
+    <edge source="paper_f9b5558539da260a67f0" target="method_418c7944ab4659038262" id="edge_cdc2ad5e885868c8440f">
+      <data key="d31">edge_cdc2ad5e885868c8440f</data>
+      <data key="d32">USES_METHOD</data>
+    </edge>
+    <edge source="paper_f9b5558539da260a67f0" target="concept_3a2ac46557ab37e2b492" id="edge_e19a3b9d7c7fa4df6ad9">
+      <data key="d31">edge_e19a3b9d7c7fa4df6ad9</data>
+      <data key="d32">DISCUSSES</data>
+    </edge>
+    <edge source="paper_f9b5558539da260a67f0" target="concept_b85869ec107c3029100d" id="edge_441b44e1cb3f7101e55d">
+      <data key="d31">edge_441b44e1cb3f7101e55d</data>
+      <data key="d32">DISCUSSES</data>
+    </edge>
+    <edge source="paper_f9b5558539da260a67f0" target="claim_07d1a3589e4a2317618b" id="edge_7e2a0b21289e7b241dbb">
+      <data key="d31">edge_7e2a0b21289e7b241dbb</data>
+      <data key="d32">CONTAINS</data>
+    </edge>
+    <edge source="paper_f9b5558539da260a67f0" target="claim_755a018ef8a43640d91c" id="edge_f869f0c91a699a571b73">
+      <data key="d31">edge_f869f0c91a699a571b73</data>
+      <data key="d32">CONTAINS</data>
+    </edge>
+    <edge source="paper_f9b5558539da260a67f0" target="claim_0d9b65be27fb93fa72f8" id="edge_e41afb2d1969ea0f643d">
+      <data key="d31">edge_e41afb2d1969ea0f643d</data>
+      <data key="d32">CONTAINS</data>
+    </edge>
+    <edge source="paper_f9b5558539da260a67f0" target="claim_f66dffa29bc10b44752b" id="edge_bf4819b8597cc9094c82">
+      <data key="d31">edge_bf4819b8597cc9094c82</data>
+      <data key="d32">CONTAINS</data>
+    </edge>
+    <edge source="paper_f9b5558539da260a67f0" target="claim_a9fac38659a5c09febd8" id="edge_ec7f803cee1e520a5cad">
+      <data key="d31">edge_ec7f803cee1e520a5cad</data>
+      <data key="d32">CONTAINS</data>
+    </edge>
+    <edge source="paper_f9b5558539da260a67f0" target="claim_da7f0d685a8fb3815b07" id="edge_580748bdd6b3194114b8">
+      <data key="d31">edge_580748bdd6b3194114b8</data>
+      <data key="d32">CONTAINS</data>
+    </edge>
+    <edge source="paper_f9b5558539da260a67f0" target="model_487b91042c7cf27a19e2" id="edge_57b673c13116fa20cd1a">
+      <data key="d31">edge_57b673c13116fa20cd1a</data>
+      <data key="d32">USES_MODEL</data>
+    </edge>
+    <edge source="paper_f9b5558539da260a67f0" target="claim_1a6543da29bcb4fe2df9" id="edge_5c9f30b6202ff2962a23">
+      <data key="d31">edge_5c9f30b6202ff2962a23</data>
+      <data key="d32">CONTAINS</data>
+    </edge>
+    <edge source="paper_f9b5558539da260a67f0" target="claim_aea9a9cda3f741110b69" id="edge_a6c2641e7e00c030fc4a">
+      <data key="d31">edge_a6c2641e7e00c030fc4a</data>
+      <data key="d32">CONTAINS</data>
+    </edge>
+    <edge source="paper_f9b5558539da260a67f0" target="claim_d43f78c2bc18dde98e55" id="edge_f6f8e95ed4187c5425c4">
+      <data key="d31">edge_f6f8e95ed4187c5425c4</data>
+      <data key="d32">CONTAINS</data>
+    </edge>
+    <edge source="paper_f9b5558539da260a67f0" target="claim_9fdfec4512d761e87466" id="edge_5c47a1ede01b2f14396f">
+      <data key="d31">edge_5c47a1ede01b2f14396f</data>
+      <data key="d32">CONTAINS</data>
+    </edge>
+    <edge source="paper_f9b5558539da260a67f0" target="claim_0f3bc57575e8653269cc" id="edge_a7501d88f3915cdc212d">
+      <data key="d31">edge_a7501d88f3915cdc212d</data>
+      <data key="d32">CONTAINS</data>
+    </edge>
+    <edge source="claim_7272fee42c4be4fc3856" target="method_242a7e0404079f5f47b5" id="edge_d72ac119c329094ebe6d">
+      <data key="d31">edge_d72ac119c329094ebe6d</data>
+      <data key="d32">USES_METHOD</data>
+    </edge>
+    <edge source="claim_7272fee42c4be4fc3856" target="concept_0c4d01e81bb3d1fd0dc4" id="edge_7eec49ef632aa0bebb3f">
+      <data key="d31">edge_7eec49ef632aa0bebb3f</data>
+      <data key="d32">ABOUT</data>
+    </edge>
+    <edge source="evidence_98b75d844e5abcd52301" target="claim_7272fee42c4be4fc3856" id="edge_29862fa367bf86ba5b8f">
+      <data key="d31">edge_29862fa367bf86ba5b8f</data>
+      <data key="d32">SUPPORTS</data>
+      <data key="d33">0.1566</data>
+      <data key="d34">0.4</data>
+      <data key="d35">The passage mentions developing synthetic datasets for fine-tuning, which is one of the approaches mentioned in the claim.</data>
+      <data key="d36">paper_f9b5558539da260a67f0</data>
+      <data key="d37" />
+    </edge>
+    <edge source="evidence_a447cf9042696756fa23" target="claim_7272fee42c4be4fc3856" id="edge_1e4aaf7730089930fae4">
+      <data key="d31">edge_1e4aaf7730089930fae4</data>
+      <data key="d32">SUPPORTS</data>
+      <data key="d33">0.1358</data>
+      <data key="d34">0.6</data>
+      <data key="d35">The passage mentions curating a dataset for fine-tuning, which is also mentioned in the claim.</data>
+      <data key="d36">paper_f9b5558539da260a67f0</data>
+      <data key="d37" />
+    </edge>
+    <edge source="evidence_f245ea9e4636f183cd94" target="claim_7272fee42c4be4fc3856" id="edge_f19680b9ccb3fe8b58e4">
+      <data key="d31">edge_f19680b9ccb3fe8b58e4</data>
+      <data key="d32">SUPPORTS</data>
+      <data key="d33">0.1355</data>
+      <data key="d34">0.6</data>
+      <data key="d35">The passage mentions creating a synthetic dataset for enhancing conversational abilities, which is another approach mentioned in the claim.</data>
+      <data key="d36">paper_f9b5558539da260a67f0</data>
+      <data key="d37" />
+    </edge>
+    <edge source="evidence_2d3e21a41f0f2105d2e5" target="claim_f44567df621d3d0c4962" id="edge_25a9acca49bf84dfcf8d">
+      <data key="d31">edge_25a9acca49bf84dfcf8d</data>
+      <data key="d32">SUPPORTS</data>
+      <data key="d33">0.2476</data>
+      <data key="d34">0.4</data>
+      <data key="d35">The passage directly supports the claim by stating that enhancements improve user interactions.</data>
+      <data key="d36">paper_f9b5558539da260a67f0</data>
+      <data key="d37" />
+    </edge>
+    <edge source="evidence_2d3e21a41f0f2105d2e5" target="claim_8935b7eb24a27a43cbd0" id="edge_2979cf578ece146b548f">
+      <data key="d31">edge_2979cf578ece146b548f</data>
+      <data key="d32">SUPPORTS</data>
+      <data key="d33">0.9208</data>
+      <data key="d34">0.8</data>
+      <data key="d35">The sentence directly supports the claim by stating that the techniques 'significantly enhance both conversational fluency and user engagement'.</data>
+      <data key="d36">paper_f9b5558539da260a67f0</data>
+      <data key="d37" />
+    </edge>
+    <edge source="evidence_2d3e21a41f0f2105d2e5" target="claim_0d9b65be27fb93fa72f8" id="edge_bb80444994d06c2cf5ef">
+      <data key="d31">edge_bb80444994d06c2cf5ef</data>
+      <data key="d32">SUPPORTS</data>
+      <data key="d33">0.2121</data>
+      <data key="d34">0.6</data>
+      <data key="d35">The sentence supports the claim by describing a broader benefit of fine-tuning.</data>
+      <data key="d36">paper_f9b5558539da260a67f0</data>
+      <data key="d37" />
+    </edge>
+    <edge source="evidence_115d70553757919f1c9e" target="claim_f44567df621d3d0c4962" id="edge_1b959db2fb64b60d6bb0">
+      <data key="d31">edge_1b959db2fb64b60d6bb0</data>
+      <data key="d32">SUPPORTS</data>
+      <data key="d33">0.1723</data>
+      <data key="d34">0.6</data>
+      <data key="d35">The passage provides additional evidence by stating that the improvements make AI models more suitable for real-world applications.</data>
+      <data key="d36">paper_f9b5558539da260a67f0</data>
+      <data key="d37" />
+    </edge>
+    <edge source="evidence_115d70553757919f1c9e" target="claim_8935b7eb24a27a43cbd0" id="edge_cfd83a0e3812d65e8537">
+      <data key="d31">edge_cfd83a0e3812d65e8537</data>
+      <data key="d32">SUPPORTS</data>
+      <data key="d33">0.3365</data>
+      <data key="d34">0.6</data>
+      <data key="d35">The sentence supports the claim by stating that the techniques bring AI 'closer to mimicking real human communication'.</data>
+      <data key="d36">paper_f9b5558539da260a67f0</data>
+      <data key="d37" />
+    </edge>
+    <edge source="evidence_4df60add2859e0953e1f" target="claim_f44567df621d3d0c4962" id="edge_aebd5ad94f39bd482d2e">
+      <data key="d31">edge_aebd5ad94f39bd482d2e</data>
+      <data key="d32">SUPPORTS</data>
+      <data key="d33">0.1626</data>
+      <data key="d34">0.4</data>
+      <data key="d35">The passage supports the claim by stating that fine-tuning improves conversational coherence.</data>
+      <data key="d36">paper_f9b5558539da260a67f0</data>
+      <data key="d37" />
+    </edge>
+    <edge source="evidence_4df60add2859e0953e1f" target="claim_0d9b65be27fb93fa72f8" id="edge_a709dc0fc2c3262ea88a">
+      <data key="d31">edge_a709dc0fc2c3262ea88a</data>
+      <data key="d32">SUPPORTS</data>
+      <data key="d33">0.8967</data>
+      <data key="d34">0.8</data>
+      <data key="d35">The sentence is identical to the claim, indicating strong support.</data>
+      <data key="d36">paper_f9b5558539da260a67f0</data>
+      <data key="d37" />
+    </edge>
+    <edge source="evidence_ed6d573af590b9ba241f" target="claim_dbe1bf64e017e6d1e020" id="edge_effd006846acb17113ba">
+      <data key="d31">edge_effd006846acb17113ba</data>
+      <data key="d32">SUPPORTS</data>
+      <data key="d33">0.6662</data>
+      <data key="d34">0.8</data>
+      <data key="d35">The passage directly reports the claim's assertion about large language models' progress.</data>
+      <data key="d36">paper_f9b5558539da260a67f0</data>
+      <data key="d37" />
+    </edge>
+    <edge source="evidence_98365ee1e6e7ba1c92bc" target="claim_dbe1bf64e017e6d1e020" id="edge_e08fd960de0b8f18b3be">
+      <data key="d31">edge_e08fd960de0b8f18b3be</data>
+      <data key="d32">IRRELEVANT</data>
+      <data key="d33">0.2735</data>
+      <data key="d34" />
+      <data key="d35">The passage is a reference to a specific paper and does not provide evidence for the claim.</data>
+      <data key="d36">paper_f9b5558539da260a67f0</data>
+      <data key="d37" />
+    </edge>
+    <edge source="evidence_98365ee1e6e7ba1c92bc" target="claim_d43f78c2bc18dde98e55" id="edge_058945c72a3f0464ac21">
+      <data key="d31">edge_058945c72a3f0464ac21</data>
+      <data key="d32">IRRELEVANT</data>
+      <data key="d33">0.3873</data>
+      <data key="d34" />
+      <data key="d35">The passage is a citation reference and only provides the citation number, which does not provide any relevant information to support or contradict the claim.</data>
+      <data key="d36">paper_f9b5558539da260a67f0</data>
+      <data key="d37" />
+    </edge>
+    <edge source="evidence_a250c4cdf6356f68daac" target="claim_dbe1bf64e017e6d1e020" id="edge_3a275a0b1ee150cd0ed6">
+      <data key="d31">edge_3a275a0b1ee150cd0ed6</data>
+      <data key="d32">INSUFFICIENT</data>
+      <data key="d33">0.2677</data>
+      <data key="d34" />
+      <data key="d35">The passage is related to the topic but does not provide enough information to establish or evaluate the claim.</data>
+      <data key="d36">paper_f9b5558539da260a67f0</data>
+      <data key="d37" />
+    </edge>
+    <edge source="evidence_e3c3aafe5517f0419e8d" target="claim_8935b7eb24a27a43cbd0" id="edge_d395bdde073c5b95053b">
+      <data key="d31">edge_d395bdde073c5b95053b</data>
+      <data key="d32">INSUFFICIENT</data>
+      <data key="d33">0.2371</data>
+      <data key="d34" />
+      <data key="d35">The sentence is related to the claim but does not provide enough information to establish or evaluate it.</data>
+      <data key="d36">paper_f9b5558539da260a67f0</data>
+      <data key="d37" />
+    </edge>
+    <edge source="claim_68a28b6113113e9309a5" target="method_418c7944ab4659038262" id="edge_2b56c374f4d47e219224">
+      <data key="d31">edge_2b56c374f4d47e219224</data>
+      <data key="d32">USES_METHOD</data>
+    </edge>
+    <edge source="claim_68a28b6113113e9309a5" target="concept_3a2ac46557ab37e2b492" id="edge_0cbe32b374d0558e2c7e">
+      <data key="d31">edge_0cbe32b374d0558e2c7e</data>
+      <data key="d32">ABOUT</data>
+    </edge>
+    <edge source="claim_68a28b6113113e9309a5" target="concept_b85869ec107c3029100d" id="edge_5db04bd128de397614d1">
+      <data key="d31">edge_5db04bd128de397614d1</data>
+      <data key="d32">ABOUT</data>
+    </edge>
+    <edge source="evidence_7eb1778fcb729b60f461" target="claim_68a28b6113113e9309a5" id="edge_39690873b29bb60d3293">
+      <data key="d31">edge_39690873b29bb60d3293</data>
+      <data key="d32">SUPPORTS</data>
+      <data key="d33">0.8051</data>
+      <data key="d34">0.8</data>
+      <data key="d35">The passage directly supports the claim by stating that DPO is used to emphasize user engagement and maintain linguistic accuracy.</data>
+      <data key="d36">paper_f9b5558539da260a67f0</data>
+      <data key="d37" />
+    </edge>
+    <edge source="evidence_218d28cd6c1a3f3ad982" target="claim_68a28b6113113e9309a5" id="edge_0d0fc387097b460ac439">
+      <data key="d31">edge_0d0fc387097b460ac439</data>
+      <data key="d32">SUPPORTS</data>
+      <data key="d33">0.306</data>
+      <data key="d34">0.4</data>
+      <data key="d35">The passage supports the claim by stating that DPO is used for a related purpose, but it does not directly address user engagement.</data>
+      <data key="d36">paper_f9b5558539da260a67f0</data>
+      <data key="d37" />
+    </edge>
+    <edge source="evidence_99b38dc0cbb58a98430e" target="claim_68a28b6113113e9309a5" id="edge_ef893e9f8f3faa4d6b5e">
+      <data key="d31">edge_ef893e9f8f3faa4d6b5e</data>
+      <data key="d32">IRRELEVANT</data>
+      <data key="d33">0.273</data>
+      <data key="d34" />
+      <data key="d35">The passage does not provide any relevant information to the claim and appears to be humorous or unrelated.</data>
+      <data key="d36">paper_f9b5558539da260a67f0</data>
+      <data key="d37" />
+    </edge>
+    <edge source="evidence_70d03f66b0712dcabbf3" target="claim_07d1a3589e4a2317618b" id="edge_44098401a90b1d564a64">
+      <data key="d31">edge_44098401a90b1d564a64</data>
+      <data key="d32">SUPPORTS</data>
+      <data key="d33">0.8082</data>
+      <data key="d34">0.8</data>
+      <data key="d35">The passage directly supports the claim by mentioning leveraging established strengths and refining performance for human-like interactions.</data>
+      <data key="d36">paper_f9b5558539da260a67f0</data>
+      <data key="d37" />
+    </edge>
+    <edge source="evidence_d1e65d7630f8956c1797" target="claim_07d1a3589e4a2317618b" id="edge_d796d13e491bae2397ea">
+      <data key="d31">edge_d796d13e491bae2397ea</data>
+      <data key="d32">SUPPORTS</data>
+      <data key="d33">0.1554</data>
+      <data key="d34">0.2</data>
+      <data key="d35">The passage supports the claim by mentioning datasets that facilitate human-like interactions.</data>
+      <data key="d36">paper_f9b5558539da260a67f0</data>
+      <data key="d37" />
+    </edge>
+    <edge source="evidence_75e16faae178ba057676" target="claim_07d1a3589e4a2317618b" id="edge_08cff5d1c7d78abcb506">
+      <data key="d31">edge_08cff5d1c7d78abcb506</data>
+      <data key="d32">IRRELEVANT</data>
+      <data key="d33">0.1472</data>
+      <data key="d34" />
+      <data key="d35">The passage is unrelated to the claim and does not provide useful evidence.</data>
+      <data key="d36">paper_f9b5558539da260a67f0</data>
+      <data key="d37" />
+    </edge>
+    <edge source="evidence_2fec0f73ab15f586e3d6" target="claim_755a018ef8a43640d91c" id="edge_6fb589b259c8370f42fa">
+      <data key="d31">edge_6fb589b259c8370f42fa</data>
+      <data key="d32">SUPPORTS</data>
+      <data key="d33">0.6551</data>
+      <data key="d34">0.8</data>
+      <data key="d35">Directly reports experimental result showing fine-tuned models outperforming official instruction models.</data>
+      <data key="d36">paper_f9b5558539da260a67f0</data>
+      <data key="d37" />
+    </edge>
+    <edge source="evidence_2fec0f73ab15f586e3d6" target="claim_1a6543da29bcb4fe2df9" id="edge_52b30273fae1e773a0f6">
+      <data key="d31">edge_52b30273fae1e773a0f6</data>
+      <data key="d32">SUPPORTS</data>
+      <data key="d33">0.2671</data>
+      <data key="d34">0.6</data>
+      <data key="d35">Although the passage does not directly support the claim, it implies that fine-tuning open-source models can lead to better performance than official instruction models.</data>
+      <data key="d36">paper_f9b5558539da260a67f0</data>
+      <data key="d37" />
+    </edge>
+    <edge source="evidence_79f0bebfedd33b035599" target="claim_755a018ef8a43640d91c" id="edge_dc50a4996f374c6120d9">
+      <data key="d31">edge_dc50a4996f374c6120d9</data>
+      <data key="d32">SUPPORTS</data>
+      <data key="d33">0.5861</data>
+      <data key="d34">0.7</data>
+      <data key="d35">Reports on a comparison between fine-tuned and official instruction models, which supports the claim.</data>
+      <data key="d36">paper_f9b5558539da260a67f0</data>
+      <data key="d37" />
+    </edge>
+    <edge source="evidence_b610d5530434c96671c6" target="claim_755a018ef8a43640d91c" id="edge_3908a815f6a075d2aa7c">
+      <data key="d31">edge_3908a815f6a075d2aa7c</data>
+      <data key="d32">INSUFFICIENT</data>
+      <data key="d33">0.4744</data>
+      <data key="d34">0.2</data>
+      <data key="d35">Describes a setup for comparison, but does not directly report results or comparisons.</data>
+      <data key="d36">paper_f9b5558539da260a67f0</data>
+      <data key="d37" />
+    </edge>
+    <edge source="claim_0d9b65be27fb93fa72f8" target="method_242a7e0404079f5f47b5" id="edge_7d5fdbc6a8c570b26979">
+      <data key="d31">edge_7d5fdbc6a8c570b26979</data>
+      <data key="d32">USES_METHOD</data>
+    </edge>
+    <edge source="evidence_503a02be198512cbdbee" target="claim_0d9b65be27fb93fa72f8" id="edge_ef55e5bb015d6aaf8062">
+      <data key="d31">edge_ef55e5bb015d6aaf8062</data>
+      <data key="d32">SUPPORTS</data>
+      <data key="d33">0.2376</data>
+      <data key="d34">0.6</data>
+      <data key="d35">The sentence supports the claim by describing a specific benefit of fine-tuning.</data>
+      <data key="d36">paper_f9b5558539da260a67f0</data>
+      <data key="d37" />
+    </edge>
+    <edge source="evidence_268d84d3237ce8fdb15c" target="claim_f66dffa29bc10b44752b" id="edge_75ad29ceb13513f1d948">
+      <data key="d31">edge_75ad29ceb13513f1d948</data>
+      <data key="d32">SUPPORTS</data>
+      <data key="d33">0.4881</data>
+      <data key="d34">0.6</data>
+      <data key="d35">The passage directly states that the average performance change is minimal.</data>
+      <data key="d36">paper_f9b5558539da260a67f0</data>
+      <data key="d37" />
+    </edge>
+    <edge source="evidence_de2a5698b22e857c0361" target="claim_f66dffa29bc10b44752b" id="edge_dd5f81c15a6d0dce3543">
+      <data key="d31">edge_dd5f81c15a6d0dce3543</data>
+      <data key="d32">SUPPORTS</data>
+      <data key="d33">0.4863</data>
+      <data key="d34">0.6</data>
+      <data key="d35">The passage directly states that the average performance change is minimal.</data>
+      <data key="d36">paper_f9b5558539da260a67f0</data>
+      <data key="d37" />
+    </edge>
+    <edge source="evidence_10a28a1d45b7d696b8e4" target="claim_f66dffa29bc10b44752b" id="edge_697228385648459e21ed">
+      <data key="d31">edge_697228385648459e21ed</data>
+      <data key="d32">INSUFFICIENT</data>
+      <data key="d33">0.327</data>
+      <data key="d34" />
+      <data key="d35">The passage does not directly state that the average performance change is minimal, but rather presents a comparison.</data>
+      <data key="d36">paper_f9b5558539da260a67f0</data>
+      <data key="d37" />
+    </edge>
+    <edge source="evidence_cfc69c9aa1664caac247" target="claim_a9fac38659a5c09febd8" id="edge_4d9a3233524fee3965cc">
+      <data key="d31">edge_4d9a3233524fee3965cc</data>
+      <data key="d32">SUPPORTS</data>
+      <data key="d33">0.6736</data>
+      <data key="d34">0.8</data>
+      <data key="d35">The passage directly supports the claim by stating that regular audits and updates can further ensure ethical standards.</data>
+      <data key="d36">paper_f9b5558539da260a67f0</data>
+      <data key="d37" />
+    </edge>
+    <edge source="evidence_024af606ea0f38ba3c64" target="claim_a9fac38659a5c09febd8" id="edge_9cbd0f8590b1637bd7f9">
+      <data key="d31">edge_9cbd0f8590b1637bd7f9</data>
+      <data key="d32">IRRELEVANT</data>
+      <data key="d33">0.1695</data>
+      <data key="d34" />
+      <data key="d35">The passage discusses the importance of addressing ethical concerns but does not directly relate to regular audits and updates.</data>
+      <data key="d36">paper_f9b5558539da260a67f0</data>
+      <data key="d37" />
+    </edge>
+    <edge source="evidence_764ed53a0649000ccf75" target="claim_a9fac38659a5c09febd8" id="edge_0c608b138bb37ce8650b">
+      <data key="d31">edge_0c608b138bb37ce8650b</data>
+      <data key="d32">SUPPORTS</data>
+      <data key="d33">0.1417</data>
+      <data key="d34">0.6</data>
+      <data key="d35">The passage suggests that regular audits and updates can contribute to responsible implementation of LLMs, but it does not directly state the claim.</data>
+      <data key="d36">paper_f9b5558539da260a67f0</data>
+      <data key="d37" />
+    </edge>
+    <edge source="evidence_764ed53a0649000ccf75" target="claim_da7f0d685a8fb3815b07" id="edge_93d0ac2e210d7af777ed">
+      <data key="d31">edge_93d0ac2e210d7af777ed</data>
+      <data key="d32">SUPPORTS</data>
+      <data key="d33">0.6388</data>
+      <data key="d34">0.6</data>
+      <data key="d35">The passage directly supports the claim by stating that adhering to regulatory frameworks and establishing ethical guidelines ensures responsible implementation of LLM advancements.</data>
+      <data key="d36">paper_f9b5558539da260a67f0</data>
+      <data key="d37" />
+    </edge>
+    <edge source="claim_da7f0d685a8fb3815b07" target="model_487b91042c7cf27a19e2" id="edge_ed132471c212c30c5f2e">
+      <data key="d31">edge_ed132471c212c30c5f2e</data>
+      <data key="d32">USES_MODEL</data>
+    </edge>
+    <edge source="evidence_4fa9e23fa80bb2b36ec8" target="claim_da7f0d685a8fb3815b07" id="edge_92dbaa1d5ffcfefcce23">
+      <data key="d31">edge_92dbaa1d5ffcfefcce23</data>
+      <data key="d32">INSUFFICIENT</data>
+      <data key="d33">0.2674</data>
+      <data key="d34" />
+      <data key="d35">The passage is related to the claim but does not provide enough information to establish or evaluate it.</data>
+      <data key="d36">paper_f9b5558539da260a67f0</data>
+      <data key="d37" />
+    </edge>
+    <edge source="evidence_48aae1209c1e87ef8da5" target="claim_da7f0d685a8fb3815b07" id="edge_d582792c7f29bf5956cd">
+      <data key="d31">edge_d582792c7f29bf5956cd</data>
+      <data key="d32">IRRELEVANT</data>
+      <data key="d33">0.1597</data>
+      <data key="d34" />
+      <data key="d35">The passage is not directly related to the claim and does not provide useful evidence for evaluating it.</data>
+      <data key="d36">paper_f9b5558539da260a67f0</data>
+      <data key="d37" />
+    </edge>
+    <edge source="evidence_f37b0ebce40531e4c9ae" target="claim_1a6543da29bcb4fe2df9" id="edge_b9a2c8784978467f63d1">
+      <data key="d31">edge_b9a2c8784978467f63d1</data>
+      <data key="d32">SUPPORTS</data>
+      <data key="d33">0.5829</data>
+      <data key="d34">0.8</data>
+      <data key="d35">The passage directly supports the claim by stating that open-source models can be fine-tuned to produce more conversational responses.</data>
+      <data key="d36">paper_f9b5558539da260a67f0</data>
+      <data key="d37" />
+    </edge>
+    <edge source="evidence_91a5a1651be539cee0a4" target="claim_1a6543da29bcb4fe2df9" id="edge_7c723ba63d09335514d7">
+      <data key="d31">edge_7c723ba63d09335514d7</data>
+      <data key="d32">IRRELEVANT</data>
+      <data key="d33">0.2278</data>
+      <data key="d34" />
+      <data key="d35">The passage discusses the topic of enhancing human-like responses in LLMs, but it does not directly support or contradict the claim.</data>
+      <data key="d36">paper_f9b5558539da260a67f0</data>
+      <data key="d37" />
+    </edge>
+    <edge source="evidence_a6d19627b389f744ea2f" target="claim_aea9a9cda3f741110b69" id="edge_2c161c97651a8444826f">
+      <data key="d31">edge_2c161c97651a8444826f</data>
+      <data key="d32">SUPPORTS</data>
+      <data key="d33">0.8358</data>
+      <data key="d34">0.6</data>
+      <data key="d35">The passage directly supports the claim by stating that there is no noticeable loss in accuracy or efficiency.</data>
+      <data key="d36">paper_f9b5558539da260a67f0</data>
+      <data key="d37" />
+    </edge>
+    <edge source="evidence_616cf3be1a178165e82f" target="claim_aea9a9cda3f741110b69" id="edge_f4d9cdf0fa2333977cfc">
+      <data key="d31">edge_f4d9cdf0fa2333977cfc</data>
+      <data key="d32">IRRELEVANT</data>
+      <data key="d33">0.1646</data>
+      <data key="d34" />
+      <data key="d35">Although the passage discusses improvement in performance, it does not address the specific claim about maintaining model performance across benchmarks.</data>
+      <data key="d36">paper_f9b5558539da260a67f0</data>
+      <data key="d37" />
+    </edge>
+    <edge source="evidence_32c494393fb97ead67f3" target="claim_aea9a9cda3f741110b69" id="edge_486e18025b769202f473">
+      <data key="d31">edge_486e18025b769202f473</data>
+      <data key="d32">INSUFFICIENT</data>
+      <data key="d33">0.1608</data>
+      <data key="d34" />
+      <data key="d35">The passage mentions potential performance changes but does not provide evidence that our approach maintains model performance.</data>
+      <data key="d36">paper_f9b5558539da260a67f0</data>
+      <data key="d37" />
+    </edge>
+    <edge source="evidence_e82a8427792296ff6d4d" target="claim_d43f78c2bc18dde98e55" id="edge_1b48c75c82a7c16837f4">
+      <data key="d31">edge_1b48c75c82a7c16837f4</data>
+      <data key="d32">SUPPORTS</data>
+      <data key="d33">0.8066</data>
+      <data key="d34">0.8</data>
+      <data key="d35">The passage directly reports the publication of the model and dataset on Hugging Face, which supports the claim.</data>
+      <data key="d36">paper_f9b5558539da260a67f0</data>
+      <data key="d37" />
+    </edge>
+    <edge source="evidence_6731f9a924ba19873caf" target="claim_d43f78c2bc18dde98e55" id="edge_38ad1e1c457a48f5f544">
+      <data key="d31">edge_38ad1e1c457a48f5f544</data>
+      <data key="d32">IRRELEVANT</data>
+      <data key="d33">0.5196</data>
+      <data key="d34" />
+      <data key="d35">The passage is a citation reference but does not provide any relevant information to support or contradict the claim.</data>
+      <data key="d36">paper_f9b5558539da260a67f0</data>
+      <data key="d37" />
+    </edge>
+    <edge source="evidence_e7760fe65566b3f8473d" target="claim_9fdfec4512d761e87466" id="edge_2ae5baad7603d08633c0">
+      <data key="d31">edge_2ae5baad7603d08633c0</data>
+      <data key="d32">SUPPORTS</data>
+      <data key="d33">0.3256</data>
+      <data key="d34">0.4</data>
+      <data key="d35">The sentence directly supports the claim by stating that engagement involves showing interest.</data>
+      <data key="d36">paper_f9b5558539da260a67f0</data>
+      <data key="d37" />
+    </edge>
+    <edge source="evidence_941ee4234c4ab6734956" target="claim_9fdfec4512d761e87466" id="edge_942e54ec181d7a6ce007">
+      <data key="d31">edge_942e54ec181d7a6ce007</data>
+      <data key="d32">INSUFFICIENT</data>
+      <data key="d33">0.3122</data>
+      <data key="d34" />
+      <data key="d35">The sentence is related to the claim but does not provide enough information to establish or evaluate it.</data>
+      <data key="d36">paper_f9b5558539da260a67f0</data>
+      <data key="d37" />
+    </edge>
+    <edge source="evidence_b481f1bd582abd48ec0c" target="claim_0f3bc57575e8653269cc" id="edge_f265074aea8fadd14b05">
+      <data key="d31">edge_f265074aea8fadd14b05</data>
+      <data key="d32">SUPPORTS</data>
+      <data key="d33">0.6355</data>
+      <data key="d34">0.8</data>
+      <data key="d35">The passage directly states that having a sense of direction, a reason to get up in the morning, and a feeling of making a positive impact are all part of the same concept.</data>
+      <data key="d36">paper_f9b5558539da260a67f0</data>
+      <data key="d37" />
+    </edge>
+    <edge source="evidence_bf38212e1b6a1d333552" target="claim_0f3bc57575e8653269cc" id="edge_23dd258c61996aeff32b">
+      <data key="d31">edge_23dd258c61996aeff32b</data>
+      <data key="d32">IRRELEVANT</data>
+      <data key="d33">0.2</data>
+      <data key="d34" />
+      <data key="d35">The passage does not relate to the claim and is more focused on personal experiences.</data>
+      <data key="d36">paper_f9b5558539da260a67f0</data>
+      <data key="d37" />
+    </edge>
+    <edge source="evidence_0b47c12d9d393206b1e2" target="claim_0f3bc57575e8653269cc" id="edge_70f1a4561b227c059e6f">
+      <data key="d31">edge_70f1a4561b227c059e6f</data>
+      <data key="d32">INSUFFICIENT</data>
+      <data key="d33">0.1848</data>
+      <data key="d34">0.2</data>
+      <data key="d35">The passage expresses a positive emotion but does not provide any information about the claim.</data>
+      <data key="d36">paper_f9b5558539da260a67f0</data>
+      <data key="d37" />
+    </edge>
+  </graph>
+</graphml>

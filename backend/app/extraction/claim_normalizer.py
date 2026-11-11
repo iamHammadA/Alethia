@@ -1,5 +1,5 @@
 import spacy
-from claim_extractor import analyzer
+from .claim_extractor import analyzer
 import re
 
 nlp = spacy.load("en_core_web_lg")

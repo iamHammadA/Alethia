@@ -8,11 +8,11 @@ import sys
 
 CURRENT_FILE = Path(__file__).resolve()
 ROOT_DIR = next(
-    (p for p in CURRENT_FILE.parents if p.name.lower() == "aletheia"),
+    (p for p in CURRENT_FILE.parents if p.name.lower() == "alethia"),
     CURRENT_FILE.parent,
 )
 
-# 2. Target the 'arXiv papers' folder inside ALETHEIA
+# 2. Target the 'arXiv papers' folder inside ALETHIA
 SAVE_DIR = ROOT_DIR / "arXiv papers"
 
 if str(ROOT_DIR) not in sys.path:

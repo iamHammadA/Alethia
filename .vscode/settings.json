@@ -3,5 +3,6 @@
     "cSpell.enabled": true,
     "[python]": {
         "cSpell.enabled": false
-    }
+    },
+    "python.terminal.useEnvFile": true
 }
