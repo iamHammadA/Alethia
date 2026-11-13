@@ -41,6 +41,8 @@ def get_data(topic: str, max_results: int = 5) -> list[dict]:
     for old_pdf in SAVE_DIR.glob("paper*.pdf"):
         old_pdf.unlink(missing_ok=True)
 
+    from backend.app.extraction import extractor as text_extractor
+    text_extractor.full_data.clear()
     papers = []
     for idx, entry in enumerate(entries):
         links = entry.findall("atom:link", ns)
@@ -67,15 +69,13 @@ def get_data(topic: str, max_results: int = 5) -> list[dict]:
         )
         downloaded.raise_for_status()
         pdf_path.write_bytes(downloaded.content)
-        from backend.app.extraction.extractor import headings_and_text_recognization
-        headings_and_text_recognization(idx, pdf_path)
+        text_extractor.headings_and_text_recognization(idx, pdf_path)
         papers.append(paper)
 
     if not papers:
         raise RuntimeError("No downloadable PDF papers were returned by arXiv.")
-    from backend.app.extraction.extractor import full_data
     with (SAVE_DIR / "arxiv_papers_full.json").open("w", encoding="utf-8") as file:
-        json.dump(full_data, file, indent=2, ensure_ascii=False)
+        json.dump(text_extractor.full_data, file, indent=2, ensure_ascii=False)
     with (SAVE_DIR / "paper_metadata.json").open("w", encoding="utf-8") as file:
         json.dump({paper["article_key"]: paper for paper in papers}, file, indent=2, ensure_ascii=False)
     return papers
