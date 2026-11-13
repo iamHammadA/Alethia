@@ -1,4 +1,3 @@
-from google import genai
 import json
 from .claim_normalizer import main_function
 import os
@@ -7,7 +6,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-client = genai.Client()
 def call_openrouter_reasoning(
     claim_input: dict | str, 
     api_key: str | None = None,
