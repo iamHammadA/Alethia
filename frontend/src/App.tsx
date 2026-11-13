@@ -76,10 +76,13 @@ function App() {
 
   const activeJob = job && ["queued", "running"].includes(job.status) ? job : null;
   const title = {overview:"Research overview", graph:"Knowledge graph", papers:"Research papers", claims:"Claims & evidence"}[page];
-  const filteredGraph = useMemo(() => ({
-    nodes: graph.nodes.filter(n => graphType === "all" || n.node_type === graphType),
-    edges: graph.edges
-  }), [graph, graphType]);
+  const filteredGraph = useMemo(() => {
+    const nodes = graph.nodes.filter(n => graphType === "all" || n.node_type === graphType);
+    const ids = new Set(nodes.map(n => n.id));
+    const endpoint = (value: GraphEdge["source"]) => typeof value === "string" ? value : value.id;
+    const edges = graph.edges.filter(edge => ids.has(endpoint(edge.source)) && ids.has(endpoint(edge.target)));
+    return { nodes, edges };
+  }, [graph, graphType]);
 
   return <div className="app-shell">
     <aside className="sidebar">
