@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import ForceGraph2D from "react-force-graph-2d";
 import {
   Activity, ArrowDownRight, ArrowRight, Atom, BookOpen, BrainCircuit, Check,
@@ -64,7 +64,7 @@ function App() {
     if (page === "graph") api.graph().then(r => setGraph({nodes:r.nodes, edges:r.edges})).catch(e => setError(e.message));
   }, [page, search, relationship]);
 
-  const startResearch = async (event: React.FormEvent) => {
+  const startResearch = async (event: FormEvent) => {
     event.preventDefault();
     if (topic.trim().length < 3) return;
     try {
