@@ -68,7 +68,7 @@ export type Job = {
 };
 
 export const api = {
-  health: () => request<{ status: string; graph_available: boolean }>("/api/health"),
+  health: () => request<{ status: string; graph_available: boolean; ollama_available?: boolean; ollama_model_available?: boolean; openrouter_configured?: boolean; pipeline_busy?: boolean }>("/api/health"),
   dashboard: () => request<Dashboard>("/api/dashboard"),
   graph: () => request<{ nodes: GraphNode[]; edges: GraphEdge[]; total_nodes: number; total_edges: number }>("/api/graph"),
   papers: (search = "") => request<{ items: GraphNode[]; total: number }>(`/api/papers?search=${encodeURIComponent(search)}`),
