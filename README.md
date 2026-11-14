@@ -654,6 +654,45 @@ These settings control candidate similarity, the maximum number of LLM compariso
 
 ---
 
+## Web Application
+
+Alethia now includes a React + TypeScript web interface backed by a FastAPI service.
+
+### Start the API
+
+From the repository root:
+
+```bash
+pip install -r requirements.txt
+python -m spacy download en_core_web_lg
+ollama pull llama3.2
+# Set OPENROUTER_API_KEY in your environment
+uvicorn backend.app.main:app --reload
+```
+
+### Start the frontend
+
+In a second terminal:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Open [http://localhost:5173](http://localhost:5173). The frontend proxies `/api` requests to the local FastAPI service.
+
+The web app provides:
+- Research overview and pipeline status
+- New arXiv research investigations
+- Interactive scientific knowledge graph
+- Research paper library
+- Claim and evidence inspection
+- Graph, GraphML, HTML, insight, and build-report exports
+
+The first research run requires a working OpenRouter API key and a running Ollama service with the configured evidence model. Research jobs run one at a time. See [backend/README.md](backend/README.md) for API details.
+
+---
 ## Project Status
 
 **Current Release: Version 1 — Core Literature Analysis and Knowledge Graph Pipeline**

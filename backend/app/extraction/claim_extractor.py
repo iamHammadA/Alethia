@@ -18,7 +18,6 @@ SAVE_DIR = ROOT_DIR / "arXiv papers"
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-from backend.app.search.arxiv.download import get_data
 
 try:
     nltk.data.find('tokenizers/punkt_tab/english/')

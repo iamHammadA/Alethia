@@ -1821,5 +1821,5 @@ def main() -> nx.MultiDiGraph:
     return graph
 
 
-linker()
-main()
+if __name__ == "__main__":
+    main()

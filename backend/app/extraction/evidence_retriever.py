@@ -175,4 +175,5 @@ def main():
     print(f"\nProcessing complete. Evidence saved to: {output_path}")
 
 
-main()
+if __name__ == "__main__":
+    main()
