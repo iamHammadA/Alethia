@@ -3,11 +3,13 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
+import os
 import threading
 import uuid
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+from urllib.request import urlopen
 
 from fastapi import BackgroundTasks, FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
@@ -139,11 +141,29 @@ def run_job(job_id: str, topic: str, max_results: int) -> None:
 
 @app.get("/api/health")
 def health():
+    # Report actual local dependencies instead of displaying a misleading
+    # "configured" state when Ollama or the OpenRouter key is unavailable.
+    ollama_available = False
+    ollama_models: list[str] = []
+    try:
+        with urlopen("http://127.0.0.1:11434/api/tags", timeout=1.2) as response:
+            payload = json.loads(response.read().decode("utf-8"))
+            ollama_models = [
+                str(model.get("name", ""))
+                for model in payload.get("models", [])
+                if isinstance(model, dict)
+            ]
+            ollama_available = True
+    except Exception:
+        pass
     return {
         "status": "ok",
         "service": "Alethia API",
         "graph_available": GRAPH_PATH.exists(),
-        "ollama_configured": True,
+        "ollama_available": ollama_available,
+        "ollama_model_available": any(name.startswith("llama3.2") for name in ollama_models),
+        "openrouter_configured": bool(os.getenv("OPENROUTER_API_KEY")),
+        "pipeline_busy": PIPELINE_LOCK.locked(),
         "data_directory": str(DATA_DIR),
     }
 
