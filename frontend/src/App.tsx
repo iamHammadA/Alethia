@@ -4,7 +4,7 @@ import {
   Activity, ArrowDownRight, ArrowRight, Atom, BookOpen, BrainCircuit, Check,
   ChevronDown, CircleHelp, Clock3, Command, Download, ExternalLink, FileText,
   Filter, FlaskConical, GitBranch, Layers3, LoaderCircle, Network, Plus,
-  Search, ShieldCheck, Sparkles, X, Zap
+  Search, ShieldCheck, Sparkles, X, Zap, RefreshCw
 } from "lucide-react";
 import { api, type Claim, type Dashboard, type GraphEdge, type GraphNode, type Job } from "./api";
 
@@ -31,17 +31,58 @@ function App() {
   const [selectedNode, setSelectedNode] = useState<GraphNode | null>(null);
   const [graphType, setGraphType] = useState("all");
   const [showResearch, setShowResearch] = useState(false);
+  const [lastSyncedAt, setLastSyncedAt] = useState<Date | null>(null);
+  const [syncing, setSyncing] = useState(false);
   const graphRef = useRef<any>(null);
 
-  const refreshDashboard = useCallback(async () => {
+  const refreshDashboard = useCallback(async (quiet = false) => {
+    if (!quiet) setSyncing(true);
     try {
       const [d, h] = await Promise.all([api.dashboard(), api.health()]);
-      setDashboard(d); setHealth(h.status === "ok"); setError("");
-    } catch (e) { setError(e instanceof Error ? e.message : "Could not connect to Alethia API."); }
-    finally { setLoading(false); }
+      setDashboard(d);
+      setHealth(h.status === "ok");
+      setLastSyncedAt(new Date());
+      setError("");
+    } catch (e) {
+      setHealth(false);
+      setError(e instanceof Error ? e.message : "Could not connect to Alethia API.");
+    } finally {
+      setLoading(false);
+      if (!quiet) setSyncing(false);
+    }
   }, []);
 
-  useEffect(() => { void refreshDashboard(); }, [refreshDashboard]);
+  // Keep dashboard metrics and API status fresh without requiring a page reload.
+  // Polling pauses in background tabs to avoid unnecessary local API traffic.
+  useEffect(() => {
+    void refreshDashboard();
+    const timer = window.setInterval(() => {
+      if (document.visibilityState === "visible") void refreshDashboard(true);
+    }, 8000);
+    return () => window.clearInterval(timer);
+  }, [refreshDashboard]);
+
+  // The overview mini-map and full graph both use real API graph data.
+  useEffect(() => {
+    if (page !== "overview" && page !== "graph") return;
+    let active = true;
+    const loadGraph = async () => {
+      try {
+        const result = await api.graph();
+        if (active) setGraph({ nodes: result.nodes, edges: result.edges });
+      } catch (e) {
+        if (active) setError(e instanceof Error ? e.message : "Could not load the knowledge graph.");
+      }
+    };
+    void loadGraph();
+    const timer = window.setInterval(() => {
+      if (document.visibilityState === "visible") void loadGraph();
+    }, 12000);
+    return () => {
+      active = false;
+      window.clearInterval(timer);
+    };
+  }, [page]);
 
   useEffect(() => {
     if (!job || !["queued", "running"].includes(job.status)) return;
@@ -58,10 +99,33 @@ function App() {
     return () => window.clearInterval(timer);
   }, [job?.id, job?.status, refreshDashboard]);
 
+  // Search results stay in sync while their page is open. A short debounce
+  // avoids sending a request for every keystroke.
   useEffect(() => {
-    if (page === "papers") api.papers(search).then(r => setPapers(r.items)).catch(e => setError(e.message));
-    if (page === "claims") api.claims(search, relationship).then(r => setClaims(r.items)).catch(e => setError(e.message));
-    if (page === "graph") api.graph().then(r => setGraph({nodes:r.nodes, edges:r.edges})).catch(e => setError(e.message));
+    if (page !== "papers" && page !== "claims") return;
+    let active = true;
+    const load = async () => {
+      try {
+        if (page === "papers") {
+          const result = await api.papers(search);
+          if (active) setPapers(result.items);
+        } else {
+          const result = await api.claims(search, relationship);
+          if (active) setClaims(result.items);
+        }
+      } catch (e) {
+        if (active) setError(e instanceof Error ? e.message : "Could not load research data.");
+      }
+    };
+    const debounce = window.setTimeout(() => void load(), 220);
+    const timer = window.setInterval(() => {
+      if (document.visibilityState === "visible") void load();
+    }, 10000);
+    return () => {
+      active = false;
+      window.clearTimeout(debounce);
+      window.clearInterval(timer);
+    };
   }, [page, search, relationship]);
 
   const startResearch = async (event: FormEvent) => {
@@ -103,14 +167,14 @@ function App() {
     <main className="main-area">
       <header className="topbar">
         <div className="breadcrumb"><span>Workspace</span><span className="slash">/</span><strong>{title}</strong></div>
-        <div className="top-actions"><div className="connection"><span className={health?"status-dot":"status-dot offline"}/>{health?"Connected":"Disconnected"}</div><button className="icon-button" title="Help"><CircleHelp size={17}/></button><button className="new-button" onClick={()=>setShowResearch(true)}><Plus size={16}/> New investigation</button></div>
+        <div className="top-actions"><div className="connection"><span className={health?"status-dot":"status-dot offline"}/>{health?"Live":"Offline"}<small className="sync-time">{lastSyncedAt ? lastSyncedAt.toLocaleTimeString([], {hour:"2-digit",minute:"2-digit",second:"2-digit"}) : "Not synced"}</small></div><button className="subtle-button refresh-button" onClick={()=>{void refreshDashboard();}} disabled={syncing}><RefreshCw size={14} className={syncing?"spin":""}/>{syncing?"Refreshing":"Refresh"}</button><button className="icon-button" title="Help"><CircleHelp size={17}/></button><button className="new-button" onClick={()=>setShowResearch(true)}><Plus size={16}/> New investigation</button></div>
       </header>
 
       <div className="page-content">
         {error && <div className="error-banner"><X size={16}/>{error}<button onClick={()=>setError("")}><X size={15}/></button></div>}
         {activeJob && <div className="job-banner"><div className="job-icon"><LoaderCircle size={18}/></div><div className="job-copy"><strong>Investigating: {activeJob.topic}</strong><span>{activeJob.message}</span><div className="progress-track"><i style={{width:`${activeJob.progress}%`}}/></div></div><strong className="job-percent">{activeJob.progress}%</strong></div>}
         {job?.status==="failed" && <div className="error-banner"><X size={16}/><span>Investigation failed: {job.error}</span><button onClick={()=>setJob(null)}><X size={15}/></button></div>}
-        {page==="overview" && <Overview dashboard={dashboard} loading={loading} onNew={()=>setShowResearch(true)} onNavigate={setPage}/>}
+        {page==="overview" && <Overview dashboard={dashboard} loading={loading} graph={graph} onNew={()=>setShowResearch(true)} onNavigate={setPage}/>}
         {page==="graph" && <GraphPage graph={filteredGraph} selected={selectedNode} setSelected={setSelectedNode} graphType={graphType} setGraphType={setGraphType} graphRef={graphRef}/>}
         {page==="papers" && <PapersPage papers={papers} search={search} setSearch={setSearch}/>}
         {page==="claims" && <ClaimsPage claims={claims} search={search} setSearch={setSearch} relationship={relationship} setRelationship={setRelationship}/>}
@@ -132,7 +196,7 @@ function App() {
   </div>;
 }
 
-function Overview({dashboard,loading,onNew,onNavigate}:{dashboard:Dashboard|null;loading:boolean;onNew:()=>void;onNavigate:(p:Page)=>void}) {
+function Overview({dashboard,loading,graph,onNew,onNavigate}:{dashboard:Dashboard|null;loading:boolean;graph:{nodes:GraphNode[];edges:GraphEdge[]};onNew:()=>void;onNavigate:(p:Page)=>void}) {
   const stats = dashboard?.stats;
   const metricCards = [
     {label:"Research papers",value:stats?.papers,icon:BookOpen,sub:"Retrieved publications"},
@@ -145,7 +209,7 @@ function Overview({dashboard,loading,onNew,onNavigate}:{dashboard:Dashboard|null
     <section className="metrics-grid">{metricCards.map(({label,value,icon:Icon,sub})=><div className="metric-card" key={label}><div className="metric-top"><span>{label}</span><Icon size={17}/></div><strong>{loading?"—":(value??0).toLocaleString()}</strong><small>{sub}</small></div>)}</section>
     <section className="overview-grid">
       <div className="panel research-panel"><div className="panel-heading"><div><span className="eyebrow">RESEARCH WORKFLOW</span><h2>Start with a question.</h2></div><span className="live-label"><span className="status-dot"/> READY</span></div><p>Explore a topic across arXiv. Alethia will extract claims, find supporting passages, classify evidence, and connect findings across papers.</p><div className="workflow-steps">{[{n:"01",t:"Retrieve",d:"Find relevant papers",icon:Search},{n:"02",t:"Analyze",d:"Extract claims & evidence",icon:FlaskConical},{n:"03",t:"Connect",d:"Build a knowledge graph",icon:Network}].map(({n,t,d,icon:Icon})=><div className="workflow-step" key={n}><span>{n}</span><Icon size={17}/><strong>{t}</strong><small>{d}</small></div>)}</div><button className="text-action" onClick={onNew}>Create an investigation <ArrowRight size={15}/></button></div>
-      <div className="panel graph-summary"><div className="panel-heading"><div><span className="eyebrow">KNOWLEDGE MAP</span><h2>Connected knowledge</h2></div><button className="subtle-button" onClick={()=>onNavigate("graph")}>Explore <ArrowRight size={14}/></button></div><MiniNetwork/><div className="graph-summary-footer"><div><strong>{stats?.relationships??0}</strong><span>relationships</span></div><div><strong>{stats?.papers??0}</strong><span>source papers</span></div><div><strong>{stats?.claims??0}</strong><span>claims</span></div></div></div>
+      <div className="panel graph-summary"><div className="panel-heading"><div><span className="eyebrow">KNOWLEDGE MAP</span><h2>Connected knowledge</h2></div><button className="subtle-button" onClick={()=>onNavigate("graph")}>Explore <ArrowRight size={14}/></button></div><MiniNetwork graph={graph}/><div className="graph-summary-footer"><div><strong>{stats?.relationships??0}</strong><span>relationships</span></div><div><strong>{stats?.papers??0}</strong><span>source papers</span></div><div><strong>{stats?.claims??0}</strong><span>claims</span></div></div></div>
     </section>
     <section className="panel recent-panel"><div className="panel-heading"><div><span className="eyebrow">YOUR LIBRARY</span><h2>Research papers</h2></div><button className="subtle-button" onClick={()=>onNavigate("papers")}>View all <ArrowRight size={14}/></button></div>
       {dashboard?.papers?.length ? <div className="recent-list">{dashboard.papers.slice(0,5).map((paper,i)=><div className="recent-item" key={paper.id}><div className="paper-icon"><FileText size={17}/></div><div className="recent-info"><strong>{String(paper.title||paper.label||`Research paper ${i+1}`)}</strong><span>{String(paper.arxiv_id? `arXiv:${paper.arxiv_id}` : paper.source_pdf||"Imported research paper")}</span></div><span className="type-pill">PAPER</span><ArrowDownRight size={15}/></div>)}</div> : <div className="empty-state"><BookOpen size={24}/><strong>No research papers yet</strong><span>Run your first investigation to start building your library.</span><button className="text-action" onClick={onNew}>Start exploring <ArrowRight size={14}/></button></div>}
@@ -154,14 +218,28 @@ function Overview({dashboard,loading,onNew,onNavigate}:{dashboard:Dashboard|null
   </div>;
 }
 
-function MiniNetwork() {
-  return <div className="mini-network"><svg viewBox="0 0 480 175" role="img" aria-label="Illustrative connected research graph">
-    <g stroke="#4a563f" strokeWidth="1.1" opacity=".8"><path d="M240 82L118 43L55 112L168 145L240 82L355 35L425 100L310 145L240 82"/><path d="M118 43L168 145M355 35L310 145M55 112L240 82M425 100L240 82"/></g>
-    {[{x:240,y:82,r:13,c:"#c8e67a"},{x:118,y:43,r:8,c:"#8ea66a"},{x:55,y:112,r:6,c:"#687d58"},{x:168,y:145,r:7,c:"#c8e67a"},{x:355,y:35,r:8,c:"#8ea66a"},{x:425,y:100,r:6,c:"#687d58"},{x:310,y:145,r:7,c:"#a8c56e"}].map((n,i)=><circle key={i} cx={n.x} cy={n.y} r={n.r} fill={n.c} opacity=".9"/>)}
-    <circle cx="240" cy="82" r="24" fill="none" stroke="#c8e67a" opacity=".17"/><circle cx="240" cy="82" r="34" fill="none" stroke="#c8e67a" opacity=".08"/>
-  </svg><span className="network-caption">PAPERS <i/> CLAIMS <i/> EVIDENCE</span></div>;
+function MiniNetwork({graph}:{graph:{nodes:GraphNode[];edges:GraphEdge[]}}) {
+  const nodes = graph.nodes.slice(0, 18);
+  const points = nodes.map((node, index) => {
+    const angle = (index / Math.max(nodes.length, 1)) * Math.PI * 2 - Math.PI / 2;
+    return { node, x: 240 + Math.cos(angle) * 174, y: 83 + Math.sin(angle) * 59 };
+  });
+  const pointById = new Map(points.map(point => [point.node.id, point]));
+  const endpoint = (value: GraphEdge["source"]) => typeof value === "string" ? value : value.id;
+  const edges = graph.edges
+    .map(edge => ({ source: pointById.get(endpoint(edge.source)), target: pointById.get(endpoint(edge.target)) }))
+    .filter((edge): edge is {source: typeof points[number]; target: typeof points[number]} => Boolean(edge.source && edge.target));
+  const colors:Record<string,string>={paper:"#d8e8a0",claim:"#a8c57a",evidence:"#91a9c6",method:"#d9ad78",concept:"#bd9bdd",model:"#df8f88"};
+  return <div className="mini-network">
+    {points.length ? <svg viewBox="0 0 480 175" role="img" aria-label="Live preview of the Alethia knowledge graph">
+      <g stroke="#596550" strokeWidth="1" opacity=".72">
+        {edges.slice(0, 42).map((edge,index)=><line key={index} x1={edge.source.x} y1={edge.source.y} x2={edge.target.x} y2={edge.target.y}/>)}
+      </g>
+      {points.map(({node,x,y})=><circle className="live-node" key={node.id} cx={x} cy={y} r={node.node_type==="paper"?7:node.node_type==="claim"?5.5:4.5} fill={colors[node.node_type]||"#9aa59a"}><title>{String(node.title||node.normalized_claim||node.label||node.id)}</title></circle>)}
+    </svg> : <div className="mini-network-empty"><Network size={23}/><strong>Knowledge graph is waiting</strong><span>Run an investigation to populate this live preview.</span></div>}
+    <span className="network-caption">{points.length} LIVE ENTITIES <i/> {edges.length} LINKS</span>
+  </div>;
 }
-
 function GraphPage({graph,selected,setSelected,graphType,setGraphType,graphRef}:{graph:{nodes:GraphNode[];edges:GraphEdge[]};selected:GraphNode|null;setSelected:(n:GraphNode|null)=>void;graphType:string;setGraphType:(v:string)=>void;graphRef:any}) {
   const data = useMemo(()=>({nodes:graph.nodes.map(n=>({...n,name:String(n.normalized_claim||n.title||n.label||n.id),group:n.node_type})),links:graph.edges.map(e=>({source:typeof e.source==="string"?e.source:e.source.id,target:typeof e.target==="string"?e.target:e.target.id,relationship:e.relationship}))}),[graph]);
   const colors:Record<string,string>={paper:"#d8e8a0",claim:"#a8c57a",evidence:"#91a9c6",method:"#d9ad78",concept:"#bd9bdd",model:"#df8f88"};
