@@ -294,14 +294,14 @@ def analyze_evidence(evidence_item):
 # IMPORT MATCHED EVIDENCE
 # --------------------------------------------------
 
-def json_importer(progress=None):
+def json_importer(progress=None, force_dummy=False):
     if not INPUT_PATH.exists():
         raise FileNotFoundError(f"Input file not found: {INPUT_PATH}")
 
     with INPUT_PATH.open("r", encoding="utf-8") as file:
         data = json.load(file)
 
-    force_dummy = os.getenv("ALETHIA_DUMMY_AI", "0").strip().lower() in {
+    force_dummy = force_dummy or os.getenv("ALETHIA_DUMMY_AI", "0").strip().lower() in {
         "1", "true", "yes", "on"
     }
     fallback_reason = "Dummy mode explicitly enabled." if force_dummy else None
@@ -348,8 +348,8 @@ def json_importer(progress=None):
 # MAIN EVIDENCE ANALYSIS PIPELINE
 # --------------------------------------------------
 
-def evidence_main(progress=None):
-    data = json_importer(progress=progress)
+def evidence_main(progress=None, force_dummy=False):
+    data = json_importer(progress=progress, force_dummy=force_dummy)
     OUTPUT_PATH.write_text(
         json.dumps(data, indent=2, ensure_ascii=False),
         encoding="utf-8",
