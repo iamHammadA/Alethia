@@ -87,7 +87,7 @@ def retrieve_evidence(
     ]
 
 
-def process_all_papers(claims_by_article: dict, arxiv_dir: Path, top_k: int = 3):
+def process_all_papers(claims_by_article: dict, arxiv_dir: Path, top_k: int = 3, include_all_claims: bool = False):
     results = {}
     pdf_files = sorted(arxiv_dir.glob("*.pdf"))
 
@@ -117,7 +117,7 @@ def process_all_papers(claims_by_article: dict, arxiv_dir: Path, top_k: int = 3)
         article_evidence = []
         for claim_item in claims:
             # Skip claims marked as not requiring evidence or low confidence
-            if isinstance(claim_item, dict):
+            if isinstance(claim_item, dict) and not include_all_claims:
                 if not claim_item.get("requires_evidence", True):
                     continue
                 if (
@@ -152,7 +152,7 @@ def process_all_papers(claims_by_article: dict, arxiv_dir: Path, top_k: int = 3)
     return results
 
 
-def main(progress=None):
+def main(progress=None, claims_by_article=None, include_all_claims=False):
     CURRENT_FILE = Path(__file__).resolve()
     ROOT_DIR = next(
         (parent for parent in CURRENT_FILE.parents
@@ -163,7 +163,11 @@ def main(progress=None):
         raise RuntimeError("Could not locate the Alethia project root.")
     SAVE_DIR = ROOT_DIR / "arXiv papers"
 
-    claims_by_article = analyzer(progress=progress)
+    if claims_by_article is None:
+        claims_by_article = analyzer(progress=progress)
+    else:
+        total_saved = sum(len(items) for items in claims_by_article.values())
+        print(f"Using {total_saved} saved claims; extraction is skipped.")
 
     for key, val in claims_by_article.items():
         if val:
@@ -172,7 +176,9 @@ def main(progress=None):
 
     if progress:
         progress("evidence", 52, "Claims are saved. Retrieving candidate evidence passages.")
-    extracted_data = process_all_papers(claims_by_article, SAVE_DIR, top_k=3)
+    extracted_data = process_all_papers(
+        claims_by_article, SAVE_DIR, top_k=3, include_all_claims=include_all_claims
+    )
 
     output_path = SAVE_DIR / "matched_evidence.json"
     with open(output_path, "w", encoding="utf-8") as f:
