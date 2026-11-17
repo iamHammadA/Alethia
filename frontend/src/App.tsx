@@ -10,9 +10,9 @@ import { api, type Claim, type Dashboard, type GraphEdge, type GraphNode, type J
 
 type Page = "overview" | "graph" | "papers" | "claims";
 const stages = [
-  ["retrieval", "Paper retrieval"], ["claims", "Claim extraction"], ["evidence", "Evidence analysis"],
-  ["linking", "Evidence linking"], ["graph", "Knowledge graph"]
-];
+  ["retrieval", "Searching arXiv"], ["papers", "Papers downloaded"], ["claims", "Claim extraction"],
+  ["evidence", "Evidence analysis"], ["linking", "Evidence linking"], ["graph", "Knowledge graph"]
+] as const;
 
 function App() {
   const [page, setPage] = useState<Page>("overview");
@@ -159,7 +159,7 @@ function App() {
         <button className={page==="claims"?"nav-item active":"nav-item"} onClick={()=>setPage("claims")}><GitBranch size={17}/> Claims & evidence <span className="nav-count">{dashboard?.stats.claims ?? "—"}</span></button>
       </nav>
       <div className="sidebar-bottom">
-        <div className="system-card"><div className="system-heading"><span className={health?"status-dot":"status-dot offline"}/><span>System status</span></div><strong>{health?"API connected":"API disconnected"}</strong><p>{dashboard?.available?"Knowledge graph loaded":"Waiting for graph data"}</p></div>
+        <div className="system-card"><div className="system-heading"><span className={health?"status-dot":"status-dot offline"}/><span>System status</span></div><strong>{activeJob?"Pipeline running":health?"API connected":"API disconnected"}</strong><p>{activeJob? `${activeJob.stage} · ${activeJob.progress}%`:dashboard?.available?"Knowledge graph loaded":dashboard?.stats.papers?"Research data available":"Waiting for research data"}</p></div>
         <div className="sidebar-footer"><div className="avatar">HA</div><div><strong>Research workspace</strong><span>Personal instance</span></div><ChevronDown size={15}/></div>
       </div>
     </aside>
@@ -172,8 +172,9 @@ function App() {
 
       <div className="page-content">
         {error && <div className="error-banner"><X size={16}/>{error}<button onClick={()=>setError("")}><X size={15}/></button></div>}
-        {activeJob && <div className="job-banner"><div className="job-icon"><LoaderCircle size={18}/></div><div className="job-copy"><strong>Investigating: {activeJob.topic}</strong><span>{activeJob.message}</span><div className="progress-track"><i style={{width:`${activeJob.progress}%`}}/></div></div><strong className="job-percent">{activeJob.progress}%</strong></div>}
-        {job?.status==="failed" && <div className="error-banner"><X size={16}/><span>Investigation failed: {job.error}</span><button onClick={()=>setJob(null)}><X size={15}/></button></div>}
+        {activeJob && <PipelineMonitor job={activeJob}/>} 
+        {job?.status==="failed" && <div className="error-banner"><X size={16}/><span>Investigation stopped at {job.stage}: {job.error}</span><button onClick={()=>setJob(null)}><X size={15}/></button></div>}
+        {job?.status==="completed" && <div className="completion-banner"><Check size={16}/><span>Investigation complete — {String(job.result?.papers_downloaded ?? dashboard?.stats.papers ?? 0)} papers processed. Your papers and claims are ready to inspect.</span><button onClick={()=>setJob(null)}><X size={15}/></button></div>}
         {page==="overview" && <Overview dashboard={dashboard} loading={loading} graph={graph} onNew={()=>setShowResearch(true)} onNavigate={setPage}/>}
         {page==="graph" && <GraphPage graph={filteredGraph} selected={selectedNode} setSelected={setSelectedNode} graphType={graphType} setGraphType={setGraphType} graphRef={graphRef}/>}
         {page==="papers" && <PapersPage papers={papers} search={search} setSearch={setSearch}/>}
@@ -194,6 +195,31 @@ function App() {
       </form>
     </div>}
   </div>;
+}
+
+
+function PipelineMonitor({job}:{job:Job}) {
+  const activeIndex = stages.findIndex(([key]) => key === job.stage);
+  const completed = (key:string, index:number) => job.progress >= 100 || (activeIndex >= 0 && index < activeIndex);
+  const activeLabel = stages.find(([key]) => key === job.stage)?.[1] || job.stage;
+  return <section className="pipeline-monitor" aria-live="polite">
+    <div className="pipeline-monitor-head">
+      <div className="pipeline-live"><span className="pipeline-orb"><Activity size={16}/></span><div><span className="eyebrow">LIVE INVESTIGATION</span><strong>{job.topic}</strong></div></div>
+      <div className="pipeline-progress-value"><strong>{job.progress}%</strong><span>{activeLabel}</span></div>
+    </div>
+    <div className="pipeline-message"><LoaderCircle size={14} className="spin"/><span>{job.message}</span><span className="pipeline-status">LIVE</span></div>
+    <div className="pipeline-progress-track"><i style={{width:`${job.progress}%`}}/></div>
+    <div className="pipeline-stage-grid">
+      {stages.map(([key,label],index)=>{
+        const isActive=key===job.stage && job.status==="running";
+        const isDone=completed(key,index);
+        return <div className={`pipeline-stage ${isDone?"done":isActive?"active":""}`} key={key}>
+          <span className="pipeline-stage-icon">{isDone?<Check size={13}/>:isActive?<LoaderCircle size={13} className="spin"/>:<span>{String(index+1).padStart(2,"0")}</span>}</span>
+          <span>{label}</span>
+        </div>;
+      })}
+    </div>
+  </section>;
 }
 
 function Overview({dashboard,loading,graph,onNew,onNavigate}:{dashboard:Dashboard|null;loading:boolean;graph:{nodes:GraphNode[];edges:GraphEdge[]};onNew:()=>void;onNavigate:(p:Page)=>void}) {
