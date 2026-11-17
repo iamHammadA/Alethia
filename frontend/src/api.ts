@@ -76,5 +76,6 @@ export const api = {
   startResearch: (topic: string, max_results: number) => request<Job>("/api/research", {
     method: "POST", body: JSON.stringify({ topic, max_results })
   }),
+  resumeResearch: () => request<Job>("/api/research/resume", { method: "POST" }),
   job: (id: string) => request<Job>(`/api/jobs/${id}`)
 };
