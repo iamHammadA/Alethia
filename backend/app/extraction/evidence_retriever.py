@@ -31,6 +31,7 @@ def extract_claim_and_original(claim_item):
             claim_item.get("original_sentence")
             or claim_item.get("source_sentence")
             or claim_item.get("sentence")
+            or claim_item.get("original_text")
             or claim_item.get("raw_claim")
             or claim_text
         )
@@ -148,31 +149,36 @@ def process_all_papers(claims_by_article: dict, arxiv_dir: Path, top_k: int = 3)
     return results
 
 
-def main():
+def main(progress=None):
     CURRENT_FILE = Path(__file__).resolve()
-
     ROOT_DIR = next(
-        (p for p in CURRENT_FILE.parents if p.name.lower() == "aletheia"),
-        CURRENT_FILE.parent,
+        (parent for parent in CURRENT_FILE.parents
+         if (parent / "backend").is_dir() and (parent / "frontend").is_dir()),
+        None,
     )
-
+    if ROOT_DIR is None:
+        raise RuntimeError("Could not locate the Alethia project root.")
     SAVE_DIR = ROOT_DIR / "arXiv papers"
 
-    claims_by_article = analyzer()
+    claims_by_article = analyzer(progress=progress)
 
-    # Debug check: verify claim structure if needed
     for key, val in claims_by_article.items():
         if val:
             print(f"Sample claim item for {key}: {val[0]} (Type: {type(val[0])})")
             break
 
+    if progress:
+        progress("evidence", 52, "Claims are saved. Retrieving candidate evidence passages.")
     extracted_data = process_all_papers(claims_by_article, SAVE_DIR, top_k=3)
 
     output_path = SAVE_DIR / "matched_evidence.json"
     with open(output_path, "w", encoding="utf-8") as f:
-        json.dump(extracted_data, f, indent=2)
+        json.dump(extracted_data, f, indent=2, ensure_ascii=False)
 
+    if progress:
+        progress("evidence", 58, "Candidate evidence passages retrieved.")
     print(f"\nProcessing complete. Evidence saved to: {output_path}")
+    return extracted_data
 
 
 if __name__ == "__main__":
