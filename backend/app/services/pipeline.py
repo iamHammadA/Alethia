@@ -18,7 +18,7 @@ def run_research(topic: str, max_results: int = 5, progress: Progress | None = N
     update("retrieval", 5, f"Searching arXiv for “{topic}”")
     download = importlib.import_module("backend.app.search.arxiv.download")
     download = importlib.reload(download)
-    papers = download.get_data(topic, max_results=max_results)
+    papers = download.get_data(topic, max_results=max_results, progress=update)
 
     # Reload in dependency order so a second investigation in the same server
     # process uses the newly downloaded papers, not module-level cached claims.
