@@ -1,13 +1,30 @@
-from google import genai
 import json
 from .claim_normalizer import main_function
 import os
 import requests
 from dotenv import load_dotenv
+from pathlib import Path
 
 load_dotenv()
 
-client = genai.Client()
+CURRENT_FILE = Path(__file__).resolve()
+ROOT_DIR = next(
+    (parent for parent in CURRENT_FILE.parents
+     if (parent / "backend").is_dir() and (parent / "frontend").is_dir()),
+    None,
+)
+if ROOT_DIR is None:
+    raise RuntimeError("Could not locate the Alethia project root.")
+SAVE_DIR = ROOT_DIR / "arXiv papers"
+CLAIMS_OUTPUT_PATH = SAVE_DIR / "ai_claims.json"
+
+
+def _save_claims(data: dict) -> None:
+    SAVE_DIR.mkdir(parents=True, exist_ok=True)
+    temporary_path = CLAIMS_OUTPUT_PATH.with_suffix(".json.tmp")
+    temporary_path.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
+    temporary_path.replace(CLAIMS_OUTPUT_PATH)
+
 def call_openrouter_reasoning(
     claim_input: dict | str, 
     api_key: str | None = None,
@@ -72,22 +89,110 @@ Output ONLY valid JSON. No conversational fluff or markdown formatting outside t
     # Parse and return JSON object
     return json.loads(raw_content)
 
-def analyzer():
-    ai_claims = {}
+def _dummy_claim_analysis(single_claim: dict) -> dict:
+    """Create explicitly simulated metadata without changing the extracted claim."""
+    original = str(single_claim.get("text") or single_claim.get("original_text") or "").strip()
+    subjects = single_claim.get("subject") or []
+    verbs = single_claim.get("verb") or []
+    objects = single_claim.get("object") or []
+    if not isinstance(subjects, list):
+        subjects = [str(subjects)]
+    if not isinstance(verbs, list):
+        verbs = [str(verbs)]
+    if not isinstance(objects, list):
+        objects = [str(objects)]
+    return {
+        "normalized_claim": original,
+        "subject": ", ".join(str(value) for value in subjects if value),
+        "relation": ", ".join(str(value) for value in verbs if value),
+        "object": ", ".join(str(value) for value in objects if value),
+        "claim_type": single_claim.get("claim_type") or "other",
+        "requires_evidence": True,
+        "confidence": 0.0,
+        "analysis_status": "simulated",
+        "analysis_mode": "simulated",
+        "simulation_notice": "Dummy fallback output; no model verdict was produced.",
+    }
+
+
+def analyzer(progress=None):
+    """Persist extracted claims first, then use model analysis or safe dummy fallback."""
     json_claims = main_function()
-    
-    # Store key in environment or variable
-    openrouter_key = os.getenv("OPENROUTER_API_KEY")
-    
+    total_claims = sum(len(items) for items in json_claims.values())
+    ai_claims = {}
+
+    # Never make persistence depend on a paid/limited API.
     for article_id, claims_list in json_claims.items():
-        inter_claim = []
-        print(f"Article {article_id} Claims Count:", len(claims_list))
-        
-        for single_claim in claims_list:
-            analyzed_claim = call_openrouter_reasoning(single_claim, api_key=openrouter_key)
-            inter_claim.append(analyzed_claim)
-            print(analyzed_claim)
-            
-        ai_claims[article_id] = inter_claim
-     
+        ai_claims[article_id] = [
+            {
+                **single_claim,
+                "original_text": single_claim.get("text", ""),
+                "normalized_claim": single_claim.get("text", ""),
+                "source_paper_id": article_id,
+                "article_key": article_id,
+                "analysis_status": "pending",
+                "analysis_mode": "not_analyzed",
+            }
+            for single_claim in claims_list
+        ]
+    _save_claims(ai_claims)
+
+    if progress:
+        progress("claims", 25, f"Extracted and saved {total_claims} real claims.")
+
+    force_dummy = os.getenv("ALETHIA_DUMMY_AI", "0").strip().lower() in {
+        "1", "true", "yes", "on"
+    }
+    fallback_reason = "Dummy mode explicitly enabled." if force_dummy else None
+    completed = 0
+
+    for article_id, claims_list in json_claims.items():
+        for index, single_claim in enumerate(claims_list):
+            if not force_dummy and fallback_reason is None:
+                try:
+                    analyzed_claim = call_openrouter_reasoning(
+                        single_claim, api_key=os.getenv("OPENROUTER_API_KEY")
+                    )
+                    enriched_claim = {
+                        **single_claim,
+                        **analyzed_claim,
+                        "original_text": single_claim.get("text", ""),
+                        "source_paper_id": article_id,
+                        "article_key": article_id,
+                        "analysis_status": "complete",
+                        "analysis_mode": "openrouter",
+                    }
+                except Exception as exc:
+                    # Stop calling a rate-limited/unavailable provider and
+                    # continue the remaining claims with clearly marked data.
+                    fallback_reason = f"{type(exc).__name__}: {str(exc)[:240]}"
+                    print(f"OpenRouter unavailable; switching to dummy analysis: {fallback_reason}")
+                    if progress:
+                        progress("claims", 47, "API unavailable. Continuing remaining claims with clearly labelled dummy analysis.")
+                    enriched_claim = _dummy_claim_analysis(single_claim)
+                    enriched_claim.update({
+                        "original_text": single_claim.get("text", ""),
+                        "source_paper_id": article_id,
+                        "article_key": article_id,
+                        "simulation_reason": fallback_reason,
+                    })
+            else:
+                enriched_claim = _dummy_claim_analysis(single_claim)
+                enriched_claim.update({
+                    "original_text": single_claim.get("text", ""),
+                    "source_paper_id": article_id,
+                    "article_key": article_id,
+                    "simulation_reason": fallback_reason,
+                })
+
+            ai_claims[article_id][index] = enriched_claim
+            completed += 1
+            _save_claims(ai_claims)
+            if progress:
+                percent = 25 + round(22 * completed / max(total_claims, 1))
+                mode = "simulated" if enriched_claim.get("analysis_mode") == "simulated" else "analyzed"
+                progress("claims", min(percent, 47), f"{mode.title()} {completed} of {total_claims} claims.")
+
+    if progress and total_claims == 0:
+        progress("claims", 47, "No candidate claims were found in the downloaded papers.")
     return ai_claims

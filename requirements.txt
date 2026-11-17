@@ -1,0 +1,13 @@
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0
+pydantic>=2.8.0
+requests>=2.32.0
+beautifulsoup4>=4.12.0
+pymupdf4llm>=0.0.17
+nltk>=3.9.0
+spacy>=3.7.0
+scikit-learn>=1.5.0
+networkx>=3.3
+ollama>=0.3.0
+python-dotenv>=1.0.1
+google-genai>=1.0.0

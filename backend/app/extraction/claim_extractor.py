@@ -8,9 +8,12 @@ import sys
 
 CURRENT_FILE = Path(__file__).resolve()
 ROOT_DIR = next(
-    (p for p in CURRENT_FILE.parents if p.name.lower() == "alethia"),
-    CURRENT_FILE.parent,
+    (p for p in CURRENT_FILE.parents
+     if (p / "backend").is_dir() and (p / "frontend").is_dir()),
+    None,
 )
+if ROOT_DIR is None:
+    raise RuntimeError("Could not locate the Alethia project root.")
 
 # 2. Target the 'arXiv papers' folder inside ALETHIA
 SAVE_DIR = ROOT_DIR / "arXiv papers"
@@ -18,7 +21,6 @@ SAVE_DIR = ROOT_DIR / "arXiv papers"
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-from backend.app.search.arxiv.download import get_data
 
 try:
     nltk.data.find('tokenizers/punkt_tab/english/')

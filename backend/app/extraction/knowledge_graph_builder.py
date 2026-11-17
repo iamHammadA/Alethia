@@ -59,9 +59,11 @@ except ImportError:
 CURRENT_FILE = Path(__file__).resolve()
 ROOT_DIR = next(
     (parent for parent in CURRENT_FILE.parents
-     if parent.name.lower() == "alethia"),
-    CURRENT_FILE.parent,
+     if (parent / "backend").is_dir() and (parent / "frontend").is_dir()),
+    None,
 )
+if ROOT_DIR is None:
+    raise RuntimeError("Could not locate the Alethia project root.")
 
 DATA_DIR = ROOT_DIR / "arXiv papers"
 OUTPUT_DIR = DATA_DIR / "knowledge_graph"
@@ -464,6 +466,8 @@ def add_claim_node(
             claim_confidence=safe_float(
                 claim_payload.get("confidence")
             ) if safe_float(claim_payload.get("confidence")) is not None else "",
+            analysis_status=clean_text(claim_payload.get("analysis_status")) or "",
+            analysis_mode=clean_text(claim_payload.get("analysis_mode")) or "unknown",
         )
 
     add_edge(graph, paper_id, claim_id, "CONTAINS")
@@ -544,6 +548,7 @@ def add_evidence_node(
             reason=clean_text(first_value(
                 evidence, "reason", "explanation", "reasoning"
             )) or "",
+            analysis_mode=clean_text(evidence.get("analysis_mode")) or "unknown",
         )
 
     relation = str(evidence.get("relationship", "insufficient")).lower()
@@ -1903,5 +1908,5 @@ def main() -> nx.MultiDiGraph:
     return graph
 
 
-linker()
-main()
+if __name__ == "__main__":
+    main()
