@@ -120,7 +120,10 @@ def process_all_papers(claims_by_article: dict, arxiv_dir: Path, top_k: int = 3)
             if isinstance(claim_item, dict):
                 if not claim_item.get("requires_evidence", True):
                     continue
-                if claim_item.get("confidence", 1.0) < 0.4:
+                if (
+                    claim_item.get("confidence", 1.0) < 0.4
+                    and claim_item.get("analysis_mode") != "simulated"
+                ):
                     continue
 
             claim_text, orig_sentence = extract_claim_and_original(claim_item)
