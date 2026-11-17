@@ -38,7 +38,7 @@ def run_research(topic: str, max_results: int = 5, progress: Progress | None = N
     update("evidence", 60, "Candidate evidence retrieved. Running local LLM evidence analysis.")
     evidence_analyzer = importlib.import_module("backend.app.extraction.ai_evidence_analyzer")
     evidence_analyzer = importlib.reload(evidence_analyzer)
-    evidence_analyzer.evidence_main()
+    evidence_analyzer.evidence_main(progress=update)
 
     update("linking", 78, "Linking evidence to claims and preserving source relationships.")
     linker = importlib.import_module("backend.app.extraction.claim_evidence_linker")
@@ -62,5 +62,6 @@ def run_research(topic: str, max_results: int = 5, progress: Progress | None = N
         "paper_titles": [paper.get("title", "") for paper in papers],
         "nodes": graph.number_of_nodes(),
         "edges": graph.number_of_edges(),
+        "analysis_mode": "dummy" if __import__("os").getenv("ALETHIA_DUMMY_AI", "0").lower() in {"1", "true", "yes", "on"} else "automatic_fallback",
         "report": report,
     }
