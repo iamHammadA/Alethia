@@ -167,6 +167,26 @@ def run_job(job_id: str, topic: str, max_results: int) -> None:
         PIPELINE_LOCK.release()
 
 
+def run_resume_job(job_id: str) -> None:
+    if not PIPELINE_LOCK.acquire(blocking=False):
+        update_job(job_id, status="failed", error="Another research pipeline is already running. Please try again when it finishes.", completed_at=now())
+        return
+    try:
+        update_job(job_id, status="running", stage="claims", progress=5, message="Loading saved papers and claims.")
+        from backend.app.services.pipeline import resume_existing_research
+
+        def progress(stage: str, percent: int, message: str) -> None:
+            update_job(job_id, stage=stage, progress=percent, message=message)
+
+        result = resume_existing_research(progress)
+        update_job(job_id, status="completed", stage="complete", progress=100, message="Saved investigation resumed.", result=result, completed_at=now())
+    except Exception as exc:
+        logger.exception("Alethia resume job failed")
+        update_job(job_id, status="failed", error=str(exc), message="Resume stopped before completion.", completed_at=now())
+    finally:
+        PIPELINE_LOCK.release()
+
+
 @app.get("/api/health")
 def health():
     # Report actual local dependencies instead of displaying a misleading
@@ -326,6 +346,31 @@ async def start_research(request: ResearchRequest, background_tasks: BackgroundT
     with JOBS_LOCK:
         JOBS[job_id] = job
     background_tasks.add_task(run_job, job_id, request.topic.strip(), request.max_results)
+    return job
+
+
+@app.post("/api/research/resume", status_code=202)
+async def resume_research(background_tasks: BackgroundTasks):
+    if not PAPER_METADATA_PATH.exists() or not CLAIMS_PATH.exists():
+        raise HTTPException(status_code=400, detail="No saved research metadata or claims are available to resume.")
+    metadata = read_json(PAPER_METADATA_PATH, {})
+    claims_data = read_json(CLAIMS_PATH, {})
+    if not isinstance(metadata, dict) or not metadata or not isinstance(claims_data, dict) or not claims_data:
+        raise HTTPException(status_code=400, detail="Saved research metadata or claims are empty or invalid.")
+    job_id = str(uuid.uuid4())
+    job = {
+        "id": job_id,
+        "topic": "Resume saved research",
+        "status": "queued",
+        "stage": "queued",
+        "progress": 0,
+        "message": "Your saved investigation has been queued for resume.",
+        "created_at": now(),
+        "updated_at": now(),
+    }
+    with JOBS_LOCK:
+        JOBS[job_id] = job
+    background_tasks.add_task(run_resume_job, job_id)
     return job
 
 
