@@ -622,8 +622,12 @@ def add_named_node(
     node_type: str,
     name: str,
     description: str = "",
+    scope: str = "",
 ) -> str:
-    node_id = stable_id(node_type, name)
+    # Keep extracted entities local to their source paper. Generic subjects
+    # such as "virus" or "corona" must not collapse unrelated papers into
+    # one global hub. Named methods/concepts remain globally reusable.
+    node_id = stable_id(node_type, scope, name) if scope else stable_id(node_type, name)
 
     if node_id not in graph:
         graph.add_node(
@@ -632,6 +636,7 @@ def add_named_node(
             label=name,
             name=name,
             description=description or "",
+            source_paper_id=scope or "",
         )
 
     return node_id
@@ -722,7 +727,9 @@ def extract_methods_and_concepts(
     for field, edge_type in (("subject", "HAS_SUBJECT"), ("object", "ABOUT")):
         value = clean_text(claim_payload.get(field))
         if value and len(value) >= 3:
-            entity_id = add_named_node(graph, "entity", value)
+            entity_id = add_named_node(
+                graph, "entity", value, scope=paper_id
+            )
             add_edge(graph, claim_id, entity_id, edge_type)
 
 
