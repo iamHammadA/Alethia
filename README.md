@@ -1,465 +1,525 @@
-
 # Alethia
-### An AI-Powered Scientific Literature Analysis and Knowledge Graph System
+### AI-Powered Scientific Literature Intelligence & Knowledge Graph Platform
 
-**Alethia** is an independent AI research engineering project that explores how scientific literature can be transformed into structured, interconnected knowledge.
+<p align="center">
+  <strong>Transforming scientific literature into connected, traceable, and explorable knowledge.</strong>
+</p>
 
-It combines Natural Language Processing (NLP), Large Language Models (LLMs), information retrieval, evidence analysis, and knowledge graph construction to extract scientific claims from research papers, identify relevant evidence, evaluate claim-evidence relationships, and organize research information into an interconnected knowledge representation.
-
-The central idea behind Alethia is simple:
-
-**Scientific knowledge should not remain trapped inside individual research papers. It should be connected, traceable, and explorable.**
-
----
-
-## Table of Contents
-
-- [The Problem](#the-problem)
-- [What Alethia Does](#what-alethia-does)
-- [System Architecture](#system-architecture)
-- [Core Components](#core-components)
-- [Scientific Knowledge Graph](#scientific-knowledge-graph)
-- [Interactive Graph Visualization](#interactive-graph-visualization)
-- [Technology Stack](#technology-stack)
-- [Project Structure](#project-structure)
-- [Installation and Configuration](#installation-and-configuration)
-- [Project Status](#project-status)
-- [Limitations and Research Considerations](#limitations-and-research-considerations)
-- [Future Development](#future-development)
-- [Author](#author)
+<p align="center">
+  <img src="https://img.shields.io/badge/Project-AI%20Research-blue" />
+  <img src="https://img.shields.io/badge/Python-3.10%2B-yellow" />
+  <img src="https://img.shields.io/badge/Frontend-React%20%2B%20TypeScript-blue" />
+  <img src="https://img.shields.io/badge/Backend-FastAPI-green" />
+  <img src="https://img.shields.io/badge/Status-Research%20Prototype-orange" />
+  <img src="https://img.shields.io/badge/License-MIT-green" />
+</p>
 
 ---
 
-## The Problem
+## 1. Introduction
 
-Scientific research is distributed across an enormous and continuously expanding collection of publications.
+**Alethia** is an AI-powered scientific literature intelligence platform designed to transform unstructured research papers into structured, interconnected scientific knowledge.
 
-A finding in one paper may support, contradict, extend, or provide context for findings in another. However, identifying these relationships manually requires researchers to repeatedly search, read, compare, and interpret individual publications.
+Scientific knowledge is distributed across thousands of research publications. Understanding how different studies relate to one another requires researchers to manually read papers, identify findings, compare methodologies, evaluate evidence, and investigate potentially conflicting conclusions.
 
-Traditional document-based research workflows do not inherently provide a unified representation of:
+Alethia aims to automate and organize this process.
 
-- What scientific claims have been made?
-- What evidence supports or contradicts those claims?
-- Which research papers discuss similar findings?
-- What methodologies and algorithms are being used?
-- Which scientific concepts connect different publications?
-- Where might potentially conflicting findings exist?
+It combines:
 
-Alethia explores an automated approach to this problem by transforming research documents into structured scientific information and connecting that information through a knowledge graph.
+- Natural Language Processing (NLP)
+- Large Language Models (LLMs)
+- Scientific information retrieval
+- Automated claim extraction
+- Evidence retrieval and analysis
+- Cross-paper claim comparison
+- Knowledge graph construction
+- Interactive graph visualization
+- Research intelligence and insights
+
+Rather than treating research papers as isolated documents, Alethia connects their claims, evidence, methodologies, algorithms, models, datasets, and scientific concepts into a unified knowledge representation.
+
+### Our Vision
+
+> Scientific knowledge should not remain trapped inside individual research papers. It should be connected, traceable, and explorable.
 
 ---
 
-## What Alethia Does
+## 2. The Problem
 
-Alethia implements a multi-stage scientific literature analysis pipeline.
+Scientific research is growing exponentially.
+
+Every year, researchers publish thousands of papers containing new findings, methodologies, algorithms, hypotheses, and experimental results.
+
+However, scientific knowledge remains fragmented across individual publications.
+
+Researchers frequently encounter several problems:
+
+- Finding relevant research across multiple publications.
+- Identifying claims made by different researchers.
+- Determining which evidence supports a particular claim.
+- Discovering potentially contradictory findings.
+- Comparing methodologies across research papers.
+- Understanding relationships between scientific concepts.
+- Identifying repeated research patterns.
+- Tracking the development of scientific ideas.
+
+Traditional research workflows provide access to publications but do not inherently provide a connected representation of the knowledge contained within them.
+
+### Alethia's Approach
+
+Alethia transforms scientific publications into structured knowledge.
+
+It extracts claims, identifies potentially relevant evidence, analyzes relationships, and connects the resulting information through a scientific knowledge graph.
+
+This creates a foundation for more intelligent scientific literature exploration.
+
+---
+
+## 3. What Alethia Does
+
+Alethia implements a multi-stage scientific literature intelligence pipeline.
 
 | Component | Responsibility |
 |---|---|
 | Paper Retrieval | Retrieves scientific publications from arXiv |
-| PDF Processing | Extracts structured text from research papers |
+| PDF Processing | Extracts structured content from research papers |
 | Claim Extraction | Identifies potentially meaningful scientific claims |
-| Claim Normalization | Structures claims and extracts subject-predicate-object information |
-| AI Claim Analysis | Normalizes and classifies extracted scientific claims |
-| Evidence Retrieval | Finds relevant passages associated with scientific claims |
-| Evidence Analysis | Evaluates the relationship between claims and retrieved passages |
-| Claim-Evidence Linking | Associates analyzed evidence with corresponding claims |
-| Knowledge Graph Construction | Converts research information into interconnected graph entities |
-| Cross-Paper Comparison | Identifies potentially related claims across different publications |
-| Research Insights | Extracts structured observations from the constructed graph |
-| Visualization | Generates an interactive representation of the knowledge graph |
+| Claim Normalization | Structures claims into standardized representations |
+| SVO Extraction | Identifies subjects, verbs, and objects |
+| AI Claim Analysis | Classifies and analyzes scientific claims |
+| Evidence Retrieval | Finds potentially relevant passages |
+| Evidence Analysis | Evaluates claim-evidence relationships |
+| Evidence Linking | Connects analyzed evidence to scientific claims |
+| Knowledge Graph Construction | Builds interconnected scientific entities |
+| Cross-Paper Comparison | Identifies potentially related claims |
+| Research Insights | Generates structured observations |
+| Visualization | Provides interactive knowledge graph exploration |
+| Web Application | Provides a unified research workspace |
 
 ---
 
-## System Architecture
+## 4. System Architecture
 
-Alethia follows a modular processing architecture.
+Alethia follows a modular architecture consisting of a frontend, backend API, AI processing pipeline, and knowledge graph layer.
+
+### High-Level Architecture
 
 ```mermaid
 flowchart TD
-    A["arXiv API"] --> B["Research Paper Retrieval"]
-    B --> C["PDF Download"]
-    C --> D["PDF-to-Markdown Extraction"]
+    A[Researcher] --> B[React Web Application]
 
-    D --> E["Claim Extraction"]
-    E --> F["Claim Normalization"]
-    F --> G["SVO Structuring"]
-    G --> H["LLM Claim Analysis"]
+    B --> C[FastAPI Backend]
 
-    H --> I["Evidence Retrieval"]
-    I --> J["TF-IDF Similarity Ranking"]
-    J --> K["Candidate Evidence"]
+    C --> D[Research Pipeline]
 
-    K --> L["LLM Evidence Analysis"]
-    L --> M["Evidence Classification"]
-    M --> N["Claim-Evidence Linking"]
+    D --> E[arXiv API]
+    E --> F[Research Paper Retrieval]
 
-    N --> O["Knowledge Graph Builder"]
-    O --> P["Entity and Relationship Construction"]
-    P --> Q["Cross-Paper Claim Comparison"]
+    F --> G[PDF Processing]
 
-    Q --> R["Research Insights"]
-    Q --> S["JSON Export"]
-    Q --> T["GraphML Export"]
-    Q --> U["Interactive HTML Visualization"]
+    G --> H[Claim Extraction]
+
+    H --> I[Claim Normalization]
+
+    I --> J[AI Claim Analysis]
+
+    J --> K[Evidence Retrieval]
+
+    K --> L[AI Evidence Analysis]
+
+    L --> M[Claim Evidence Linking]
+
+    M --> N[Knowledge Graph Builder]
+
+    N --> O[Cross Paper Comparison]
+
+    O --> P[Research Insights]
+
+    N --> Q[JSON Export]
+    N --> R[GraphML Export]
+    N --> S[Interactive Graph]
+
+    Q --> C
+    R --> C
+    S --> B
+
+    C --> B
 ```
 
-The architecture separates linguistic processing, AI-assisted interpretation, evidence retrieval, and graph construction into distinct stages.
+### Architectural Layers
 
-This separation allows individual components to be developed and improved without treating the entire system as one monolithic model.
+**1. Presentation Layer**
+
+The React and TypeScript frontend provides the research workspace, investigation interface, graph exploration, paper library, and research insights.
+
+**2. API Layer**
+
+FastAPI manages communication between the frontend and backend processing components.
+
+**3. Processing Layer**
+
+Python-based modules perform paper retrieval, PDF extraction, claim identification, evidence retrieval, and AI-assisted analysis.
+
+**4. Intelligence Layer**
+
+LLMs analyze scientific claims and evaluate the semantic relationships between claims and evidence.
+
+**5. Knowledge Layer**
+
+NetworkX constructs a provenance-preserving scientific knowledge graph.
+
+**6. Visualization Layer**
+
+Interactive visualizations allow researchers to explore entities and their relationships.
 
 ---
 
-## Core Components
+## 5. Core Components
 
-### 1. Scientific Paper Retrieval and PDF Processing
+### 5.1 Scientific Paper Retrieval
 
-**Files:**
-- `backend/app/search/arxiv/download.py`
-- `backend/app/extraction/extractor.py`
+**File:** `backend/app/search/arxiv/download.py`
 
-Alethia retrieves research publications through the arXiv API.
+Alethia retrieves scientific publications through the arXiv API.
 
-The retrieval module:
+The retrieval process:
 
-1. Accepts a research topic from the user.
+1. Accepts a research topic.
 2. Constructs an arXiv search query.
-3. Retrieves publication metadata and PDF links.
-4. Downloads the corresponding research papers.
-5. Processes the downloaded PDFs.
+3. Retrieves relevant publication metadata.
+4. Identifies available PDF links.
+5. Downloads research publications.
+6. Stores paper metadata for subsequent processing.
 
-For document processing, Alethia uses PyMuPDF4LLM to convert scientific PDFs into Markdown-like text representations.
+The system uses arXiv as its initial scientific publication source.
 
-The extraction module organizes document content around detected section headings, preserving a structured representation of the research paper for subsequent analysis.
+### 5.2 PDF Processing
 
-### 2. Scientific Claim Extraction
+**File:** `backend/app/extraction/extractor.py`
+
+Research papers are processed using PyMuPDF4LLM.
+
+The extraction component:
+
+- Converts PDF documents into Markdown-like text.
+- Extracts document content.
+- Identifies section headings.
+- Preserves document structure where possible.
+- Prepares extracted content for downstream NLP processing.
+
+### 5.3 Scientific Claim Extraction
 
 **File:** `backend/app/extraction/claim_extractor.py`
 
-The claim extraction component identifies statements that potentially express scientific findings, conclusions, propositions, hypotheses, and other research-related assertions.
+The claim extraction component identifies potentially meaningful scientific statements.
 
-It processes extracted document text and applies linguistic and pattern-based analysis to identify candidate claims.
+These include:
 
-The objective is to distinguish potentially meaningful scientific statements from the surrounding document content.
+- Research findings.
+- Experimental results.
+- Scientific conclusions.
+- Hypotheses.
+- Methodological claims.
+- Comparative statements.
+- Theoretical propositions.
 
-### 3. Claim Normalization and SVO Structuring
+The objective is to separate meaningful scientific assertions from surrounding document content.
+
+### 5.4 Claim Normalization and SVO Extraction
 
 **File:** `backend/app/extraction/claim_normalizer.py`
 
-Extracted claims may contain inconsistent wording, complex sentence structures, and unnecessary linguistic variations.
+Scientific claims often express similar ideas using different terminology and sentence structures.
 
-Alethia processes these statements using spaCy and the `en_core_web_lg` language model.
+Alethia uses spaCy and the `en_core_web_lg` language model to process and normalize extracted claims.
 
-One of the important techniques implemented in this component is Subject-Verb-Object (SVO) extraction.
+An important component is Subject-Verb-Object (SVO) extraction.
 
-For a candidate scientific statement, the system identifies:
+For example:
 
-- **Subject:** The entity performing or associated with an action.
-- **Verb:** The central action or relationship.
-- **Object:** The entity or concept affected by the relationship.
+```text
+Original Claim:
 
-The component also includes a verb-strength calculation based on linguistic patterns.
+The proposed model improves classification accuracy
+on medical imaging datasets.
 
-This structured representation provides additional information for downstream claim analysis and graph construction.
+Subject:
+The proposed model
 
-### 4. AI-Assisted Claim Analysis
+Relation:
+Improves
+
+Object:
+Classification accuracy
+```
+
+The normalized representation helps downstream components identify relationships between scientific statements.
+
+The component also implements verb-strength calculations based on linguistic patterns.
+
+### 5.5 AI-Assisted Claim Analysis
 
 **File:** `backend/app/extraction/ai_claim_analyzer.py`
 
-Alethia uses an LLM through OpenRouter to analyze and normalize extracted scientific claims.
+Alethia uses Large Language Models through OpenRouter to analyze extracted scientific claims.
 
-The model is instructed to return structured JSON containing:
+The AI analysis component produces structured information, including:
 
-- Normalized scientific claim
-- Subject
-- Relation
-- Object
-- Claim type
-- Evidence requirement
-- Confidence score
+- Normalized scientific claim.
+- Subject.
+- Relation.
+- Object.
+- Claim type.
+- Evidence requirement.
+- Confidence score.
 
-The claim classifier recognizes categories such as:
+Supported claim categories include:
 
-- Method
-- Result
-- Comparison
-- Finding
-- Hypothesis
-- Theoretical
-- Dataset
-- Limitation
-- Conclusion
-- Other
+| Category | Description |
+|---|---|
+| Method | Describes a research methodology |
+| Result | Reports an experimental result |
+| Comparison | Compares different approaches |
+| Finding | Reports a scientific finding |
+| Hypothesis | Presents a scientific hypothesis |
+| Theoretical | Describes theoretical propositions |
+| Dataset | Discusses datasets |
+| Limitation | Identifies research limitations |
+| Conclusion | Presents research conclusions |
+| Other | Other scientific statements |
 
-The resulting structured information is used by subsequent stages of the analysis pipeline.
+The resulting structured representation is used by subsequent pipeline stages.
 
-### 5. Evidence Retrieval
+### 5.6 Evidence Retrieval
 
 **File:** `backend/app/extraction/evidence_retriever.py`
 
-After extracting and analyzing scientific claims, Alethia searches for potentially relevant evidence within the research papers.
+After identifying scientific claims, Alethia searches for potentially relevant evidence within the extracted research documents.
 
 The retrieval component uses:
 
-- NLTK sentence tokenization
-- TF-IDF vectorization
-- Cosine similarity
+- NLTK sentence tokenization.
+- TF-IDF vectorization.
+- Cosine similarity.
 
-The process works by:
+The process:
 
-1. Splitting extracted research text into individual sentences.
-2. Representing the claim and candidate sentences using TF-IDF.
-3. Calculating cosine similarity between the claim and candidate sentences.
-4. Filtering exact and near-identical matches.
-5. Ranking the remaining candidates by similarity.
-6. Returning the highest-ranked evidence candidates.
+1. Splits research documents into sentences.
+2. Converts claims and candidate sentences into TF-IDF representations.
+3. Calculates cosine similarity.
+4. Filters exact and near-identical matches.
+5. Ranks candidate passages.
+6. Returns the highest-ranked evidence candidates.
 
-The retrieval component currently supports configurable top-k candidate selection.
+The system supports configurable top-k evidence selection.
 
-Importantly, similarity is used to identify potentially relevant passages, not to establish that a passage actually supports a scientific claim.
+**Important:** Similarity identifies potentially relevant passages. It does not establish whether a passage actually supports a scientific claim.
 
-### 6. AI-Assisted Evidence Analysis
+### 5.7 AI-Assisted Evidence Analysis
 
 **File:** `backend/app/extraction/ai_evidence_analyzer.py`
 
-This component evaluates retrieved passages against their corresponding scientific claims.
-
-Unlike similarity-based retrieval, evidence analysis focuses on the semantic relationship between a claim and each candidate passage.
+This component evaluates retrieved evidence against its corresponding scientific claim.
 
 Alethia uses Ollama for local LLM inference, with `llama3.2` as the default configured model.
 
 Each candidate passage is evaluated independently.
 
-The classifier recognizes four possible relationships:
+The system classifies evidence relationships into four categories:
 
 | Relationship | Meaning |
 |---|---|
-| `supports` | The passage provides information supporting the claim |
-| `contradicts` | The passage provides information conflicting with the claim |
-| `insufficient` | The passage is related but does not provide enough information |
-| `irrelevant` | The passage does not provide useful evidence for evaluating the claim |
+| `supports` | Passage provides information supporting the claim |
+| `contradicts` | Passage provides information conflicting with the claim |
+| `insufficient` | Passage does not provide enough information |
+| `irrelevant` | Passage is not useful for evaluating the claim |
 
 Each analyzed passage receives:
 
-- Original evidence sentence
-- Similarity score
-- Relationship classification
-- Evidence strength
-- Explanation of the classification
+- Original evidence sentence.
+- Similarity score.
+- Relationship classification.
+- Evidence strength.
+- Explanation of the classification.
 
 Evidence strength is represented on a scale from 0.0 to 1.0.
 
-The module also determines:
+The component also determines:
 
-- Best evidence
-- Overall claim-evidence relationship
-- Overall evidence strength
+- Best evidence.
+- Overall claim-evidence relationship.
+- Overall evidence strength.
 
-The analysis is returned in structured JSON and validated before being saved.
+Analysis results are returned as structured JSON and validated before storage.
 
-**An important distinction:** Evidence strength represents the strength of the relationship between a passage and a claim. It does not establish that the scientific claim itself is objectively true.
+**Scientific consideration:** Evidence strength describes the strength of the relationship between a passage and a claim. It does not establish that the scientific claim is objectively true.
 
-### 7. Claim-Evidence Linking
+### 5.8 Claim-Evidence Linking
 
 **File:** `backend/app/extraction/claim_evidence_linker.py`
 
-The linking component processes analyzed evidence and applies filtering criteria before producing the final evidence collection.
+The linking component filters analyzed evidence before connecting it to scientific claims.
 
-The current implementation retains passages satisfying the following conditions:
+The current implementation retains passages satisfying these conditions:
 
-- Similarity score of at least 0.1.
+- Similarity score of at least `0.1`.
 - Relationship classified as `supports`.
-- Evidence strength of at least 0.3.
+- Evidence strength of at least `0.3`.
 
-The selected evidence is stored with its original sentence, similarity, relationship, strength, and reasoning.
+The final evidence representation preserves:
 
-This produces a filtered evidence representation for downstream processing.
+- Original evidence.
+- Similarity.
+- Relationship.
+- Evidence strength.
+- AI reasoning.
 
-### 8. Knowledge Graph Construction
+### 5.9 Knowledge Graph Construction
 
 **File:** `backend/app/extraction/knowledge_graph_builder.py`
 
 The knowledge graph builder is one of Alethia's central components.
 
-It transforms structured research information into a provenance-preserving directed multigraph using NetworkX.
+It transforms extracted scientific information into a provenance-preserving directed multigraph using NetworkX.
 
-Rather than representing a paper as a single isolated document, the builder creates individual graph entities and connects them through typed relationships.
+Instead of representing each paper as an isolated document, Alethia creates interconnected graph entities.
 
-The implementation includes:
+#### Graph Node Construction
 
-**Input processing**
-- Loads matched and analyzed evidence data.
-- Supports the flattened final evidence representation.
-- Optionally incorporates research paper metadata.
-- Normalizes different JSON input structures.
+The current implementation supports:
 
-**Node construction**
-- Creates paper nodes.
-- Creates scientific claim nodes.
-- Creates evidence nodes.
-- Identifies methodologies and algorithms.
-- Recognizes scientific concepts.
-- Creates model and dataset entities.
-- Preserves extracted subjects and objects.
-- Represents extracted hypotheses.
+- Research papers.
+- Scientific claims.
+- Evidence passages.
+- Research methodologies.
+- Algorithms.
+- Machine learning models.
+- Datasets.
+- Scientific concepts.
+- Extracted subjects and objects.
+- Hypotheses.
 
-**Relationship construction**
+#### Graph Relationships
 
-The graph uses typed, directed relationships to represent connections between its entities.
+The graph uses typed, directed relationships.
 
 Examples include:
 
-- `CONTAINS`
-- `SUPPORTS`
-- `CONTRADICTS`
-- `INSUFFICIENT`
-- `IRRELEVANT`
-- `ABOUT`
-- `DISCUSSES`
-- `USES_METHOD`
-- `USES_ALGORITHM`
-- `EVALUATES_ON`
-- `INTRODUCES`
-- `EXPRESSES_HYPOTHESIS`
-- `SIMILAR_TO`
+| Relationship | Purpose |
+|---|---|
+| `CONTAINS` | Connects a paper to its claims |
+| `SUPPORTS` | Represents supporting evidence |
+| `CONTRADICTS` | Represents contradictory evidence |
+| `INSUFFICIENT` | Represents insufficient evidence |
+| `IRRELEVANT` | Represents irrelevant evidence |
+| `ABOUT` | Connects claims to concepts |
+| `DISCUSSES` | Represents discussion relationships |
+| `USES_METHOD` | Connects research to methodologies |
+| `USES_ALGORITHM` | Connects research to algorithms |
+| `EVALUATES_ON` | Connects research to datasets |
+| `INTRODUCES` | Represents introduced contributions |
+| `EXPRESSES_HYPOTHESIS` | Connects claims to hypotheses |
+| `SIMILAR_TO` | Connects potentially related claims |
 
-The graph builder also preserves evidence attributes such as similarity, strength, reasoning, source paper, and page information when available.
-
-**Deterministic identification and deduplication**
+#### Deterministic Entity Identification
 
 Alethia generates stable entity identifiers using SHA-256-based hashing.
 
-This allows graph entities to retain consistent identifiers across repeated builds when their underlying identity remains unchanged.
+This helps maintain consistent entity identification across repeated graph builds when underlying entity identities remain unchanged.
 
-Evidence is deduplicated within its source paper rather than globally, preserving the provenance of identical passages appearing in different publications.
+#### Evidence Provenance
 
-### 9. Cross-Paper Claim Comparison
+Evidence is deduplicated within its source paper rather than globally.
+
+This preserves the provenance of identical passages appearing in different publications.
+
+### 5.10 Cross-Paper Claim Comparison
 
 The knowledge graph builder also implements cross-paper claim comparison.
 
-This component explores relationships between scientific claims originating from different research papers.
+The objective is to identify potentially related scientific claims originating from different publications.
 
-The process uses TF-IDF and cosine similarity to identify potentially related claims.
+The process uses:
 
-Claims from the same source paper are excluded from this cross-paper comparison.
+- TF-IDF.
+- Cosine similarity.
+- Optional LLM-based comparison through Ollama.
 
-Similarity identifies candidate relationships; it does not establish scientific agreement or contradiction.
+Claims from the same source paper are excluded from cross-paper comparison.
 
-An optional LLM-based comparison stage can further classify selected claim pairs using Ollama.
+Potential relationships include:
 
-Its possible classifications include:
+- Supporting relationships.
+- Contradicting relationships.
+- Extensions.
+- Similar findings.
+- Shared research problems.
+- Similar methodologies.
+- Uncertain relationships.
 
-- Supporting relationships
-- Contradicting relationships
-- Extensions
-- Similar findings
-- Shared research problems
-- Similar methodologies
-- Uncertain relationships
+The optional LLM comparison considers contextual differences such as:
 
-The optional comparison stage considers contextual differences, including methods, datasets, populations, metrics, and experimental conditions.
+- Research methodologies.
+- Datasets.
+- Experimental populations.
+- Evaluation metrics.
+- Experimental conditions.
 
-Potential support and contradiction relationships are explicitly marked as AI-suggested and unverified.
+Potential support and contradiction relationships generated by AI are marked as suggested and unverified.
 
-The cross-paper LLM stage is disabled by default and can be enabled through environment configuration.
+The cross-paper LLM stage is disabled by default.
 
 ---
 
-## Scientific Knowledge Graph
+## 6. Scientific Knowledge Graph
 
-The knowledge graph is designed to represent scientific information as interconnected entities rather than isolated text records.
+The scientific knowledge graph represents research information as interconnected entities.
 
-### Graph Entity Types
-
-The current graph builder supports the following entity categories:
+### Entity Types
 
 | Entity | Description |
 |---|---|
-| Paper | A scientific publication |
-| Claim | An extracted and normalized scientific statement |
-| Evidence | A passage retrieved from a research paper |
-| Method | A research methodology or technique |
-| Algorithm | An algorithm identified in research information |
-| Model | A machine learning model |
-| Dataset | A dataset or benchmark |
-| Concept | A recognized scientific concept |
-| Entity | An extracted subject or object |
-| Hypothesis | A hypothesis identified in a scientific claim |
+| Paper | Scientific publication |
+| Claim | Extracted scientific statement |
+| Evidence | Research passage |
+| Method | Research methodology |
+| Algorithm | Identified algorithm |
+| Model | Machine learning model |
+| Dataset | Dataset or benchmark |
+| Concept | Scientific concept |
+| Entity | Extracted subject or object |
+| Hypothesis | Scientific hypothesis |
 
-### Relationship Model
-
-The relationships between entities preserve the structure and context of the research information.
-
-For example:
+### Example Knowledge Graph
 
 ```mermaid
 flowchart TD
-    P["Research Paper"] -->|CONTAINS| C["Scientific Claim"]
-    E["Evidence Passage"] -->|SUPPORTS| C
-    E2["Evidence Passage"] -->|CONTRADICTS| C
-    C -->|USES_METHOD| M["Method"]
-    C -->|ABOUT| X["Scientific Concept"]
-    P -->|EVALUATES_ON| D["Dataset"]
-    P2["Another Research Paper"] -->|CONTAINS| C2["Related Claim"]
-    C <-->|SIMILAR_TO| C2
+    P1[Research Paper 1] -->|CONTAINS| C1[Scientific Claim]
+
+    E1[Evidence Passage 1] -->|SUPPORTS| C1
+    E2[Evidence Passage 2] -->|CONTRADICTS| C1
+
+    C1 -->|USES_METHOD| M1[Research Method]
+    C1 -->|ABOUT| X1[Scientific Concept]
+
+    P1 -->|EVALUATES_ON| D1[Dataset]
+
+    P2[Research Paper 2] -->|CONTAINS| C2[Related Claim]
+
+    C1 <-->|SIMILAR_TO| C2
 ```
 
 The graph is constructed as a directed multigraph, allowing multiple typed relationships between the same entities.
 
-### Cross-Paper Knowledge
-
-An important objective of the graph is to make connections between publications easier to explore.
-
-For example, two papers may:
-
-- Investigate similar scientific problems.
-- Use related methodologies.
-- Discuss overlapping concepts.
-- Present potentially similar findings.
-- Contain claims that may warrant further comparison.
-
-The graph provides a structured representation of these relationships while retaining their source information.
-
----
-
-## Interactive Graph Visualization
-
-Alethia generates an interactive HTML visualization of its knowledge graph.
-
-**Generated artifact:**
-
-`arXiv papers/knowledge_graph/alethia_knowledge_graph.html`
-
-The viewer is built around vis-network and provides an interactive interface for exploring the graph.
-
-Its functionality includes:
-
-- Interactive graph navigation.
-- Search across graph entities.
-- Entity-type filters.
-- Node selection.
-- Detailed entity information.
-- Evidence and claim inspection.
-- Relationship exploration.
-- Navigation between connected entities.
-- Zoom controls.
-- Graph fitting and physics controls.
-- Connection highlighting.
-
-Selecting a node opens a details panel containing its available attributes and connected entities.
-
-The visualization also provides access to source-paper relationships, allowing users to navigate between scientific claims and their research context.
-
-The HTML viewer loads vis-network and web fonts from external CDNs, so an internet connection is required for those resources.
-
 ### Graph Export Formats
 
-Alethia produces three principal graph representations:
+Alethia generates three principal graph representations:
 
 | Format | Purpose |
 |---|---|
-| HTML | Interactive graph exploration |
 | JSON | Structured graph nodes, edges, and attributes |
 | GraphML | Graph interoperability and further analysis |
+| HTML | Interactive graph exploration |
 
 Additional outputs include:
 
@@ -468,76 +528,186 @@ Additional outputs include:
 
 ---
 
-## Research Insights
+## 7. Interactive Graph Visualization
 
-The knowledge graph builder generates structured observations from the constructed graph.
+Alethia generates an interactive HTML representation of its scientific knowledge graph.
+
+**Generated artifact:**
+
+`arXiv papers/knowledge_graph/alethia_knowledge_graph.html`
+
+The graph viewer uses vis-network.
+
+Its capabilities include:
+
+- Interactive graph navigation.
+- Search across graph entities.
+- Entity-type filtering.
+- Node selection.
+- Detailed entity information.
+- Claim inspection.
+- Evidence inspection.
+- Relationship exploration.
+- Connected-entity navigation.
+- Zoom controls.
+- Graph fitting.
+- Physics controls.
+- Connection highlighting.
+
+Selecting a graph node displays its available attributes and connected entities.
+
+The visualization also preserves access to source-paper relationships.
+
+The HTML viewer loads vis-network and web fonts from external CDNs, so internet access is required for those resources.
+
+---
+
+## 8. Research Insights
+
+Alethia generates structured observations from the constructed knowledge graph.
 
 Current insight categories include:
 
-**Repeated Methods**
+### Repeated Methods
 
-Identifies methodologies appearing across multiple research papers.
+Identifies methodologies appearing across multiple research publications.
 
-**Similar Cross-Paper Claims**
+### Similar Cross-Paper Claims
 
 Records claims identified as potentially related through cross-paper similarity analysis.
 
-**Potential Contradictions**
+### Potential Contradictions
 
-Records AI-suggested potential contradictions between claims, preserving their explanations and confidence information.
+Records AI-suggested potential contradictions between claims, including available explanations and confidence information.
 
-The implementation deliberately avoids presenting unverified AI-generated comparisons as established scientific conclusions.
+These observations are intended to assist further investigation rather than establish scientific conclusions.
 
-Research gaps, AI-generated hypotheses, and suggested experiments are reserved for future evidence-grounded development.
+Research-gap identification, evidence-grounded hypothesis generation, and suggested experiment generation are future development directions.
 
 ---
 
-## Technology Stack
+## 9. Web Application
 
-| Category | Technologies |
+Alethia includes a React and TypeScript web interface backed by a FastAPI backend.
+
+The web application provides a unified research workspace.
+
+### Frontend Capabilities
+
+- Research overview dashboard.
+- Pipeline status monitoring.
+- New research investigations.
+- Interactive scientific knowledge graph.
+- Research paper library.
+- Claim and evidence inspection.
+- Graph and research data exports.
+
+### Backend Capabilities
+
+The FastAPI service provides endpoints for:
+
+- System health.
+- Dashboard statistics.
+- Knowledge graph data.
+- Research papers.
+- Scientific claims.
+- Research job creation.
+- Background job monitoring.
+- Resuming saved research.
+- Export availability and downloads.
+
+### Application Architecture
+
+```mermaid
+flowchart LR
+    A[React Frontend] <-->|HTTP API| B[FastAPI Backend]
+
+    B --> C[Research Pipeline]
+    B --> D[Graph Data]
+    B --> E[Paper Metadata]
+    B --> F[Research Claims]
+
+    C --> G[arXiv]
+    C --> H[OpenRouter]
+    C --> I[Ollama]
+
+    D --> J[JSON]
+    D --> K[GraphML]
+    D --> L[HTML Visualization]
+```
+
+---
+
+## 10. Technology Stack
+
+| Category | Technology |
 |---|---|
 | Programming Language | Python |
+| Frontend Framework | React |
+| Frontend Language | TypeScript |
+| Frontend Build Tool | Vite |
+| Backend Framework | FastAPI |
+| API Server | Uvicorn |
 | Scientific Paper Retrieval | arXiv API |
 | PDF Processing | PyMuPDF4LLM |
-| Natural Language Processing | spaCy, NLTK |
-| Linguistic Analysis | SVO Extraction, Dependency Parsing |
-| Claim Analysis | OpenRouter, LLMs |
-| Evidence Analysis | Ollama, Llama 3.2 |
+| Natural Language Processing | spaCy |
+| Sentence Processing | NLTK |
+| Claim Analysis | OpenRouter |
+| Evidence Analysis | Ollama |
+| Default Local LLM | Llama 3.2 |
 | Information Retrieval | TF-IDF |
 | Similarity Measurement | Cosine Similarity |
-| Graph Construction | NetworkX |
-| Graph Interoperability | GraphML |
+| Knowledge Graph | NetworkX |
+| Graph Export | GraphML |
 | Data Representation | JSON |
-| Interactive Visualization | HTML, CSS, JavaScript, vis-network |
+| Graph Visualization | vis-network |
+| Frontend Graph Library | react-force-graph-2d |
 
 ---
 
-## Project Structure
+## 11. Project Structure
 
 ```text
 Alethia/
 │
 ├── backend/
-│   └── app/
-│       ├── extraction/
-│       │   ├── ai_claim_analyzer.py
-│       │   ├── ai_evidence_analyzer.py
-│       │   ├── claim_evidence_linker.py
-│       │   ├── claim_extractor.py
-│       │   ├── claim_normalizer.py
-│       │   ├── evidence_retriever.py
-│       │   ├── extractor.py
-│       │   └── knowledge_graph_builder.py
-│       │
-│       └── search/
-│           └── arxiv/
-│               └── download.py
+│   ├── app/
+│   │   ├── extraction/
+│   │   │   ├── ai_claim_analyzer.py
+│   │   │   ├── ai_evidence_analyzer.py
+│   │   │   ├── claim_evidence_linker.py
+│   │   │   ├── claim_extractor.py
+│   │   │   ├── claim_normalizer.py
+│   │   │   ├── evidence_retriever.py
+│   │   │   ├── extractor.py
+│   │   │   └── knowledge_graph_builder.py
+│   │   │
+│   │   ├── search/
+│   │   │   └── arxiv/
+│   │   │       └── download.py
+│   │   │
+│   │   ├── services/
+│   │   │   └── pipeline.py
+│   │   │
+│   │   └── main.py
+│   │
+│   └── README.md
+│
+├── frontend/
+│   ├── src/
+│   ├── public/
+│   ├── package.json
+│   ├── package-lock.json
+│   ├── index.html
+│   ├── tsconfig.json
+│   └── vite.config.ts
 │
 ├── arXiv papers/
 │   ├── arxiv_papers_full.json
+│   ├── paper_metadata.json
+│   ├── ai_claims.json
+│   ├── analyzed_evidences.json
 │   ├── final_evidences.json
-│   ├── paper0.pdf
-│   ├── paper1.pdf
 │   │
 │   └── knowledge_graph/
 │       ├── alethia_knowledge_graph.graphml
@@ -550,36 +720,50 @@ Alethia/
 ├── datasets/
 ├── docs/
 ├── experiments/
-├── frontend/
 ├── notebooks/
 ├── research/
 │
+├── requirements.txt
 ├── .gitignore
+├── .gitattributes
 ├── LICENSE
-├── README.md
-└── temp.py
+└── README.md
 ```
+
+*Note: This is a logical overview of the repository. Generated research artifacts and optional directories may vary depending on the current branch and investigation.*
 
 ---
 
-## Installation and Configuration
+# 12. Installation and Setup
 
-### Prerequisites
+This section explains how to set up Alethia locally.
 
-- Python 3.10 or later.
-- Git.
-- An OpenRouter API key for AI-assisted claim analysis.
-- Ollama installed locally for evidence analysis.
-- Sufficient memory and computational resources for local LLM inference.
+## 12.1 Prerequisites
 
-### 1. Clone the Repository
+Install the following software before proceeding.
+
+| Requirement | Purpose |
+|---|---|
+| Python 3.10+ | Backend and AI processing |
+| Node.js and npm | Frontend development |
+| Git | Repository management |
+| Ollama | Local LLM inference |
+| OpenRouter API Key | AI-assisted claim analysis |
+| Internet Connection | arXiv retrieval and external services |
+
+Recommended: Use a machine with sufficient RAM and computational resources for local LLM inference.
+
+## 12.2 Clone the Repository
 
 ```bash
 git clone https://github.com/iamHammadA/Alethia.git
+
 cd Alethia
 ```
 
-### 2. Create a Virtual Environment
+## 12.3 Set Up the Python Environment
+
+Create a virtual environment:
 
 ```bash
 python -m venv venv
@@ -591,16 +775,20 @@ Activate it on Windows:
 venv\Scripts\activate
 ```
 
-Activate it on Linux:
+Activate it on Linux/macOS:
 
 ```bash
 source venv/bin/activate
 ```
 
-### 3. Install Dependencies
+## 12.4 Install Backend Dependencies
+
+From the repository root:
 
 ```bash
-pip install requests beautifulsoup4 pymupdf4llm nltk spacy scikit-learn networkx ollama python-dotenv google-genai
+pip install --upgrade pip
+
+pip install -r requirements.txt
 ```
 
 Install the spaCy language model:
@@ -609,178 +797,550 @@ Install the spaCy language model:
 python -m spacy download en_core_web_lg
 ```
 
-### 4. Configure OpenRouter
+Download NLTK resources if they are not already available in your environment:
 
-Create a `.env` file in the project root or configure the appropriate environment variables.
+```bash
+python -c "import nltk; nltk.download('punkt'); nltk.download('punkt_tab')"
+```
+
+## 12.5 Configure OpenRouter
+
+Create a `.env` file in the repository root.
 
 ```env
 OPENROUTER_API_KEY=your_openrouter_api_key
 ```
 
-Never commit API keys or other credentials to version control.
+Replace the placeholder with your actual API key.
 
-### 5. Configure Ollama
+Never commit API keys or other credentials to GitHub.
 
-Install Ollama and download the default evidence-analysis model:
+## 12.6 Install Ollama
+
+Download and install Ollama:
+
+https://ollama.com/
+
+Pull the default evidence-analysis model:
 
 ```bash
 ollama pull llama3.2
 ```
 
-Ensure the Ollama service is running before executing local inference stages.
+Make sure Ollama is running locally before starting research investigations.
 
-### 6. Configure Optional Cross-Paper LLM Analysis
+The default local Ollama service is expected at:
 
-The knowledge graph builder supports optional LLM-based cross-paper claim comparison.
+```text
+http://127.0.0.1:11434
+```
 
-Set the following environment variables to enable it:
+## 12.7 Configure Optional Cross-Paper Analysis
+
+Cross-paper LLM comparison is disabled by default.
+
+To enable it, configure:
 
 ```env
 ALETHIA_CROSS_PAPER_LLM=1
 OLLAMA_CROSS_PAPER_MODEL=llama3.2
 ```
 
-The optional cross-paper comparison can also be configured using:
+Additional configuration:
 
 ```env
 ALETHIA_CLAIM_SIMILARITY_THRESHOLD=0.35
+
 ALETHIA_MAX_LLM_PAIRS=40
+
 ALETHIA_MAX_HTML_NODES=2500
 ```
 
-These settings control candidate similarity, the maximum number of LLM comparisons, and the HTML visualization node limit.
+These settings control:
 
-**Note:** Alethia's processing modules currently operate as separate pipeline components. A unified command-line orchestration and installation workflow is still a development area.
+- Candidate claim similarity threshold.
+- Maximum number of LLM comparison pairs.
+- Maximum number of nodes in the HTML visualization.
 
 ---
 
-## Web Application
+# 13. Running the Application
 
-Alethia now includes a React + TypeScript web interface backed by a FastAPI service.
+Alethia requires two running services:
 
-### Start the API
+1. FastAPI backend.
+2. React frontend.
 
-From the repository root:
+Both services should be started in separate terminals.
+
+## 13.1 Start the Backend
+
+Open a terminal in the repository root.
+
+Activate the Python virtual environment.
+
+Run:
 
 ```bash
-pip install -r requirements.txt
-python -m spacy download en_core_web_lg
-ollama pull llama3.2
-# Set OPENROUTER_API_KEY in your environment
 uvicorn backend.app.main:app --reload
 ```
 
-### Start the frontend
+The backend will start at:
 
-In a second terminal:
+```text
+http://127.0.0.1:8000
+```
+
+API documentation:
+
+```text
+http://127.0.0.1:8000/docs
+```
+
+Health endpoint:
+
+```text
+http://127.0.0.1:8000/api/health
+```
+
+## 13.2 Start the Frontend
+
+Open another terminal.
+
+Navigate to the frontend directory:
 
 ```bash
 cd frontend
+```
+
+Install dependencies:
+
+```bash
 npm install
+```
+
+Start the development server:
+
+```bash
 npm run dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173). The frontend proxies `/api` requests to the local FastAPI service.
+The frontend will be available at:
 
-The web app provides:
-- Research overview and pipeline status
-- New arXiv research investigations
-- Interactive scientific knowledge graph
-- Research paper library
-- Claim and evidence inspection
-- Graph, GraphML, HTML, insight, and build-report exports
+```text
+http://localhost:5173
+```
 
-The first research run requires a working OpenRouter API key and a running Ollama service with the configured evidence model. Research jobs run one at a time. See [backend/README.md](backend/README.md) for API details.
+Open this address in your browser to access the Alethia research workspace.
 
----
-## Project Status
+## 13.3 Production Frontend Build
 
-**Current Release: Version 1 — Core Literature Analysis and Knowledge Graph Pipeline**
+To generate a production frontend build:
 
-Version 1 establishes the foundational components of Alethia.
+```bash
+cd frontend
 
-Implemented capabilities include:
+npm run build
+```
 
-- arXiv research paper retrieval.
-- Scientific PDF processing.
-- NLP-based claim extraction.
-- SVO-based claim structuring.
-- AI-assisted claim normalization.
-- TF-IDF-based evidence retrieval.
-- LLM-based evidence classification.
-- Evidence strength and relationship scoring.
-- Claim-evidence linking.
-- Provenance-preserving knowledge graph construction.
-- Scientific entity and relationship representation.
-- Cross-paper claim similarity analysis.
-- Optional LLM-based cross-paper comparison.
-- Research insight generation.
-- JSON and GraphML graph exports.
-- Interactive HTML graph visualization.
+To preview the production build:
 
-The project is currently a research engineering prototype. Its architecture and core processing components have been implemented, but systematic evaluation and broader validation remain necessary.
+```bash
+npm run preview
+```
 
 ---
 
-## Limitations and Research Considerations
+# 14. API Documentation
 
-Alethia is intended to assist scientific literature exploration, not replace expert scientific judgment.
+Alethia exposes its backend functionality through REST API endpoints.
 
-Some important considerations include:
+Base URL:
 
-1. **LLM Reliability:** AI-generated claim and evidence classifications may contain errors and require independent validation.
+```text
+http://127.0.0.1:8000
+```
 
-2. **Similarity vs. Evidence:** Textual similarity identifies potentially relevant passages but does not establish scientific support.
+### System Health
 
-3. **Evidence Coverage:** Retrieved evidence depends on the available paper text, claim representation, and retrieval settings.
+```http
+GET /api/health
+```
 
-4. **Cross-Paper Comparisons:** Similarity-based relationships are candidate connections, not proof of scientific agreement.
+Returns:
 
-5. **Potential Contradictions:** LLM-suggested contradictions are explicitly marked as unverified and should not be treated as established scientific conflicts.
+- API status.
+- Graph availability.
+- Ollama availability.
+- Ollama model availability.
+- OpenRouter configuration status.
+- Pipeline execution status.
 
-6. **Scale:** The current implementation requires further optimization and evaluation for larger research collections.
+### Dashboard
 
-7. **Research Discovery:** Automated research-gap identification and evidence-grounded experiment generation are not yet implemented.
+```http
+GET /api/dashboard
+```
+
+Returns dashboard information, including:
+
+- Research statistics.
+- Paper counts.
+- Claim counts.
+- Evidence counts.
+- Graph relationships.
+- Research insights.
+- Build report.
+
+### Knowledge Graph
+
+```http
+GET /api/graph
+```
+
+Optional query parameters:
+
+```text
+node_type
+limit
+```
+
+Example:
+
+```http
+GET /api/graph?limit=500
+```
+
+### Research Papers
+
+```http
+GET /api/papers
+```
+
+Optional query parameter:
+
+```text
+search
+```
+
+Example:
+
+```http
+GET /api/papers?search=machine%20learning
+```
+
+### Scientific Claims
+
+```http
+GET /api/claims
+```
+
+Optional query parameters:
+
+```text
+search
+relationship
+limit
+```
+
+Supported relationship filters:
+
+- all
+- supports
+- contradicts
+- insufficient
+- irrelevant
+
+### Start a Research Investigation
+
+```http
+POST /api/research
+```
+
+Example request:
+
+```json
+{
+  "topic": "Large Language Models",
+  "max_results": 5
+}
+```
+
+The maximum number of papers per investigation is currently 10.
+
+The endpoint returns a research job identifier and initial job status.
+
+### Monitor Research Jobs
+
+```http
+GET /api/jobs/{job_id}
+```
+
+Returns the current status and progress of a research investigation.
+
+### Resume Saved Research
+
+```http
+POST /api/research/resume
+```
+
+Resumes processing from available saved paper metadata and extracted claims.
+
+### Check Available Exports
+
+```http
+GET /api/exports
+```
+
+### Download Exports
+
+```http
+GET /api/exports/graph.json
+GET /api/exports/graph.graphml
+GET /api/exports/graph.html
+GET /api/exports/insights.json
+GET /api/exports/report.json
+```
 
 ---
 
-## Future Development
+# 15. Research Pipeline Execution
 
-Potential research and engineering directions include:
+A typical Alethia investigation follows this sequence:
+
+```mermaid
+flowchart TD
+    A[Enter Research Topic] --> B[Search arXiv]
+    B --> C[Retrieve Publications]
+    C --> D[Download PDFs]
+    D --> E[Extract Document Content]
+    E --> F[Extract Scientific Claims]
+    F --> G[Normalize Claims]
+    G --> H[AI Claim Analysis]
+    H --> I[Retrieve Candidate Evidence]
+    I --> J[AI Evidence Analysis]
+    J --> K[Link Claims and Evidence]
+    K --> L[Build Knowledge Graph]
+    L --> M[Compare Claims Across Papers]
+    M --> N[Generate Research Insights]
+    N --> O[Export Graph and Reports]
+    O --> P[Explore in Web Application]
+```
+
+### Pipeline Considerations
+
+- Research investigations use external paper retrieval and AI services.
+- Local Ollama inference is required for evidence analysis.
+- OpenRouter configuration is required for AI-assisted claim analysis.
+- Research processing can be computationally intensive.
+- The current backend processes one investigation at a time.
+- Research job state is maintained in application memory.
+- Saved research artifacts are stored in the local research data directory.
+
+---
+
+# 16. Project Status
+
+**Current Stage: Research Engineering Prototype**
+
+Alethia has implemented its foundational scientific literature analysis pipeline and a local web application.
+
+### Implemented Capabilities
+
+- [x] arXiv research paper retrieval.
+- [x] Scientific PDF processing.
+- [x] NLP-based scientific claim extraction.
+- [x] Claim normalization.
+- [x] Subject-Verb-Object extraction.
+- [x] AI-assisted claim analysis.
+- [x] TF-IDF-based evidence retrieval.
+- [x] AI-assisted evidence classification.
+- [x] Evidence relationship scoring.
+- [x] Claim-evidence linking.
+- [x] Knowledge graph construction.
+- [x] Scientific entity representation.
+- [x] Typed graph relationships.
+- [x] SHA-256-based entity identification.
+- [x] Evidence provenance preservation.
+- [x] Cross-paper claim similarity analysis.
+- [x] Optional LLM-based cross-paper comparison.
+- [x] Research insight generation.
+- [x] JSON graph export.
+- [x] GraphML export.
+- [x] Interactive HTML graph visualization.
+- [x] FastAPI backend.
+- [x] React and TypeScript frontend.
+- [x] Research dashboard.
+- [x] Paper library.
+- [x] Claim and evidence inspection.
+- [x] Background research jobs.
+- [x] Research export endpoints.
+
+### Areas Requiring Further Development
+
+- [ ] Systematic scientific evaluation.
+- [ ] More robust claim extraction.
+- [ ] Advanced semantic evidence retrieval.
+- [ ] Improved entity resolution.
+- [ ] Stronger contradiction verification.
+- [ ] Persistent research job management.
+- [ ] Scalable graph storage and querying.
+- [ ] Authentication and user management.
+- [ ] Multi-user research workspaces.
+- [ ] Automated research-gap identification.
+- [ ] Evidence-grounded hypothesis generation.
+- [ ] Suggested experiment generation.
+
+---
+
+# 17. Limitations and Scientific Considerations
+
+Alethia is designed to assist scientific literature exploration. It is not intended to replace scientific expertise or independent verification.
+
+### LLM Reliability
+
+AI-generated claims and evidence classifications may contain errors, hallucinations, or incomplete interpretations.
+
+### Similarity Is Not Evidence
+
+A high similarity score does not necessarily indicate scientific support.
+
+Similarity is used for candidate retrieval, not scientific verification.
+
+### Evidence Coverage
+
+The quality of evidence retrieval depends on document extraction, claim representation, available text, and retrieval settings.
+
+### Contextual Differences
+
+Two scientific claims may appear contradictory while referring to different datasets, methodologies, experimental conditions, or populations.
+
+### AI-Suggested Contradictions
+
+Potential contradictions identified through LLM-based analysis must be independently evaluated.
+
+They should not be treated as established scientific conflicts.
+
+### Computational Requirements
+
+Local LLM inference and large research collections may require substantial memory and computational resources.
+
+### Security
+
+The current backend is intended for local development. It should not be exposed publicly without appropriate authentication, authorization, rate limiting, secure configuration, and persistent job management.
+
+---
+
+# 18. Future Development Roadmap
+
+Alethia aims to evolve from a scientific literature analysis pipeline into a more comprehensive research intelligence platform.
+
+Potential development directions include:
+
+### Phase 1 — Improve Scientific Understanding
 
 - More robust scientific claim extraction.
-- Improved semantic evidence retrieval.
-- Better claim normalization and entity resolution.
-- More sophisticated cross-paper relationship identification.
+- Improved semantic normalization.
+- Advanced evidence retrieval.
+- Better contextual understanding.
+- Improved scientific entity resolution.
+
+### Phase 2 — Strengthen Evidence Intelligence
+
 - Evidence-grounded contradiction analysis.
-- Improved provenance and citation tracking.
-- Research-gap identification based on connected evidence.
+- Improved claim-evidence verification.
+- Better citation and source tracking.
+- Multi-paper evidence comparison.
+- More reliable confidence estimation.
+
+### Phase 3 — Research Discovery
+
+- Automated research-gap identification.
+- Identification of underexplored scientific relationships.
 - Evidence-grounded hypothesis generation.
-- Suggested experiment generation.
-- Scalable graph construction and querying.
-- Systematic evaluation against manually annotated scientific literature.
+- Suggested experiments.
+- Identification of emerging research directions.
+
+### Phase 4 — Knowledge Infrastructure
+
+- Scalable graph storage.
+- Advanced graph querying.
+- Persistent research workspaces.
+- Improved graph analytics.
+- Larger scientific publication collections.
+- Additional publication sources beyond arXiv.
+
+### Phase 5 — Research Intelligence Platform
+
+- Advanced research exploration.
+- Cross-disciplinary knowledge discovery.
+- Longitudinal research tracking.
+- Collaborative research workspaces.
+- Intelligent scientific question answering.
+- More comprehensive research analytics.
+
+These are development directions, not claims of currently implemented functionality.
 
 ---
 
-## Author
+# 19. Contributing
+
+Contributions, suggestions, bug reports, and research collaborations are welcome.
+
+If you would like to contribute:
+
+1. Fork the repository.
+2. Create a feature branch.
+3. Make your changes.
+4. Test your implementation.
+5. Commit your changes.
+6. Open a pull request describing your contribution.
+
+Example:
+
+```bash
+git fork https://github.com/iamHammadA/Alethia
+```
+
+Or create a branch in your fork:
+
+```bash
+git checkout -b feature/your-feature
+```
+
+Submit a pull request with a clear description of:
+
+- The problem being addressed.
+- The proposed solution.
+- The changes introduced.
+- Any relevant testing.
+
+For major changes, open an issue first to discuss the proposed implementation.
+
+---
+
+# 20. License
+
+Alethia is distributed under the MIT License.
+
+See the [LICENSE](LICENSE) file for complete licensing information.
+
+---
+
+# 21. Author
 
 **Hammad A.**
 
 Independent AI Research & Development
 
-GitHub: [@iamHammadA](https://github.com/iamHammadA)
-
-Project Repository: [github.com/iamHammadA/Alethia](https://github.com/iamHammadA/Alethia)
-
----
-
-## License
-
-See the [LICENSE](LICENSE) file for licensing information.
+- GitHub: [@iamHammadA](https://github.com/iamHammadA)
+- Project: [Alethia](https://github.com/iamHammadA/Alethia)
 
 ---
 
 <p align="center">
-  <strong>Alethia</strong><br>
-  Connecting scientific claims, evidence, and knowledge.
+  <h3>🧠 Alethia</h3>
+  <strong>Connecting Scientific Claims, Evidence, and Knowledge.</strong>
+  <br />
+  <em>Making scientific knowledge connected, traceable, and explorable.</em>
 </p>
