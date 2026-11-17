@@ -1558,6 +1558,7 @@ DATA.nodes.forEach(n => {
 const claimNodes = DATA.nodes.filter(n => n.type === "claim");
 const claimX = new Map();
 const claimsByPaper = new Map();
+const claimRowsByPaper = new Map();
 claimNodes.forEach(n => {
   const pid = paperFor.get(n.id);
   if (!pid || !laneX.has(pid)) return;
@@ -1567,6 +1568,7 @@ claimNodes.forEach(n => {
 claimsByPaper.forEach((items, pid) => {
   const cx = laneX.get(pid), cols = Math.min(4, Math.max(1, items.length));
   const rows = Math.ceil(items.length / cols);
+  claimRowsByPaper.set(pid, rows);
   items.forEach((n, i) => {
     const col = i % cols, row = Math.floor(i / cols);
     claimX.set(n.id, cx + (col - (cols - 1) / 2) * 220);
@@ -1581,12 +1583,22 @@ evidenceNodes.forEach(n => {
   if (!evidenceByPaper.has(pid)) evidenceByPaper.set(pid, []);
   evidenceByPaper.get(pid).push(n);
 });
+let sharedBaseY = 850;
 evidenceByPaper.forEach((items, pid) => {
   const cx = laneX.get(pid), cols = 5;
+  const claimRows = claimRowsByPaper.get(pid) || 0;
+  const evidenceStartY = -120 + claimRows * 150 + 220;
+  const evidenceRows = Math.ceil(items.length / cols);
+  sharedBaseY = Math.max(sharedBaseY, evidenceStartY + evidenceRows * 115 + 250);
   items.forEach((n, i) => {
     const col = i % cols, row = Math.floor(i / cols);
-    n._layout = {x: cx + (col - (cols - 1) / 2) * 165, y: 420 + row * 115};
+    n._layout = {x: cx + (col - (cols - 1) / 2) * 165, y: evidenceStartY + row * 115};
   });
+});
+claimRowsByPaper.forEach((rows, pid) => {
+  if (!evidenceByPaper.has(pid)) {
+    sharedBaseY = Math.max(sharedBaseY, -120 + rows * 150 + 300);
+  }
 });
 paperNodes.forEach(p => {
   p._layout = {x: laneX.get(p.id), y: -520};
@@ -1602,7 +1614,7 @@ sharedNodes.forEach((n, i) => {
   const x = linkedPapers.length
     ? linkedPapers.reduce((sum, pid) => sum + laneX.get(pid), 0) / linkedPapers.length
     : 0;
-  n._layout = {x: x + ((i % 3) - 1) * 150, y: 850 + Math.floor(i / 3) * 130};
+  n._layout = {x: x + ((i % 3) - 1) * 150, y: sharedBaseY + Math.floor(i / 3) * 130};
 });
 
 const ALWAYS_LABEL = new Set(["paper","method","model","algorithm","dataset","hypothesis","concept"]);
@@ -1642,15 +1654,14 @@ function refreshLabels(){
 }
 
 /* ---------- load sequence ---------- */
-network.on("stabilizationProgress", p => { $("prog").style.width = (p.iterations/p.total*100)+"%"; });
-network.once("stabilizationIterationsDone", () => {
+/* Physics is disabled for the deterministic layout, so do not wait for a
+   stabilization event that may never fire. Reveal and fit the graph directly. */
+requestAnimationFrame(() => {
   $("prog").style.width = "100%";
   refreshLabels();
-  setTimeout(() => {
-    document.body.classList.add("ready");
-    network.fit({animation: REDUCED ? false : {duration:1400, easingFunction:"easeInOutCubic"}});
-    network.setOptions({physics:false}); $("phys").textContent="▶";
-  }, 250);
+  document.body.classList.add("ready");
+  network.fit({animation: REDUCED ? false : {duration:1400, easingFunction:"easeInOutCubic"}});
+  $("phys").textContent = "▶";
 });
 let zt; network.on("zoom", () => { clearTimeout(zt); zt = setTimeout(() => {
   const z = network.getScale() > .75; if (z !== zoomedIn){ zoomedIn = z; refreshLabels(); } }, 120); });
