@@ -8,12 +8,18 @@ import requests
 import pymupdf4llm
 
 CURRENT_FILE = Path(__file__).resolve()
-ROOT_DIR = next((p for p in CURRENT_FILE.parents if p.name.lower() == "alethia"), CURRENT_FILE.parent)
+ROOT_DIR = next(
+    (parent for parent in CURRENT_FILE.parents
+     if (parent / "backend").is_dir() and (parent / "frontend").is_dir()),
+    None,
+)
+if ROOT_DIR is None:
+    raise RuntimeError("Could not locate the Alethia project root.")
 SAVE_DIR = ROOT_DIR / "arXiv papers"
 SAVE_DIR.mkdir(parents=True, exist_ok=True)
 
 
-def get_data(topic: str, max_results: int = 5) -> list[dict]:
+def get_data(topic: str, max_results: int = 5, progress=None) -> list[dict]:
     """Retrieve papers from arXiv and extract their PDF text.
 
     Importing this module never prompts for input or starts a network request.
@@ -38,12 +44,17 @@ def get_data(topic: str, max_results: int = 5) -> list[dict]:
         raise RuntimeError("arXiv returned no papers for this topic.")
 
     SAVE_DIR.mkdir(parents=True, exist_ok=True)
+    # This project currently keeps one active research corpus. Clear derived
+    # outputs so the UI never mixes claims/evidence from the previous topic.
+    for stale_name in ("ai_claims.json", "matched_evidence.json", "analyzed_evidences.json", "final_evidences.json"):
+        (SAVE_DIR / stale_name).unlink(missing_ok=True)
     for old_pdf in SAVE_DIR.glob("paper*.pdf"):
         old_pdf.unlink(missing_ok=True)
 
     from backend.app.extraction import extractor as text_extractor
     text_extractor.full_data.clear()
     papers = []
+    paper_metadata = {}
     for idx, entry in enumerate(entries):
         links = entry.findall("atom:link", ns)
         pdf_url = next(
@@ -69,15 +80,25 @@ def get_data(topic: str, max_results: int = 5) -> list[dict]:
         )
         downloaded.raise_for_status()
         pdf_path.write_bytes(downloaded.content)
-        text_extractor.headings_and_text_recognization(idx, pdf_path)
         papers.append(paper)
+        paper_metadata[paper["article_key"]] = paper
+        metadata_path = SAVE_DIR / "paper_metadata.json"
+        temporary_metadata_path = metadata_path.with_suffix(".json.tmp")
+        temporary_metadata_path.write_text(
+            json.dumps(paper_metadata, indent=2, ensure_ascii=False), encoding="utf-8"
+        )
+        temporary_metadata_path.replace(metadata_path)
+        if progress:
+            percent = 5 + round(13 * (idx + 1) / max(len(entries), 1))
+            progress("retrieval", min(percent, 19), f"Downloaded {len(papers)} of {len(entries)} papers: {paper['title'][:90]}")
+        text_extractor.headings_and_text_recognization(idx, pdf_path)
 
     if not papers:
         raise RuntimeError("No downloadable PDF papers were returned by arXiv.")
     with (SAVE_DIR / "arxiv_papers_full.json").open("w", encoding="utf-8") as file:
         json.dump(text_extractor.full_data, file, indent=2, ensure_ascii=False)
     with (SAVE_DIR / "paper_metadata.json").open("w", encoding="utf-8") as file:
-        json.dump({paper["article_key"]: paper for paper in papers}, file, indent=2, ensure_ascii=False)
+        json.dump(paper_metadata, file, indent=2, ensure_ascii=False)
     return papers
 
 
