@@ -2,7 +2,9 @@
 from __future__ import annotations
 
 import importlib
+import json
 import logging
+from pathlib import Path
 from typing import Callable
 
 logger = logging.getLogger("alethia.pipeline")
@@ -63,5 +65,95 @@ def run_research(topic: str, max_results: int = 5, progress: Progress | None = N
         "nodes": graph.number_of_nodes(),
         "edges": graph.number_of_edges(),
         "analysis_mode": "dummy" if __import__("os").getenv("ALETHIA_DUMMY_AI", "0").lower() in {"1", "true", "yes", "on"} else "automatic_fallback",
+        "report": report,
+    }
+
+
+
+def resume_existing_research(progress: Progress | None = None) -> dict:
+    """Continue from saved metadata, PDFs, and claims without re-downloading or re-extracting."""
+    def update(stage: str, percent: int, message: str) -> None:
+        if progress:
+            progress(stage, percent, message)
+        logger.info("[%s%%] %s", percent, message)
+
+    current_file = Path(__file__).resolve()
+    root_dir = next(
+        (parent for parent in current_file.parents
+         if (parent / "backend").is_dir() and (parent / "frontend").is_dir()),
+        None,
+    )
+    if root_dir is None:
+        raise RuntimeError("Could not locate the Alethia project root.")
+
+    data_dir = root_dir / "arXiv papers"
+    metadata_path = data_dir / "paper_metadata.json"
+    claims_path = data_dir / "ai_claims.json"
+    if not metadata_path.exists() or not claims_path.exists():
+        raise FileNotFoundError("Resume requires saved paper_metadata.json and ai_claims.json files.")
+
+    metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+    claims_by_article = json.loads(claims_path.read_text(encoding="utf-8"))
+    if not isinstance(metadata, dict) or not metadata:
+        raise ValueError("No saved paper metadata was found.")
+    if not isinstance(claims_by_article, dict) or not claims_by_article:
+        raise ValueError("No saved scientific claims were found.")
+
+    article_keys = list(metadata.keys())
+    missing = [key for key in article_keys if not isinstance(claims_by_article.get(key), list)]
+    if missing:
+        raise ValueError("Saved claims are missing for: " + ", ".join(missing))
+
+    pdf_files = sorted(data_dir.glob("*.pdf"))
+    if len(pdf_files) < len(article_keys):
+        raise FileNotFoundError(
+            f"Found {len(pdf_files)} PDFs for {len(article_keys)} saved papers. Restore missing PDFs first."
+        )
+
+    claim_count = sum(len(claims_by_article[key]) for key in article_keys)
+    update("claims", 28, f"Loaded {claim_count} saved claims from {len(article_keys)} papers. Claim extraction skipped.")
+
+    evidence_retriever = importlib.import_module("backend.app.extraction.evidence_retriever")
+    evidence_retriever = importlib.reload(evidence_retriever)
+    evidence_retriever.main(
+        progress=update,
+        claims_by_article=claims_by_article,
+        include_all_claims=True,
+    )
+
+    update("evidence", 60, "Retrieved passages from saved PDFs. Running explicitly simulated evidence classification.")
+    evidence_analyzer = importlib.import_module("backend.app.extraction.ai_evidence_analyzer")
+    evidence_analyzer = importlib.reload(evidence_analyzer)
+    evidence_analyzer.evidence_main(progress=update, force_dummy=True)
+
+    update("linking", 78, "Linking retrieved passages to the saved claims.")
+    linker = importlib.import_module("backend.app.extraction.claim_evidence_linker")
+    linker = importlib.reload(linker)
+    linker.linker()
+
+    update("graph", 88, "Rebuilding the knowledge graph from saved research.")
+    graph_builder = importlib.import_module("backend.app.extraction.knowledge_graph_builder")
+    graph_builder = importlib.reload(graph_builder)
+    graph = graph_builder.main()
+
+    report = {}
+    if graph_builder.REPORT_PATH.exists():
+        report = json.loads(graph_builder.REPORT_PATH.read_text(encoding="utf-8"))
+
+    titles = [
+        str(metadata[key].get("title", key))
+        for key in article_keys
+        if isinstance(metadata.get(key), dict)
+    ]
+    topic = titles[0] if titles else "Resumed saved research"
+    update("complete", 100, "Saved research resumed. Evidence retrieval and graph rebuilding completed.")
+    return {
+        "topic": topic,
+        "papers_downloaded": len(article_keys),
+        "paper_titles": titles,
+        "claims_loaded": claim_count,
+        "nodes": graph.number_of_nodes(),
+        "edges": graph.number_of_edges(),
+        "analysis_mode": "simulated",
         "report": report,
     }
