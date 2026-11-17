@@ -21,6 +21,10 @@ GRAPH_DIR = DATA_DIR / "knowledge_graph"
 GRAPH_PATH = GRAPH_DIR / "alethia_knowledge_graph.json"
 REPORT_PATH = GRAPH_DIR / "build_report.json"
 INSIGHTS_PATH = GRAPH_DIR / "research_insights.json"
+PAPER_METADATA_PATH = DATA_DIR / "paper_metadata.json"
+CLAIMS_PATH = DATA_DIR / "ai_claims.json"
+ANALYZED_EVIDENCE_PATH = DATA_DIR / "analyzed_evidences.json"
+FINAL_EVIDENCE_PATH = DATA_DIR / "final_evidences.json"
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("alethia.api")
@@ -83,6 +87,8 @@ def dashboard_payload() -> dict:
     edges = data.get("edges", [])
     report = read_json(REPORT_PATH, {})
     insights = read_json(INSIGHTS_PATH, {})
+    metadata = read_json(PAPER_METADATA_PATH, {})
+    claim_data = read_json(CLAIMS_PATH, {})
     by_type: dict[str, int] = {}
     for node in nodes:
         kind = node.get("node_type", "other")
@@ -90,23 +96,27 @@ def dashboard_payload() -> dict:
     papers = [node for node in nodes if node.get("node_type") == "paper"]
     claims = [node for node in nodes if node.get("node_type") == "claim"]
     evidence = [node for node in nodes if node.get("node_type") == "evidence"]
+    metadata_count = len(metadata) if isinstance(metadata, dict) else 0
+    claim_count = sum(len(items) for items in claim_data.values() if isinstance(items, list)) if isinstance(claim_data, dict) else 0
     supported = sum(1 for edge in edges if str(edge.get("relationship", "")).upper() == "SUPPORTS")
+    paper_preview = papers[:6]
+    if not paper_preview and isinstance(metadata, dict):
+        paper_preview = [{"id": key, "node_type": "paper", **value} for key, value in list(metadata.items())[:6] if isinstance(value, dict)]
     return {
         "available": GRAPH_PATH.exists(),
         "stats": {
-            "papers": len(papers) or report.get("papers_created", 0),
-            "claims": len(claims) or report.get("claims_created", 0),
+            "papers": len(papers) or metadata_count or report.get("papers_created", 0),
+            "claims": len(claims) or claim_count or report.get("claims_created", 0),
             "evidence": len(evidence) or report.get("evidence_created", 0),
             "relationships": len(edges) or report.get("total_edges", 0),
             "supported_links": supported,
         },
         "node_types": by_type,
-        "papers": papers[:6],
+        "papers": paper_preview,
         "insights": insights,
         "report": report,
         "updated_at": datetime.fromtimestamp(GRAPH_PATH.stat().st_mtime, timezone.utc).isoformat() if GRAPH_PATH.exists() else None,
     }
-
 
 class ResearchRequest(BaseModel):
     topic: str = Field(min_length=3, max_length=240)
@@ -196,15 +206,24 @@ def papers(search: str = ""):
     data = graph_data()
     nodes, _ = build_indexes(data)
     paper_nodes = [node for node in nodes.values() if node.get("node_type") == "paper"]
+    metadata = read_json(PAPER_METADATA_PATH, {})
+    claim_data = read_json(CLAIMS_PATH, {})
+    claim_counts = {article_id: len(items) for article_id, items in claim_data.items() if isinstance(items, list)} if isinstance(claim_data, dict) else {}
     result = []
-    for paper in paper_nodes:
-        related_claims = [
-            node for node in nodes.values()
-            if node.get("node_type") == "claim" and node.get("source_paper_id") == paper.get("id")
-        ]
-        item = {**paper, "claim_count": len(related_claims)}
-        if search.lower() in json.dumps(item, ensure_ascii=False).lower():
-            result.append(item)
+    if isinstance(metadata, dict) and metadata:
+        for article_id, paper in metadata.items():
+            if not isinstance(paper, dict):
+                continue
+            graph_paper = next((node for node in paper_nodes if node.get("arxiv_id") == paper.get("arxiv_id") or node.get("article_key") == article_id or node.get("id") == article_id), {})
+            item = {**graph_paper, **paper, "id": graph_paper.get("id") or article_id, "node_type": "paper", "claim_count": claim_counts.get(article_id, graph_paper.get("claim_count", 0))}
+            if search.lower() in json.dumps(item, ensure_ascii=False).lower():
+                result.append(item)
+    else:
+        for paper in paper_nodes:
+            related_claims = [node for node in nodes.values() if node.get("node_type") == "claim" and node.get("source_paper_id") == paper.get("id")]
+            item = {**paper, "claim_count": len(related_claims)}
+            if search.lower() in json.dumps(item, ensure_ascii=False).lower():
+                result.append(item)
     return {"items": result, "total": len(result)}
 
 
@@ -212,22 +231,52 @@ def papers(search: str = ""):
 def claims(search: str = "", relationship: str = "all", limit: int = Query(default=300, ge=1, le=1000)):
     data = graph_data()
     nodes, evidence_by_claim = build_indexes(data)
+    metadata = read_json(PAPER_METADATA_PATH, {})
+    claim_data = read_json(CLAIMS_PATH, {})
+    analyzed = read_json(ANALYZED_EVIDENCE_PATH, {})
+    final_evidence = read_json(FINAL_EVIDENCE_PATH, {})
     result = []
-    for node in nodes.values():
-        if node.get("node_type") != "claim":
-            continue
-        evidence = evidence_by_claim.get(node.get("id"), [])
-        if relationship != "all" and not any(item.get("relationship") == relationship for item in evidence):
-            continue
-        paper = nodes.get(node.get("source_paper_id"), {})
-        item = {
-            **node,
-            "paper_title": paper.get("title") or paper.get("label") or "Research paper",
-            "evidence": evidence,
-            "evidence_count": len(evidence),
-        }
-        if search.lower() in json.dumps(item, ensure_ascii=False).lower():
-            result.append(item)
+
+    # Durable extraction output is available before remote analysis or graph building.
+    if isinstance(claim_data, dict) and claim_data:
+        for article_id, claim_list in claim_data.items():
+            if not isinstance(claim_list, list):
+                continue
+            paper = metadata.get(article_id, {}) if isinstance(metadata, dict) else {}
+            analyzed_rows = analyzed.get(article_id, []) if isinstance(analyzed, dict) else []
+            if isinstance(analyzed_rows, dict):
+                analyzed_rows = analyzed_rows.get("claims_analyzed", [])
+            linked_rows = final_evidence.get(article_id, []) if isinstance(final_evidence, dict) else []
+            for index, node in enumerate(claim_list):
+                if not isinstance(node, dict):
+                    continue
+                evidence = []
+                if isinstance(analyzed_rows, list) and index < len(analyzed_rows) and isinstance(analyzed_rows[index], dict):
+                    evidence = analyzed_rows[index].get("evidence_analysis", [])
+                if not evidence and isinstance(linked_rows, list) and index < len(linked_rows) and isinstance(linked_rows[index], list):
+                    evidence = linked_rows[index]
+                if not evidence:
+                    evidence = evidence_by_claim.get(node.get("id"), [])
+                if relationship != "all":
+                    evidence = [item for item in evidence if str(item.get("relationship", "")).lower() == relationship]
+                    if not evidence:
+                        continue
+                item = {**node, "id": node.get("id") or f"{article_id}_claim_{index}", "node_type": "claim", "source_paper_id": article_id, "paper_title": paper.get("title") or "Research paper", "evidence": evidence, "evidence_count": len(evidence)}
+                if search.lower() in json.dumps(item, ensure_ascii=False).lower():
+                    result.append(item)
+    else:
+        for node in nodes.values():
+            if node.get("node_type") != "claim":
+                continue
+            evidence = evidence_by_claim.get(node.get("id"), [])
+            if relationship != "all":
+                evidence = [item for item in evidence if item.get("relationship") == relationship]
+                if not evidence:
+                    continue
+            paper = nodes.get(node.get("source_paper_id"), {})
+            item = {**node, "paper_title": paper.get("title") or paper.get("label") or "Research paper", "evidence": evidence, "evidence_count": len(evidence)}
+            if search.lower() in json.dumps(item, ensure_ascii=False).lower():
+                result.append(item)
     return {"items": result[:limit], "total": len(result)}
 
 
