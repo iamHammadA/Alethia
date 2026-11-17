@@ -108,8 +108,8 @@ def dashboard_payload() -> dict:
     return {
         "available": GRAPH_PATH.exists(),
         "stats": {
-            "papers": max(len(papers), metadata_count, report.get("papers_created", 0)),
-            "claims": max(len(claims), claim_count, report.get("claims_created", 0)),
+            "papers": metadata_count or len(papers) or report.get("papers_created", 0),
+            "claims": claim_count if CLAIMS_PATH.exists() else (len(claims) or report.get("claims_created", 0)),
             "evidence": len(evidence) or report.get("evidence_created", 0),
             "relationships": len(edges) or report.get("total_edges", 0),
             "supported_links": supported,
