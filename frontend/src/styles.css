@@ -57,6 +57,7 @@
 .paper-authors{margin-top:9px;color:#9dab93;font-size:9px;line-height:1.5;overflow-wrap:anywhere}
 .analysis-pending{color:#e0c58b;font:8px var(--mono);letter-spacing:.25px}
 .analysis-ready{color:#a8c987;font:8px var(--mono);letter-spacing:.25px}
+.analysis-simulated{color:#e5b66f;font:8px var(--mono);letter-spacing:.25px}
 
 .pipeline-failed{border-color:#68433a;background:radial-gradient(ellipse at 8% 0%,#63372d55,transparent 48%),linear-gradient(135deg,#241815,#171311 65%,#1d1715)}
 .pipeline-failed:before{background:linear-gradient(180deg,#e29b7f,#9e5846 55%,transparent);box-shadow:0 0 18px #d77d6266}
