@@ -3,8 +3,27 @@ from .claim_normalizer import main_function
 import os
 import requests
 from dotenv import load_dotenv
+from pathlib import Path
 
 load_dotenv()
+
+CURRENT_FILE = Path(__file__).resolve()
+ROOT_DIR = next(
+    (parent for parent in CURRENT_FILE.parents
+     if (parent / "backend").is_dir() and (parent / "frontend").is_dir()),
+    None,
+)
+if ROOT_DIR is None:
+    raise RuntimeError("Could not locate the Alethia project root.")
+SAVE_DIR = ROOT_DIR / "arXiv papers"
+CLAIMS_OUTPUT_PATH = SAVE_DIR / "ai_claims.json"
+
+
+def _save_claims(data: dict) -> None:
+    SAVE_DIR.mkdir(parents=True, exist_ok=True)
+    temporary_path = CLAIMS_OUTPUT_PATH.with_suffix(".json.tmp")
+    temporary_path.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
+    temporary_path.replace(CLAIMS_OUTPUT_PATH)
 
 def call_openrouter_reasoning(
     claim_input: dict | str, 
@@ -70,22 +89,53 @@ Output ONLY valid JSON. No conversational fluff or markdown formatting outside t
     # Parse and return JSON object
     return json.loads(raw_content)
 
-def analyzer():
-    ai_claims = {}
+def analyzer(progress=None):
+    """Analyze normalized claims and persist partial results for the live UI."""
     json_claims = main_function()
-    
-    # Store key in environment or variable
+    ai_claims = {}
+    total_claims = sum(len(items) for items in json_claims.values())
+    completed = 0
     openrouter_key = os.getenv("OPENROUTER_API_KEY")
-    
+
+    # Publish locally extracted claims before any remote model request. If
+    # model quota is exhausted, the Claims page still shows extracted claims.
     for article_id, claims_list in json_claims.items():
-        inter_claim = []
+        ai_claims[article_id] = [
+            {
+                **single_claim,
+                "original_text": single_claim.get("text", ""),
+                "normalized_claim": single_claim.get("text", ""),
+                "source_paper_id": article_id,
+                "article_key": article_id,
+                "analysis_status": "pending",
+            }
+            for single_claim in claims_list
+        ]
+    _save_claims(ai_claims)
+
+    if progress:
+        progress("claims", 25, f"Extracted {total_claims} candidate claims. Starting claim analysis.")
+
+    for article_id, claims_list in json_claims.items():
         print(f"Article {article_id} Claims Count:", len(claims_list))
-        
-        for single_claim in claims_list:
+        for index, single_claim in enumerate(claims_list):
             analyzed_claim = call_openrouter_reasoning(single_claim, api_key=openrouter_key)
-            inter_claim.append(analyzed_claim)
-            print(analyzed_claim)
-            
-        ai_claims[article_id] = inter_claim
-     
+            enriched_claim = {
+                **single_claim,
+                **analyzed_claim,
+                "original_text": single_claim.get("text", ""),
+                "source_paper_id": article_id,
+                "article_key": article_id,
+                "analysis_status": "complete",
+            }
+            ai_claims[article_id][index] = enriched_claim
+            completed += 1
+            _save_claims(ai_claims)
+            if progress:
+                percent = 25 + round(22 * completed / max(total_claims, 1))
+                progress("claims", min(percent, 47), f"Analyzed {completed} of {total_claims} claims.")
+            print(enriched_claim)
+
+    if progress and total_claims == 0:
+        progress("claims", 47, "No candidate claims were found in the downloaded papers.")
     return ai_claims
