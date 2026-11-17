@@ -22,7 +22,8 @@ def run_research(topic: str, max_results: int = 5, progress: Progress | None = N
 
     # Reload in dependency order so a second investigation in the same server
     # process uses the newly downloaded papers, not module-level cached claims.
-    update("claims", 22, f"Downloaded {len(papers)} papers. Extracting scientific claims.")
+    update("papers", 20, f"Downloaded {len(papers)} papers. Metadata and PDFs are saved.")
+    update("claims", 24, "Extracting and normalizing scientific claims.")
     claim_extractor = importlib.import_module("backend.app.extraction.claim_extractor")
     importlib.reload(claim_extractor)
     claim_normalizer = importlib.import_module("backend.app.extraction.claim_normalizer")
@@ -32,9 +33,9 @@ def run_research(topic: str, max_results: int = 5, progress: Progress | None = N
 
     evidence_retriever = importlib.import_module("backend.app.extraction.evidence_retriever")
     evidence_retriever = importlib.reload(evidence_retriever)
-    evidence_retriever.main()
+    evidence_retriever.main(progress=update)
 
-    update("evidence", 58, "Candidate evidence retrieved. Running local LLM evidence analysis.")
+    update("evidence", 60, "Candidate evidence retrieved. Running local LLM evidence analysis.")
     evidence_analyzer = importlib.import_module("backend.app.extraction.ai_evidence_analyzer")
     evidence_analyzer = importlib.reload(evidence_analyzer)
     evidence_analyzer.evidence_main()
