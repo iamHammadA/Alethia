@@ -4,11 +4,6 @@ from pathlib import Path
 
 import ollama
 
-
-# --------------------------------------------------
-# PATH CONFIGURATION
-# --------------------------------------------------
-
 CURRENT_FILE = Path(__file__).resolve()
 
 ROOT_DIR = next(
@@ -25,17 +20,7 @@ SAVE_DIR.mkdir(parents=True, exist_ok=True)
 INPUT_PATH = SAVE_DIR / "matched_evidence.json"
 OUTPUT_PATH = SAVE_DIR / "analyzed_evidences.json"
 
-
-# --------------------------------------------------
-# MODEL CONFIGURATION
-# --------------------------------------------------
-
 MODEL = os.getenv("OLLAMA_EVIDENCE_MODEL", "llama3.2")
-
-
-# --------------------------------------------------
-# SYSTEM INSTRUCTION
-# --------------------------------------------------
 
 SYSTEM_INSTRUCTION = """
 You are the Evidence Analysis module of Alethia,
@@ -139,11 +124,6 @@ All strength values must be between 0.0 and 1.0.
 Return valid JSON only. No markdown or additional text.
 """
 
-
-# --------------------------------------------------
-# OUTPUT VALIDATION
-# --------------------------------------------------
-
 def validate_analysis(result, evidence_item):
 
     if not isinstance(result, dict):
@@ -210,10 +190,6 @@ def validate_analysis(result, evidence_item):
 
     return result
 
-
-# --------------------------------------------------
-# EVIDENCE ANALYSIS
-# --------------------------------------------------
 
 def dummy_analyze_evidence(evidence_item):
     """Produce conservative, explicitly simulated evidence classifications."""
@@ -289,11 +265,6 @@ def analyze_evidence(evidence_item):
     validated["analysis_mode"] = "ollama"
     return validated
 
-
-# --------------------------------------------------
-# IMPORT MATCHED EVIDENCE
-# --------------------------------------------------
-
 def json_importer(progress=None, force_dummy=False):
     if not INPUT_PATH.exists():
         raise FileNotFoundError(f"Input file not found: {INPUT_PATH}")
@@ -344,10 +315,6 @@ def json_importer(progress=None, force_dummy=False):
     return analysed_results
 
 
-# --------------------------------------------------
-# MAIN EVIDENCE ANALYSIS PIPELINE
-# --------------------------------------------------
-
 def evidence_main(progress=None, force_dummy=False):
     data = json_importer(progress=progress, force_dummy=force_dummy)
     OUTPUT_PATH.write_text(
@@ -359,11 +326,6 @@ def evidence_main(progress=None, force_dummy=False):
     if progress:
         progress("evidence", 75, "Evidence analysis output saved.")
     return data
-
-
-# --------------------------------------------------
-# EXECUTION
-# --------------------------------------------------
 
 if __name__ == "__main__":
     evidence_main()
