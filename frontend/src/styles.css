@@ -57,3 +57,12 @@
 .paper-authors{margin-top:9px;color:#9dab93;font-size:9px;line-height:1.5;overflow-wrap:anywhere}
 .analysis-pending{color:#e0c58b;font:8px var(--mono);letter-spacing:.25px}
 .analysis-ready{color:#a8c987;font:8px var(--mono);letter-spacing:.25px}
+
+.pipeline-failed{border-color:#68433a;background:radial-gradient(ellipse at 8% 0%,#63372d55,transparent 48%),linear-gradient(135deg,#241815,#171311 65%,#1d1715)}
+.pipeline-failed:before{background:linear-gradient(180deg,#e29b7f,#9e5846 55%,transparent);box-shadow:0 0 18px #d77d6266}
+.pipeline-failed .pipeline-orb{border-color:#7a4b3d;background:#39231e;color:#f0ad91}
+.pipeline-failed .pipeline-progress-track i{background:linear-gradient(90deg,#a65e4a,#e6a185);box-shadow:0 0 12px #df927266}
+.pipeline-failed .pipeline-stage.failed{border-color:#a26350;background:#35211c;color:#f0c1ad}
+.pipeline-failed .pipeline-stage.failed .pipeline-stage-icon{background:#9d5947;color:#fff0e9}
+.pipeline-failed .pipeline-status{color:#edaa91}
+.pipeline-failed .pipeline-message>svg{color:#e5a08a}
