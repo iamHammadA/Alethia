@@ -627,8 +627,12 @@ def add_named_node(
     node_type: str,
     name: str,
     description: str = "",
+    scope: str = "",
 ) -> str:
-    node_id = stable_id(node_type, name)
+    # Keep extracted entities local to their source paper. Generic subjects
+    # such as "virus" or "corona" must not collapse unrelated papers into
+    # one global hub. Named methods/concepts remain globally reusable.
+    node_id = stable_id(node_type, scope, name) if scope else stable_id(node_type, name)
 
     if node_id not in graph:
         graph.add_node(
@@ -637,6 +641,7 @@ def add_named_node(
             label=name,
             name=name,
             description=description or "",
+            source_paper_id=scope or "",
         )
 
     return node_id
@@ -727,7 +732,9 @@ def extract_methods_and_concepts(
     for field, edge_type in (("subject", "HAS_SUBJECT"), ("object", "ABOUT")):
         value = clean_text(claim_payload.get(field))
         if value and len(value) >= 3:
-            entity_id = add_named_node(graph, "entity", value)
+            entity_id = add_named_node(
+                graph, "entity", value, scope=paper_id
+            )
             add_edge(graph, claim_id, entity_id, edge_type)
 
 
@@ -1537,12 +1544,90 @@ const byId = new Map(DATA.nodes.map(n => [n.id, n]));
 const adj = new Map(DATA.nodes.map(n => [n.id, []]));
 DATA.edges.forEach(e => { adj.get(e.from).push(e); adj.get(e.to).push(e); });
 
+/* ---------- deterministic paper-first layout ---------- */
+/* Put each paper in its own vertical lane. Claims sit below their paper and
+   evidence sits below the claims, so the paper node is no longer the visual
+   centre of a force-directed hairball. Shared concepts/methods are placed in
+   a lower shared lane. */
+const paperNodes = DATA.nodes.filter(n => n.type === "paper");
+const laneGap = 1050;
+const laneX = new Map(paperNodes.map((p, i) =>
+  [p.id, (i - (paperNodes.length - 1) / 2) * laneGap]
+));
+const paperFor = new Map();
+DATA.nodes.forEach(n => {
+  if (n.type === "paper") paperFor.set(n.id, n.id);
+  else if (n.details && n.details.source_paper_id)
+    paperFor.set(n.id, n.details.source_paper_id);
+});
+const claimNodes = DATA.nodes.filter(n => n.type === "claim");
+const claimX = new Map();
+const claimsByPaper = new Map();
+const claimRowsByPaper = new Map();
+claimNodes.forEach(n => {
+  const pid = paperFor.get(n.id);
+  if (!pid || !laneX.has(pid)) return;
+  if (!claimsByPaper.has(pid)) claimsByPaper.set(pid, []);
+  claimsByPaper.get(pid).push(n);
+});
+claimsByPaper.forEach((items, pid) => {
+  const cx = laneX.get(pid), cols = Math.min(4, Math.max(1, items.length));
+  const rows = Math.ceil(items.length / cols);
+  claimRowsByPaper.set(pid, rows);
+  items.forEach((n, i) => {
+    const col = i % cols, row = Math.floor(i / cols);
+    claimX.set(n.id, cx + (col - (cols - 1) / 2) * 220);
+    n._layout = {x: cx + (col - (cols - 1) / 2) * 220, y: -120 + row * 150};
+  });
+});
+const evidenceNodes = DATA.nodes.filter(n => n.type === "evidence");
+const evidenceByPaper = new Map();
+evidenceNodes.forEach(n => {
+  const pid = paperFor.get(n.id);
+  if (!pid || !laneX.has(pid)) return;
+  if (!evidenceByPaper.has(pid)) evidenceByPaper.set(pid, []);
+  evidenceByPaper.get(pid).push(n);
+});
+let sharedBaseY = 850;
+evidenceByPaper.forEach((items, pid) => {
+  const cx = laneX.get(pid), cols = 5;
+  const claimRows = claimRowsByPaper.get(pid) || 0;
+  const evidenceStartY = -120 + claimRows * 150 + 220;
+  const evidenceRows = Math.ceil(items.length / cols);
+  sharedBaseY = Math.max(sharedBaseY, evidenceStartY + evidenceRows * 115 + 250);
+  items.forEach((n, i) => {
+    const col = i % cols, row = Math.floor(i / cols);
+    n._layout = {x: cx + (col - (cols - 1) / 2) * 165, y: evidenceStartY + row * 115};
+  });
+});
+claimRowsByPaper.forEach((rows, pid) => {
+  if (!evidenceByPaper.has(pid)) {
+    sharedBaseY = Math.max(sharedBaseY, -120 + rows * 150 + 300);
+  }
+});
+paperNodes.forEach(p => {
+  p._layout = {x: laneX.get(p.id), y: -520};
+});
+const sharedNodes = DATA.nodes.filter(n =>
+  !["paper", "claim", "evidence"].includes(n.type)
+);
+sharedNodes.forEach((n, i) => {
+  const linkedPapers = [...new Set(adj.get(n.id).map(e => {
+    const other = e.from === n.id ? e.to : e.from;
+    return paperFor.get(other);
+  }).filter(pid => laneX.has(pid)))];
+  const x = linkedPapers.length
+    ? linkedPapers.reduce((sum, pid) => sum + laneX.get(pid), 0) / linkedPapers.length
+    : 0;
+  n._layout = {x: x + ((i % 3) - 1) * 150, y: sharedBaseY + Math.floor(i / 3) * 130};
+});
+
 const ALWAYS_LABEL = new Set(["paper","method","model","algorithm","dataset","hypothesis","concept"]);
 let zoomedIn = false, focusId = null, hidden = new Set();
 
 const nodes = new vis.DataSet(DATA.nodes.map(n => {
   const c = col(n.type), deg = adj.get(n.id).length;
-  return {id:n.id, label:"", shape:"dot",
+  return {id:n.id, x:n._layout?.x || 0, y:n._layout?.y || 0, fixed:{x:true,y:true}, label:"", shape:"dot",
     size: n.type==="paper" ? 30 : Math.min(8 + Math.sqrt(deg)*3, 24),
     color:{background:c, border:c, highlight:{background:"#fff",border:c}, hover:{background:"#fff",border:c}},
     borderWidth:1.5, shadow:{enabled:true,color:c+"99",size:n.type==="paper"?32:16,x:0,y:0},
@@ -1557,9 +1642,7 @@ const edges = new vis.DataSet(DATA.edges.map((e,i) => ({
 
 const network = new vis.Network($("graph"), {nodes, edges}, {
   interaction:{hover:true,tooltipDelay:200,hideEdgesOnDrag:true,zoomSpeed:.7},
-  physics:{solver:"forceAtlas2Based",
-    forceAtlas2Based:{gravitationalConstant:-60,centralGravity:.008,springLength:130,springConstant:.06,damping:.5,avoidOverlap:.4},
-    stabilization:{iterations:280,updateInterval:20}},
+  physics:{enabled:false},
   nodes:{scaling:{label:false}}, edges:{selectionWidth:2}
 });
 
@@ -1576,15 +1659,14 @@ function refreshLabels(){
 }
 
 /* ---------- load sequence ---------- */
-network.on("stabilizationProgress", p => { $("prog").style.width = (p.iterations/p.total*100)+"%"; });
-network.once("stabilizationIterationsDone", () => {
+/* Physics is disabled for the deterministic layout, so do not wait for a
+   stabilization event that may never fire. Reveal and fit the graph directly. */
+requestAnimationFrame(() => {
   $("prog").style.width = "100%";
   refreshLabels();
-  setTimeout(() => {
-    document.body.classList.add("ready");
-    network.fit({animation: REDUCED ? false : {duration:1400, easingFunction:"easeInOutCubic"}});
-    if (DATA.nodes.length > 500) { network.setOptions({physics:false}); $("phys").textContent="▶"; }
-  }, 250);
+  document.body.classList.add("ready");
+  network.fit({animation: REDUCED ? false : {duration:1400, easingFunction:"easeInOutCubic"}});
+  $("phys").textContent = "▶";
 });
 let zt; network.on("zoom", () => { clearTimeout(zt); zt = setTimeout(() => {
   const z = network.getScale() > .75; if (z !== zoomedIn){ zoomedIn = z; refreshLabels(); } }, 120); });
