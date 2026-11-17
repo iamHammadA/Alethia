@@ -128,6 +128,14 @@ function App() {
     };
   }, [page, search, relationship]);
 
+  const startResume = async () => {
+    try {
+      setError("");
+      const created = await api.resumeResearch();
+      setJob(created);
+    } catch (e) { setError(e instanceof Error ? e.message : "Could not resume saved research."); }
+  };
+
   const startResearch = async (event: FormEvent) => {
     event.preventDefault();
     if (topic.trim().length < 3) return;
@@ -167,7 +175,7 @@ function App() {
     <main className="main-area">
       <header className="topbar">
         <div className="breadcrumb"><span>Workspace</span><span className="slash">/</span><strong>{title}</strong></div>
-        <div className="top-actions"><div className="connection"><span className={health?"status-dot":"status-dot offline"}/>{health?"Live":"Offline"}<small className="sync-time">{lastSyncedAt ? lastSyncedAt.toLocaleTimeString([], {hour:"2-digit",minute:"2-digit",second:"2-digit"}) : "Not synced"}</small></div><button className="subtle-button refresh-button" onClick={()=>{void refreshDashboard();}} disabled={syncing}><RefreshCw size={14} className={syncing?"spin":""}/>{syncing?"Refreshing":"Refresh"}</button><button className="icon-button" title="Help"><CircleHelp size={17}/></button><button className="new-button" onClick={()=>setShowResearch(true)}><Plus size={16}/> New investigation</button></div>
+        <div className="top-actions"><div className="connection"><span className={health?"status-dot":"status-dot offline"}/>{health?"Live":"Offline"}<small className="sync-time">{lastSyncedAt ? lastSyncedAt.toLocaleTimeString([], {hour:"2-digit",minute:"2-digit",second:"2-digit"}) : "Not synced"}</small></div><button className="subtle-button refresh-button" onClick={()=>{void refreshDashboard();}} disabled={syncing}><RefreshCw size={14} className={syncing?"spin":""}/>{syncing?"Refreshing":"Refresh"}</button><button className="icon-button" title="Help"><CircleHelp size={17}/></button>{dashboard?.stats.claims ? <button className="subtle-button" onClick={()=>void startResume()} disabled={Boolean(activeJob)}><RefreshCw size={14}/> Resume saved</button> : null}<button className="new-button" onClick={()=>setShowResearch(true)}><Plus size={16}/> New investigation</button></div>
       </header>
 
       <div className="page-content">
