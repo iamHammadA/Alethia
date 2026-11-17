@@ -12,9 +12,12 @@ import ollama
 CURRENT_FILE = Path(__file__).resolve()
 
 ROOT_DIR = next(
-    (p for p in CURRENT_FILE.parents if p.name.lower() == "alethia"),
-    CURRENT_FILE.parent
+    (p for p in CURRENT_FILE.parents
+     if (p / "backend").is_dir() and (p / "frontend").is_dir()),
+    None,
 )
+if ROOT_DIR is None:
+    raise RuntimeError("Could not locate the Alethia project root.")
 
 SAVE_DIR = ROOT_DIR / "arXiv papers"
 SAVE_DIR.mkdir(parents=True, exist_ok=True)
@@ -212,6 +215,31 @@ def validate_analysis(result, evidence_item):
 # EVIDENCE ANALYSIS
 # --------------------------------------------------
 
+def dummy_analyze_evidence(evidence_item):
+    """Produce conservative, explicitly simulated evidence classifications."""
+    candidates = evidence_item.get("evidence_candidates", []) if isinstance(evidence_item, dict) else []
+    analyzed = []
+    for candidate in candidates:
+        similarity = float(candidate.get("similarity", 0.0) or 0.0)
+        analyzed.append({
+            "sentence": candidate.get("sentence", ""),
+            "similarity": max(0.0, min(1.0, similarity)),
+            "relationship": "insufficient",
+            "strength": round(min(0.2, max(0.0, similarity * 0.2)), 3),
+            "reason": "SIMULATED: candidate retrieved by text similarity; no semantic model verdict was made.",
+            "analysis_mode": "simulated",
+        })
+    return {
+        "claim": evidence_item.get("claim", "") if isinstance(evidence_item, dict) else str(evidence_item),
+        "evidence_analysis": analyzed,
+        "best_evidence": None,
+        "overall_relationship": "insufficient" if analyzed else "irrelevant",
+        "overall_strength": max((item["strength"] for item in analyzed), default=0.0),
+        "analysis_mode": "simulated",
+        "simulation_notice": "Dummy evidence analysis. Treat all relationships as unverified.",
+    }
+
+
 def analyze_evidence(evidence_item):
 
     if isinstance(evidence_item, dict):
@@ -257,53 +285,61 @@ def analyze_evidence(evidence_item):
             f"Invalid JSON returned by {MODEL}: {raw_content}"
         ) from e
 
-    return validate_analysis(result, evidence_item)
+    validated = validate_analysis(result, evidence_item)
+    validated["analysis_mode"] = "ollama"
+    return validated
 
 
 # --------------------------------------------------
 # IMPORT MATCHED EVIDENCE
 # --------------------------------------------------
 
-def json_importer():
-
+def json_importer(progress=None):
     if not INPUT_PATH.exists():
-        raise FileNotFoundError(
-            f"Input file not found: {INPUT_PATH}"
-        )
+        raise FileNotFoundError(f"Input file not found: {INPUT_PATH}")
 
-    with open(INPUT_PATH, "r", encoding="utf-8") as file:
+    with INPUT_PATH.open("r", encoding="utf-8") as file:
         data = json.load(file)
 
+    force_dummy = os.getenv("ALETHIA_DUMMY_AI", "0").strip().lower() in {
+        "1", "true", "yes", "on"
+    }
+    fallback_reason = "Dummy mode explicitly enabled." if force_dummy else None
     analysed_results = {}
+    total = sum(len(value.get("claims_analyzed", [])) for value in data.values() if isinstance(value, dict))
+    completed = 0
 
     for article, evidence in data.items():
-
         evidences = []
-
-        for index, evidence_item in enumerate(
-            evidence.get("claims_analyzed", [])
-        ):
-
-            print(
-                f"\nArticle: {article} | "
-                f"Claim: {index + 1}"
-            )
-
-            current_evidence = analyze_evidence(evidence_item)
+        claim_items = evidence.get("claims_analyzed", []) if isinstance(evidence, dict) else []
+        for index, evidence_item in enumerate(claim_items):
+            print(f"\nArticle: {article} | Claim: {index + 1}")
+            if not force_dummy and fallback_reason is None:
+                try:
+                    current_evidence = analyze_evidence(evidence_item)
+                except Exception as exc:
+                    fallback_reason = f"{type(exc).__name__}: {str(exc)[:240]}"
+                    print(f"Ollama unavailable; switching to dummy evidence analysis: {fallback_reason}")
+                    current_evidence = dummy_analyze_evidence(evidence_item)
+                    current_evidence["simulation_reason"] = fallback_reason
+            else:
+                current_evidence = dummy_analyze_evidence(evidence_item)
+                current_evidence["simulation_reason"] = fallback_reason
 
             evidences.append(current_evidence)
-
-            print(
-                "Relationship:",
-                current_evidence["overall_relationship"]
+            analysed_results[article] = evidences
+            # Persist after each claim so interruption cannot discard completed work.
+            OUTPUT_PATH.write_text(
+                json.dumps(analysed_results, indent=2, ensure_ascii=False),
+                encoding="utf-8",
             )
-
-            print(
-                "Strength:",
-                current_evidence["overall_strength"]
-            )
-
-        analysed_results[article] = evidences
+            completed += 1
+            if progress:
+                percent = 60 + round(14 * completed / max(total, 1))
+                mode = current_evidence.get("analysis_mode", "unknown")
+                progress("evidence", min(percent, 74), f"{mode.title()} evidence analysis: {completed}/{total} claims.")
+            print("Relationship:", current_evidence["overall_relationship"])
+            print("Strength:", current_evidence["overall_strength"])
 
     return analysed_results
 
@@ -312,23 +348,16 @@ def json_importer():
 # MAIN EVIDENCE ANALYSIS PIPELINE
 # --------------------------------------------------
 
-def evidence_main():
-
-    data = json_importer()
-
-    with open(OUTPUT_PATH, "w", encoding="utf-8") as file:
-
-        json.dump(
-            data,
-            file,
-            indent=2,
-            ensure_ascii=False
-        )
-
+def evidence_main(progress=None):
+    data = json_importer(progress=progress)
+    OUTPUT_PATH.write_text(
+        json.dumps(data, indent=2, ensure_ascii=False),
+        encoding="utf-8",
+    )
     print("\nEvidence analysis completed.")
-
     print(f"Output saved to: {OUTPUT_PATH}")
-
+    if progress:
+        progress("evidence", 75, "Evidence analysis output saved.")
     return data
 
 
