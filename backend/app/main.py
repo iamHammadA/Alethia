@@ -100,13 +100,16 @@ def dashboard_payload() -> dict:
     claim_count = sum(len(items) for items in claim_data.values() if isinstance(items, list)) if isinstance(claim_data, dict) else 0
     supported = sum(1 for edge in edges if str(edge.get("relationship", "")).upper() == "SUPPORTS")
     paper_preview = papers[:6]
-    if not paper_preview and isinstance(metadata, dict):
-        paper_preview = [{"id": key, "node_type": "paper", **value} for key, value in list(metadata.items())[:6] if isinstance(value, dict)]
+    if isinstance(metadata, dict) and metadata:
+        paper_preview = [
+            {"id": key, "node_type": "paper", **value}
+            for key, value in list(metadata.items())[:6] if isinstance(value, dict)
+        ]
     return {
         "available": GRAPH_PATH.exists(),
         "stats": {
-            "papers": len(papers) or metadata_count or report.get("papers_created", 0),
-            "claims": len(claims) or claim_count or report.get("claims_created", 0),
+            "papers": max(len(papers), metadata_count, report.get("papers_created", 0)),
+            "claims": max(len(claims), claim_count, report.get("claims_created", 0)),
             "evidence": len(evidence) or report.get("evidence_created", 0),
             "relationships": len(edges) or report.get("total_edges", 0),
             "supported_links": supported,
