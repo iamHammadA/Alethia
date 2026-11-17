@@ -60,7 +60,22 @@ def read_json(path: Path, default: Any = None) -> Any:
         return default
 
 
+def graph_is_current() -> bool:
+    if not GRAPH_PATH.exists():
+        return False
+    if not PAPER_METADATA_PATH.exists():
+        return True
+    try:
+        return GRAPH_PATH.stat().st_mtime >= PAPER_METADATA_PATH.stat().st_mtime
+    except OSError:
+        return False
+
+
 def graph_data() -> dict:
+    # Hide a previous topic's graph as soon as the active run starts writing
+    # fresh paper metadata. The new graph becomes visible when rebuilt.
+    if not graph_is_current():
+        return {"graph": {}, "nodes": [], "edges": []}
     return read_json(GRAPH_PATH, {"graph": {}, "nodes": [], "edges": []})
 
 
@@ -106,7 +121,7 @@ def dashboard_payload() -> dict:
             for key, value in list(metadata.items())[:6] if isinstance(value, dict)
         ]
     return {
-        "available": GRAPH_PATH.exists(),
+        "available": graph_is_current(),
         "stats": {
             "papers": metadata_count or len(papers) or report.get("papers_created", 0),
             "claims": claim_count if CLAIMS_PATH.exists() else (len(claims) or report.get("claims_created", 0)),
@@ -118,7 +133,7 @@ def dashboard_payload() -> dict:
         "papers": paper_preview,
         "insights": insights,
         "report": report,
-        "updated_at": datetime.fromtimestamp(GRAPH_PATH.stat().st_mtime, timezone.utc).isoformat() if GRAPH_PATH.exists() else None,
+        "updated_at": datetime.fromtimestamp(GRAPH_PATH.stat().st_mtime, timezone.utc).isoformat() if graph_is_current() else None,
     }
 
 class ResearchRequest(BaseModel):
