@@ -1,4 +1,5 @@
 # Alethia
+
 ### AI-Powered Scientific Literature Intelligence & Knowledge Graph Platform
 
 <p align="center">
